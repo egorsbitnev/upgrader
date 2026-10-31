@@ -500,6 +500,40 @@
       }
     }
 
+    
+    /* SELL SKINS STYLES */
+    .mini-card-sell-btn {
+      margin-top: 4px;
+      width: 100%;
+      padding: 3px 0;
+      background: #22151c;
+      border: 1px solid #7f1d1d;
+      color: #fca5a5;
+      font-size: 9px;
+      font-weight: 800;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .mini-card-sell-btn:hover {
+      background: #991b1b;
+      color: #fff;
+    }
+    .sell-all-btn {
+      background: #7f1d1d;
+      border: none;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+    .sell-all-btn:hover {
+      background: #b91c1c;
+    }
+
     /* SKIN CARDS (CLEAN UPGRADER LOOK) */
     .mini-card {
       background: var(--bg-card);
@@ -895,7 +929,10 @@
         <div class="panel-inventory">
           <div class="panel-header">
             <span class="panel-title">🎒 Инвентарь</span>
-            <span class="panel-badge"><span id="invCount">0</span> предм.</span>
+            <div style="display: flex; align-items: center;">
+              <span class="panel-badge"><span id="invCount">0</span> предм.</span>
+              <button class="sell-all-btn" title="Продать все скины" onclick="sellAllSkins()">Продать все</button>
+            </div>
           </div>
           <div class="dual-grid" id="inventoryGrid"></div>
         </div>
@@ -10344,6 +10381,54 @@
       });
     }
 
+    
+    function sellSkin(uid, event) {
+      if (event) event.stopPropagation();
+      const idx = state.inventory.findIndex(it => it.uid === uid);
+      if (idx === -1) return;
+
+      const item = state.inventory[idx];
+      const payout = item.price;
+
+      state.balance += payout;
+      state.inventory.splice(idx, 1);
+
+      // If current selected source was this item, reset to coin bet
+      if (state.selectedSource && state.selectedSource.uid === uid) {
+        state.selectedSource = null;
+        selectCoinBet(state.coinBet || 100);
+      }
+
+      AudioEngine.playCoins();
+      updateBalance();
+      renderInventory();
+      renderMarket();
+      recalcChance();
+    }
+
+    function sellAllSkins() {
+      if (state.inventory.length === 0) {
+        alert("Инвентарь пуст!");
+        return;
+      }
+
+      const totalVal = state.inventory.reduce((acc, it) => acc + it.price, 0);
+      if (!confirm(`Продать все ${state.inventory.length} предметов за 🪙 ${totalVal.toLocaleString('ru-RU')} монет?`)) {
+        return;
+      }
+
+      state.balance += totalVal;
+      state.inventory = [];
+      state.selectedSource = null;
+      selectCoinBet(state.coinBet || 100);
+
+      AudioEngine.playCoins();
+      updateBalance();
+      renderInventory();
+      renderMarket();
+      recalcChance();
+    }
+
     function renderInventory() {
       const grid = document.getElementById('inventoryGrid');
       grid.innerHTML = '';
@@ -10380,6 +10465,7 @@
           <div class="mini-card-name">${item.name}</div>
           <div class="mini-card-type">${item.type}</div>
           <div class="mini-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
+          <button class="mini-card-sell-btn" onclick="sellSkin(${item.uid}, event)">Продать</button>
         `;
         grid.appendChild(card);
       });
