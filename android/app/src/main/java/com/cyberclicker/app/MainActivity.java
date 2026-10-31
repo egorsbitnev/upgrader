@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.setOverScrollMode(View.OVER_SCROLL_NEVER);
