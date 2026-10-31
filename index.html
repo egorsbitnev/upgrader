@@ -3,29 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#0a0d14">
   <title>UPGRADER CS2</title>
   <style>
     :root {
-      --bg-dark: #090c14;
-      --bg-surface: #0e1320;
-      --bg-panel: #131b2c;
-      --bg-card: #182337;
-      --bg-card-hover: #1e2c45;
-      --neon-cyan: #00f2fe;
-      --neon-blue: #4facfe;
-      --neon-green: #00e701;
-      --neon-green-glow: rgba(0, 231, 1, 0.45);
-      --neon-gold: #ffb703;
-      --neon-red: #ff2a5f;
-      --neon-red-glow: rgba(255, 42, 95, 0.45);
-      --text-main: #ffffff;
-      --text-dim: #7f8fa4;
-      --border: #202c44;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --bg-main: #0e131d;
+      --bg-panel: #141a27;
+      --bg-card: #192030;
+      --bg-card-hover: #1f273b;
+      --bg-card-active: #242e45;
+      --accent-green: #00c74d;
+      --accent-yellow: #f5a623;
+      --accent-blue: #3b82f6;
+      --accent-red: #ef4444;
+      --text-white: #f3f4f6;
+      --text-muted: #838fa5;
+      --border: #222c3f;
+      --border-light: #2b374e;
     }
     * {
       box-sizing: border-box;
@@ -40,21 +33,19 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: var(--bg-dark);
-      color: var(--text-main);
+      background: var(--bg-main);
+      color: var(--text-white);
     }
     body {
       display: flex;
       flex-direction: column;
-      padding-top: var(--safe-top);
-      padding-bottom: var(--safe-bottom);
     }
 
-    /* MOBILE HEADER */
+    /* HEADER UPGRADER STYLE (CLEAN & DARK) */
     header {
-      background: #0d121f;
+      background: #111723;
       border-bottom: 1px solid var(--border);
-      padding: 8px 12px;
+      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -65,71 +56,114 @@
     .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .brand-icon {
-      width: 26px;
-      height: 26px;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      width: 28px;
+      height: 28px;
+      background: #2563eb;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #080d1a;
+      color: #fff;
       font-weight: 900;
-      font-size: 12px;
+      font-size: 13px;
     }
     .brand-name {
-      font-size: 15px;
-      font-weight: 900;
-      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       color: #fff;
     }
-    .brand-suffix {
-      font-size: 9px;
-      font-weight: 800;
-      background: rgba(0, 242, 254, 0.15);
-      color: var(--neon-cyan);
-      padding: 1px 4px;
-      border-radius: 3px;
+    .brand-badge {
+      font-size: 10px;
+      font-weight: 700;
+      background: #1e293b;
+      color: #94a3b8;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
     }
 
     .user-profile {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+    }
+    .btn-sound {
+      background: #1a2233;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .balance-pill {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: #141c2c;
+      background: #161e2e;
       border: 1px solid var(--border);
       padding: 4px 10px;
-      border-radius: 16px;
+      border-radius: 8px;
     }
     .balance-val {
-      font-weight: 900;
+      font-weight: 800;
       font-size: 13px;
-      color: var(--neon-gold);
+      color: var(--accent-yellow);
     }
     .btn-deposit {
-      background: linear-gradient(135deg, #00e676, #00c853);
+      background: var(--accent-green);
       border: none;
-      color: #090e17;
+      color: #0b111a;
       font-weight: 900;
-      font-size: 14px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
+      font-size: 15px;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: opacity 0.15s;
+    }
+    .btn-deposit:active { opacity: 0.8; }
+
+    /* NAV TABS */
+    .top-nav {
+      display: flex;
+      background: #101624;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .top-nav-btn {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .top-nav-btn.active {
+      color: #fff;
+      border-bottom-color: var(--accent-blue);
+      background: rgba(59, 130, 246, 0.05);
     }
 
-    /* MAIN CONTENT VIEWPORT */
-    .main-viewport {
+    /* MAIN VIEWPORT */
+    .viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -137,42 +171,35 @@
       position: relative;
     }
 
-    /* UPGRADER VIEW FOR MOBILE */
-    #view-upgrader {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    /* COMPACT ARENA FOR MOBILE PHONES */
-    .arena-top {
-      background: radial-gradient(ellipse at 50% 20%, #162035 0%, #0a0e18 100%);
-      padding: 8px 10px 6px;
+    /* ========================================================
+       TOP ARENA (UPGRADER WHEEL + SLOTS)
+       ======================================================== */
+    .upgrader-arena {
+      background: #111724;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
-
-    .arena-row {
+    .arena-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 380px;
-      gap: 8px;
+      max-width: 480px;
+      gap: 10px;
     }
 
-    /* MOBILE SLOTS (Left Bet / Right Target) */
-    .mobile-slot {
+    /* SLOTS: Left (Bet) / Right (Target) */
+    .arena-slot {
       flex: 1;
-      height: 105px;
-      background: var(--bg-panel);
-      border: 1.5px dashed var(--border);
-      border-radius: 12px;
-      padding: 6px 4px;
+      height: 110px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -180,95 +207,92 @@
       text-align: center;
       position: relative;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: border-color 0.15s, background 0.15s;
     }
-    .mobile-slot.active {
-      border-style: solid;
-      border-color: #3b5078;
-      background: #162136;
+    .arena-slot.active {
+      border-color: #3b82f6;
+      background: #1a2438;
     }
-    .mobile-slot.target.active {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+    .arena-slot.target.active {
+      border-color: var(--accent-green);
     }
-    .slot-badge {
+    .slot-tag {
       position: absolute;
       top: 4px;
-      font-size: 8.5px;
-      font-weight: 800;
+      font-size: 9px;
+      font-weight: 700;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: var(--text-muted);
     }
-    .slot-img-wrap {
-      width: 65px;
-      height: 44px;
+    .slot-img-box {
+      width: 70px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-top: 8px;
     }
-    .slot-img-wrap img {
+    .slot-img-box img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.7));
     }
     .slot-name {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
-      max-width: 105px;
+      max-width: 130px;
       margin-top: 2px;
     }
     .slot-price {
-      font-size: 10.5px;
-      font-weight: 900;
-      color: var(--neon-gold);
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-yellow);
     }
 
-    /* CENTER COMPACT DIAL FOR MOBILE SCREEN */
-    .dial-wrap {
+    /* DIAL WHEEL (NO WHITE DOT, CLEAN SHARP ARROW) */
+    .dial-container {
       position: relative;
-      width: 130px;
-      height: 130px;
+      width: 136px;
+      height: 136px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .dial-svg {
-      width: 130px;
-      height: 130px;
+      width: 136px;
+      height: 136px;
       transform: rotate(-90deg);
     }
-    .dial-bg {
+    .dial-track {
       fill: transparent;
-      stroke: #162136;
-      stroke-width: 11;
+      stroke: #1e273b;
+      stroke-width: 10;
     }
     .dial-arc {
       fill: transparent;
-      stroke: var(--neon-green);
-      stroke-width: 11;
+      stroke: var(--accent-green);
+      stroke-width: 10;
       stroke-linecap: round;
-      stroke-dasharray: 345;
-      stroke-dashoffset: 345;
-      transition: stroke-dashoffset 0.35s ease;
-      filter: drop-shadow(0 0 8px var(--neon-green-glow));
+      stroke-dasharray: 364;
+      stroke-dashoffset: 364;
+      transition: stroke-dashoffset 0.25s ease;
     }
 
+    /* THE NEEDLE / POINTER (ONLY ARROW, NO WHITE CENTER DOT) */
     .dial-needle {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 3px;
-      height: 62px;
-      margin-left: -1.5px;
-      margin-top: -62px;
+      width: 2px;
+      height: 65px;
+      margin-left: -1px;
+      margin-top: -65px;
       transform-origin: bottom center;
       transform: rotate(0deg);
       transition: transform 4s cubic-bezier(0.12, 0.8, 0.22, 1);
@@ -281,25 +305,14 @@
       top: -3px;
       left: 50%;
       transform: translateX(-50%);
+      width: 0;
+      height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
       border-top: 13px solid #ffffff;
-      filter: drop-shadow(0 0 6px #ffffff);
-    }
-    .dial-hub {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: #ffffff;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 8px rgba(0, 242, 254, 0.8);
-      z-index: 11;
     }
 
-    .dial-center {
+    .dial-center-info {
       position: absolute;
       display: flex;
       flex-direction: column;
@@ -308,169 +321,190 @@
       text-align: center;
       pointer-events: none;
     }
-    .dial-val {
-      font-size: 21px;
+    .dial-chance-num {
+      font-size: 22px;
       font-weight: 900;
       color: #ffffff;
       line-height: 1;
-      text-shadow: 0 0 10px var(--neon-green-glow);
     }
-    .dial-lbl {
-      font-size: 8px;
+    .dial-chance-label {
+      font-size: 9px;
       font-weight: 700;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: var(--text-muted);
       margin-top: 2px;
     }
-    .dial-x {
+    .dial-multiplier {
       font-size: 11px;
       font-weight: 800;
-      color: var(--neon-cyan);
+      color: #60a5fa;
+      margin-top: 1px;
     }
 
-    /* MOBILE PRESET CHIPS & ACTION BUTTON */
-    .arena-actions {
+    /* PRESET BUTTONS + UPGRADE BUTTON */
+    .arena-bottom-row {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 380px;
+      max-width: 480px;
       gap: 6px;
       margin-top: 6px;
     }
-    .presets-carousel {
+    .preset-chips-row {
       display: flex;
-      gap: 5px;
+      gap: 6px;
       width: 100%;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding: 1px 0;
     }
-    .presets-carousel::-webkit-scrollbar { display: none; }
-    .preset-pill {
+    .preset-btn {
       flex: 1;
-      min-width: 50px;
-      background: #141c2c;
+      background: #172030;
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 4px 0;
       font-size: 11px;
-      font-weight: 800;
-      color: var(--text-dim);
+      font-weight: 700;
+      color: var(--text-muted);
       text-align: center;
       cursor: pointer;
+      transition: all 0.15s;
     }
-    .preset-pill:active {
-      background: var(--neon-cyan);
-      color: #000;
+    .preset-btn:hover {
+      background: #202b40;
+      color: #fff;
+    }
+    .preset-btn:active {
+      background: #2563eb;
+      color: #fff;
     }
 
-    .btn-upgrade-mobile {
+    .btn-upgrade-action {
       width: 100%;
-      padding: 11px 0;
-      background: linear-gradient(135deg, #00e701, #00a801);
-      color: #080d15;
+      padding: 10px 0;
+      background: var(--accent-green);
+      color: #0b111a;
       font-size: 14px;
       font-weight: 900;
       letter-spacing: 0.5px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 231, 1, 0.4);
+      transition: background 0.15s;
     }
-    .btn-upgrade-mobile:active {
-      transform: scale(0.98);
+    .btn-upgrade-action:hover:not(:disabled) {
+      background: #00d955;
     }
-    .btn-upgrade-mobile:disabled {
-      background: #1c2639;
-      color: #4f617d;
-      box-shadow: none;
+    .btn-upgrade-action:disabled {
+      background: #1e293b;
+      color: #475569;
+      cursor: not-allowed;
     }
 
-    /* MOBILE BOTTOM SKINS COLLECTION */
-    .mobile-catalog {
+    /* ========================================================
+       SPLIT DUAL BOTTOM SECTION: INVENTORY (LEFT) & MARKET (RIGHT)
+       ======================================================== */
+    .dual-bottom-panels {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      background: var(--bg-main);
+    }
+
+    /* LEFT PANE: INVENTORY */
+    .panel-inventory {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      background: #0c101a;
       overflow: hidden;
     }
-    .mobile-tabs-row {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      background: #0d121e;
-      flex-shrink: 0;
-    }
-    .mobile-tab-btn {
+    /* RIGHT PANE: MARKET */
+    .panel-market {
       flex: 1;
-      padding: 9px 0;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--text-dim);
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .mobile-tab-btn.active {
-      color: var(--neon-cyan);
-      border-bottom-color: var(--neon-cyan);
-      background: rgba(0, 242, 254, 0.05);
+      display: flex;
+      flex-direction: column;
+      background: #0e1422;
+      overflow: hidden;
     }
 
-    .mobile-filter-bar {
+    .panel-header {
+      background: #141a28;
+      border-bottom: 1px solid var(--border);
+      padding: 6px 10px;
       display: flex;
-      gap: 5px;
-      padding: 5px 8px;
-      background: #101625;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      height: 32px;
+    }
+    .panel-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .panel-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .filter-mini-bar {
+      display: flex;
+      gap: 4px;
+      padding: 4px 6px;
+      background: #111622;
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
       scrollbar-width: none;
       flex-shrink: 0;
     }
-    .mobile-filter-bar::-webkit-scrollbar { display: none; }
-    .m-filter-chip {
-      padding: 3px 8px;
-      font-size: 10px;
+    .filter-mini-bar::-webkit-scrollbar { display: none; }
+    .f-chip {
+      padding: 2px 7px;
+      font-size: 9.5px;
       font-weight: 700;
-      background: #172134;
-      color: var(--text-dim);
-      border-radius: 10px;
+      background: #1a2233;
+      color: var(--text-muted);
+      border-radius: 4px;
       border: 1px solid var(--border);
       white-space: nowrap;
       cursor: pointer;
     }
-    .m-filter-chip.active {
-      background: var(--neon-cyan);
-      color: #090e18;
-      border-color: var(--neon-cyan);
+    .f-chip.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
     }
 
-    .mobile-grid {
+    .dual-grid {
       flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding: 6px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 6px;
       align-content: start;
     }
-    @media (min-width: 480px) {
-      .mobile-grid {
+    @media (min-width: 600px) {
+      .dual-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (min-width: 900px) {
+      .dual-grid {
         grid-template-columns: repeat(4, 1fr);
       }
     }
-    @media (min-width: 768px) {
-      .mobile-grid {
-        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-      }
-    }
 
-    .skin-item-card {
+    /* SKIN CARDS (CLEAN UPGRADER LOOK) */
+    .mini-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 6px 4px;
       display: flex;
       flex-direction: column;
@@ -478,37 +512,41 @@
       text-align: center;
       cursor: pointer;
       position: relative;
+      transition: border-color 0.12s, background 0.12s;
     }
-    .skin-item-card:active {
-      transform: scale(0.95);
+    .mini-card:hover {
+      background: var(--bg-card-hover);
+      border-color: #3b4866;
     }
-    .skin-item-card.selected {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 10px rgba(0, 242, 254, 0.35);
-      background: #1e2c47;
+    .mini-card.selected {
+      border-color: #3b82f6;
+      background: #1b263b;
     }
-    .skin-item-card.rare-contraband { border-bottom: 2.5px solid #e4ae39; }
-    .skin-item-card.rare-gold { border-bottom: 2.5px solid #ffd700; }
-    .skin-item-card.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
-    .skin-item-card.rare-classified { border-bottom: 2.5px solid #d32ce6; }
-    .skin-item-card.rare-restricted { border-bottom: 2.5px solid #8847ff; }
-    .skin-item-card.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
+    .mini-card.target-selected {
+      border-color: var(--accent-green);
+      background: #142820;
+    }
+    .mini-card.rare-contraband { border-bottom: 2px solid #e4ae39; }
+    .mini-card.rare-gold { border-bottom: 2px solid #ffd700; }
+    .mini-card.rare-covert { border-bottom: 2px solid #eb4b4b; }
+    .mini-card.rare-classified { border-bottom: 2px solid #d32ce6; }
+    .mini-card.rare-restricted { border-bottom: 2px solid #8847ff; }
+    .mini-card.rare-milspec { border-bottom: 2px solid #4b69ff; }
 
-    .skin-item-card-img {
+    .mini-card-img {
       width: 100%;
-      height: 48px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 3px;
     }
-    .skin-item-card-img img {
+    .mini-card-img img {
       max-width: 90%;
       max-height: 90%;
       object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
     }
-    .skin-item-card-name {
+    .mini-card-name {
       font-size: 10px;
       font-weight: 700;
       color: #fff;
@@ -518,45 +556,39 @@
       text-overflow: ellipsis;
       width: 100%;
     }
-    .skin-item-card-type {
+    .mini-card-type {
       font-size: 9px;
-      color: var(--text-dim);
+      color: var(--text-muted);
       margin: 1px 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
     }
-    .skin-item-card-price {
+    .mini-card-price {
       font-size: 10px;
-      font-weight: 900;
-      color: var(--neon-gold);
+      font-weight: 800;
+      color: var(--accent-yellow);
     }
 
-    /* ================= MOBILE CASES VIEW ================= */
+    /* ================= CASES VIEW ================= */
     #view-cases {
       display: none;
       flex-direction: column;
       height: 100%;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      background: var(--bg-dark);
-      padding: 10px 8px;
+      background: var(--bg-main);
+      padding: 12px;
     }
-    .cases-mobile-grid {
+    .cases-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
     }
-    @media (min-width: 500px) {
-      .cases-mobile-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    .case-card-m {
-      background: var(--bg-card);
+    .case-card {
+      background: var(--bg-panel);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 10px 8px;
       display: flex;
       flex-direction: column;
@@ -564,34 +596,29 @@
       text-align: center;
       cursor: pointer;
     }
-    .case-card-m:active {
-      transform: scale(0.96);
-    }
-    .case-card-m-img {
-      width: 90px;
-      height: 70px;
+    .case-card-img {
+      width: 85px;
+      height: 65px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 6px;
     }
-    .case-card-m-img img {
+    .case-card-img img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
     }
-    .case-card-m-name {
-      font-weight: 800;
-      font-size: 11.5px;
+    .case-card-name {
+      font-weight: 700;
+      font-size: 12px;
       color: #fff;
       margin-bottom: 6px;
-      line-height: 1.2;
     }
-    .case-card-m-btn {
-      background: linear-gradient(135deg, #ffb703, #fb8500);
-      color: #0b0f19;
-      font-weight: 900;
+    .case-card-btn {
+      background: #d97706;
+      color: #fff;
+      font-weight: 800;
       font-size: 11px;
       padding: 5px 0;
       border-radius: 6px;
@@ -601,41 +628,12 @@
       margin-top: auto;
     }
 
-    /* MOBILE BOTTOM TAB BAR */
-    .mobile-bottom-nav {
-      height: 52px;
-      background: #0b0e18;
-      border-top: 1px solid var(--border);
-      display: flex;
-      flex-shrink: 0;
-      z-index: 90;
-    }
-    .m-nav-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-dim);
-      font-size: 10px;
-      font-weight: 800;
-      cursor: pointer;
-      gap: 2px;
-      transition: color 0.15s;
-    }
-    .m-nav-item span {
-      font-size: 17px;
-    }
-    .m-nav-item.active {
-      color: var(--neon-cyan);
-    }
-
-    /* CASE OPENING MODAL FOR MOBILE */
+    /* CASE MODAL */
     .case-modal {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(6, 9, 15, 0.95);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -645,39 +643,32 @@
     }
     .case-modal-box {
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       background: var(--bg-panel);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
     }
-    .case-modal-title {
-      font-size: 16px;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 12px;
-    }
     .tape-container {
       width: 100%;
       height: 96px;
       background: #090c14;
-      border: 2px solid var(--border);
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       position: relative;
       overflow: hidden;
-      margin-bottom: 14px;
+      margin: 12px 0 14px;
     }
     .tape-pointer {
       position: absolute;
       top: 0; bottom: 0; left: 50%;
       transform: translateX(-50%);
-      width: 3px;
-      background: #ffb703;
-      box-shadow: 0 0 8px #ffb703;
+      width: 2px;
+      background: var(--accent-yellow);
       z-index: 10;
     }
     .tape-track {
@@ -690,7 +681,7 @@
     .tape-item {
       width: 90px;
       height: 100%;
-      background: #141c2c;
+      background: #121824;
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -699,11 +690,11 @@
       padding: 4px;
       flex-shrink: 0;
     }
-    .tape-item.rare-gold { border-bottom: 2.5px solid #ffd700; }
-    .tape-item.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
-    .tape-item.rare-classified { border-bottom: 2.5px solid #d32ce6; }
-    .tape-item.rare-restricted { border-bottom: 2.5px solid #8847ff; }
-    .tape-item.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
+    .tape-item.rare-gold { border-bottom: 2px solid #ffd700; }
+    .tape-item.rare-covert { border-bottom: 2px solid #eb4b4b; }
+    .tape-item.rare-classified { border-bottom: 2px solid #d32ce6; }
+    .tape-item.rare-restricted { border-bottom: 2px solid #8847ff; }
+    .tape-item.rare-milspec { border-bottom: 2px solid #4b69ff; }
     .tape-item-img {
       width: 50px;
       height: 38px;
@@ -727,45 +718,29 @@
       text-align: center;
       margin-top: 2px;
     }
-    .case-actions-group {
+    .case-actions {
       display: flex;
       gap: 8px;
       width: 100%;
     }
-    .case-open-btn-m {
+    .case-btn {
       flex: 1;
-      padding: 10px 0;
-      border-radius: 10px;
+      padding: 9px 0;
+      border-radius: 6px;
       border: none;
-      font-weight: 900;
+      font-weight: 800;
       font-size: 12px;
       cursor: pointer;
     }
-    .case-open-1x {
-      background: linear-gradient(135deg, #00e701, #00b301);
-      color: #0b0f19;
-    }
-    .case-open-10x {
-      background: linear-gradient(135deg, #ffb703, #fb8500);
-      color: #0b0f19;
-    }
-    .case-close-x {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      color: var(--text-dim);
-      font-size: 18px;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
+    .case-btn-1x { background: var(--accent-green); color: #0b111a; }
+    .case-btn-10x { background: var(--accent-yellow); color: #0b111a; }
 
-    /* FULLSCREEN RESULT OVERLAYS FOR MOBILE */
-    .animation-overlay {
+    /* RESULTS OVERLAYS */
+    .result-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(6, 9, 16, 0.94);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -773,13 +748,10 @@
       z-index: 1200;
       padding: 16px;
     }
-
-    /* WIN POPUP */
-    .win-card-box {
-      background: linear-gradient(180deg, #17243c 0%, #101828 100%);
-      border: 2px solid var(--neon-green);
-      box-shadow: 0 0 35px rgba(0, 231, 1, 0.4);
-      border-radius: 18px;
+    .result-dialog-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 20px 16px;
       width: 100%;
       max-width: 310px;
@@ -787,339 +759,204 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      animation: popWin 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
-    @keyframes popWin {
-      0% { transform: scale(0.6); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .win-badge-title {
-      font-size: 20px;
+    .result-dialog-box.win { border-color: var(--accent-green); }
+    .result-dialog-box.lose { border-color: var(--accent-red); }
+    .res-title {
+      font-size: 18px;
       font-weight: 900;
-      color: var(--neon-green);
-      letter-spacing: 0.5px;
+      margin-bottom: 6px;
     }
-    .win-skin-img-box {
-      width: 140px;
-      height: 90px;
+    .res-title.win { color: var(--accent-green); }
+    .res-title.lose { color: var(--accent-red); }
+    .res-img-box {
+      width: 130px;
+      height: 85px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 10px 0;
+      margin: 8px 0;
     }
-    .win-skin-img-box img {
+    .res-img-box img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 6px 14px rgba(0, 231, 1, 0.6));
     }
-    .win-item-name {
-      font-size: 15px;
-      font-weight: 800;
-      color: #ffffff;
-    }
-    .win-item-price {
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--neon-gold);
-      margin-top: 3px;
-    }
-    .btn-action-dialog {
-      margin-top: 16px;
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #00e701, #00b301);
-      border: none;
-      border-radius: 10px;
-      color: #080d16;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    /* LOSE POPUP */
-    .lose-card-box {
-      background: linear-gradient(180deg, #24141c 0%, #130a0f 100%);
-      border: 2px solid var(--neon-red);
-      box-shadow: 0 0 35px rgba(255, 42, 95, 0.4);
-      border-radius: 18px;
-      padding: 20px 16px;
-      width: 100%;
-      max-width: 300px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      animation: shakeLose 0.6s ease;
-    }
-    @keyframes shakeLose {
-      20%, 80% { transform: translate3d(-4px, 0, 0); }
-      40%, 60% { transform: translate3d(4px, 0, 0); }
-    }
-    .lose-badge-title {
-      font-size: 19px;
-      font-weight: 900;
-      color: var(--neon-red);
-    }
-    .btn-retry-lose {
+    .res-btn {
       margin-top: 14px;
       width: 100%;
-      padding: 11px;
-      background: #331d27;
-      border: 1px solid #66273c;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 13px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
       font-weight: 800;
+      font-size: 13px;
       cursor: pointer;
-    }
-
-    /* 10X CASE MULTI RESULT */
-    .multi-res-dialog {
-      background: var(--bg-panel);
-      border: 2px solid var(--neon-gold);
-      border-radius: 16px;
-      padding: 14px;
-      width: 100%;
-      max-width: 360px;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .multi-res-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      width: 100%;
-      overflow-y: auto;
-      max-height: 55vh;
-      padding: 4px 0;
-    }
-    .multi-res-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 3px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .multi-res-card.rare-gold { border-bottom: 2px solid #ffd700; }
-    .multi-res-card.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
-    .multi-res-card.rare-classified { border-bottom: 2.5px solid #d32ce6; }
-    .multi-res-card.rare-restricted { border-bottom: 2.5px solid #8847ff; }
-    .multi-res-card.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
-    .multi-res-card img {
-      width: 44px;
-      height: 34px;
-      object-fit: contain;
-    }
-    .multi-res-card-name {
-      font-size: 9px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
-    }
-    .multi-res-card-price {
-      font-size: 9px;
-      font-weight: 900;
-      color: var(--neon-gold);
-    }
-
-    #confettiCanvas {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 5;
     }
   </style>
 </head>
 <body>
 
-  <!-- MOBILE HEADER -->
+  <!-- HEADER -->
   <header>
     <div class="brand-wrap">
       <div class="brand-icon">UP</div>
       <div class="brand-name">UPGRADER</div>
-      <div class="brand-suffix">CS2</div>
+      <div class="brand-badge">CS2</div>
     </div>
     <div class="user-profile">
-      <button id="soundToggleBtn" onclick="AudioEngine.toggleMute()" style="background:#141c2c; border:1px solid var(--border); color:#fff; border-radius:50%; width:26px; height:26px; cursor:pointer; font-size:12px; display:flex; align-items:center; justify-content:center;">🔊</button>
+      <button class="btn-sound" id="soundToggleBtn" onclick="AudioEngine.toggleMute()">🔊</button>
       <div class="balance-pill">
-        <span style="font-size: 13px;">🪙</span>
+        <span>🪙</span>
         <span class="balance-val" id="userBalanceDisplay">1,000</span>
       </div>
       <button class="btn-deposit" title="Пополнить бесплатно (+1,000)" onclick="grantFreeCoins()">+</button>
     </div>
   </header>
 
-  <!-- VIEWPORT -->
-  <div class="main-viewport">
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <div class="top-nav-btn active" id="navItemUpgrader" onclick="switchMainView('upgrader')">
+      <span>⚡</span> Апгрейдер
+    </div>
+    <div class="top-nav-btn" id="navItemCases" onclick="switchMainView('cases')">
+      <span>📦</span> Кейсы CS2
+    </div>
+  </div>
+
+  <div class="viewport">
 
     <!-- ================= VIEW 1: UPGRADER ================= -->
-    <div id="view-upgrader">
+    <div id="view-upgrader" style="display: flex; flex-direction: column; height: 100%;">
       
-      <!-- COMPACT ARENA -->
-      <div class="arena-top">
-        <div class="arena-row">
+      <!-- TOP ARENA (UPGRADER WHEEL + SLOTS) -->
+      <div class="upgrader-arena">
+        <div class="arena-top-row">
           
           <!-- Left: User Bet Slot -->
-          <div class="mobile-slot active" id="sourceSlot" onclick="switchMobileTab('inventory')">
-            <span class="slot-badge">Ставка</span>
-            <div class="slot-img-wrap" id="sourceImgBox">
+          <div class="arena-slot active" id="sourceSlot">
+            <span class="slot-tag">Ваша ставка</span>
+            <div class="slot-img-box" id="sourceImgBox">
               <span style="font-size: 26px;">🪙</span>
             </div>
             <div class="slot-name" id="sourceTitle">100 Монет</div>
             <div class="slot-price" id="sourcePrice">🪙 100</div>
           </div>
 
-          <!-- Center: Dial Wheel -->
-          <div class="dial-wrap">
+          <!-- Center: Dial Wheel (No white center circle) -->
+          <div class="dial-container">
             <svg class="dial-svg">
-              <circle class="dial-bg" cx="65" cy="65" r="55"></circle>
-              <circle class="dial-arc" id="winArc" cx="65" cy="65" r="55"></circle>
+              <circle class="dial-track" cx="68" cy="68" r="58"></circle>
+              <circle class="dial-arc" id="winArc" cx="68" cy="68" r="58"></circle>
             </svg>
 
+            <!-- Arrow only without white center hub -->
             <div class="dial-needle" id="needle"></div>
-            <div class="dial-hub"></div>
 
-            <div class="dial-center">
-              <span class="dial-val" id="chanceDisplay">0%</span>
-              <span class="dial-lbl">Шанс</span>
-              <span class="dial-x" id="multDisplay">x0.00</span>
+            <div class="dial-center-info">
+              <span class="dial-chance-num" id="chanceDisplay">0%</span>
+              <span class="dial-chance-label">Шанс</span>
+              <span class="dial-multiplier" id="multDisplay">x0.00</span>
             </div>
           </div>
 
           <!-- Right: Target Slot -->
-          <div class="mobile-slot target" id="targetSlot" onclick="switchMobileTab('market')">
-            <span class="slot-badge">Цель</span>
-            <div class="slot-img-wrap" id="targetImgBox">
+          <div class="arena-slot target active" id="targetSlot">
+            <span class="slot-tag">Цель</span>
+            <div class="slot-img-box" id="targetImgBox">
               <span style="font-size: 24px;">🎯</span>
             </div>
-            <div class="slot-name" id="targetTitle">Выберите</div>
+            <div class="slot-name" id="targetTitle">Выберите скин</div>
             <div class="slot-price" id="targetPrice">-</div>
           </div>
 
         </div>
 
-        <!-- Presets & Action Button -->
-        <div class="arena-actions">
-          <div class="presets-carousel">
-            <div class="preset-pill" onclick="applyMultiplierTarget(1.5)">1.5x</div>
-            <div class="preset-pill" onclick="applyMultiplierTarget(2)">2x</div>
-            <div class="preset-pill" onclick="applyMultiplierTarget(5)">5x</div>
-            <div class="preset-pill" onclick="applyMultiplierTarget(10)">10x</div>
-            <div class="preset-pill" onclick="applyMultiplierTarget(25)">25x</div>
-            <div class="preset-pill" onclick="applyMultiplierTarget(50)">50x</div>
+        <!-- Presets and Upgrade Button -->
+        <div class="arena-bottom-row">
+          <div class="preset-chips-row">
+            <div class="preset-btn" onclick="applyMultiplierTarget(1.5)">1.5x</div>
+            <div class="preset-btn" onclick="applyMultiplierTarget(2)">2x</div>
+            <div class="preset-btn" onclick="applyMultiplierTarget(5)">5x</div>
+            <div class="preset-btn" onclick="applyMultiplierTarget(10)">10x</div>
+            <div class="preset-btn" onclick="applyMultiplierTarget(20)">20x</div>
+            <div class="preset-btn" onclick="applyMultiplierTarget(50)">50x</div>
           </div>
 
-          <button class="btn-upgrade-mobile" id="upgradeBtn" disabled onclick="startUpgrade()">
+          <button class="btn-upgrade-action" id="upgradeBtn" disabled onclick="startUpgrade()">
             СДЕЛАТЬ АПГРЕЙД
           </button>
         </div>
       </div>
 
-      <!-- MOBILE CATALOG SECTION -->
-      <div class="mobile-catalog">
-        <div class="mobile-tabs-row">
-          <button class="mobile-tab-btn active" id="tabMarketBtn" onclick="switchMobileTab('market')">Магазин (<span id="marketCount">0</span>)</button>
-          <button class="mobile-tab-btn" id="tabInventoryBtn" onclick="switchMobileTab('inventory')">Инвентарь (<span id="invCount">0</span>)</button>
+      <!-- DUAL BOTTOM SECTION: SPLIT IN TWO HALVES (INVENTORY ON LEFT, MARKET ON RIGHT) -->
+      <div class="dual-bottom-panels">
+        
+        <!-- LEFT HALF: USER INVENTORY -->
+        <div class="panel-inventory">
+          <div class="panel-header">
+            <span class="panel-title">🎒 Инвентарь</span>
+            <span class="panel-badge"><span id="invCount">0</span> предм.</span>
+          </div>
+          <div class="dual-grid" id="inventoryGrid"></div>
         </div>
 
-        <div class="mobile-filter-bar" id="marketFilterBar">
-          <div class="m-filter-chip active" onclick="filterMarket('all', this)">Все</div>
-          <div class="m-filter-chip" onclick="filterMarket('knife', this)">Ножи / Перчатки</div>
-          <div class="m-filter-chip" onclick="filterMarket('rifle', this)">Винтовки</div>
-          <div class="m-filter-chip" onclick="filterMarket('pistol', this)">Пистолеты</div>
-          <div class="m-filter-chip" onclick="filterMarket('cheap', this)">До 1,000</div>
-          <div class="m-filter-chip" onclick="filterMarket('expensive', this)">10,000+</div>
+        <!-- RIGHT HALF: SKINS MARKET -->
+        <div class="panel-market">
+          <div class="panel-header">
+            <span class="panel-title">🛒 Магазин целей</span>
+            <span class="panel-badge"><span id="marketCount">0</span> шт.</span>
+          </div>
+          <div class="filter-mini-bar" id="marketFilterBar">
+            <div class="f-chip active" onclick="filterMarket('all', this)">Все</div>
+            <div class="f-chip" onclick="filterMarket('knife', this)">Ножи/Перчатки</div>
+            <div class="f-chip" onclick="filterMarket('rifle', this)">Винтовки</div>
+            <div class="f-chip" onclick="filterMarket('pistol', this)">Пистолеты</div>
+            <div class="f-chip" onclick="filterMarket('cheap', this)">До 1,000</div>
+          </div>
+          <div class="dual-grid" id="marketGrid"></div>
         </div>
 
-        <div class="mobile-grid" id="marketGrid"></div>
-        <div class="mobile-grid" id="inventoryGrid" style="display: none;"></div>
       </div>
 
     </div>
 
     <!-- ================= VIEW 2: CASES ================= -->
     <div id="view-cases">
-      <div class="cases-mobile-grid" id="casesGrid"></div>
+      <div class="cases-grid" id="casesGrid"></div>
     </div>
 
-  </div>
-
-  <!-- MOBILE BOTTOM BAR NAVIGATION -->
-  <div class="mobile-bottom-nav">
-    <div class="m-nav-item active" id="navItemUpgrader" onclick="switchMainView('upgrader')">
-      <span>⚡</span>
-      <div>Апгрейдер</div>
-    </div>
-    <div class="m-nav-item" id="navItemCases" onclick="switchMainView('cases')">
-      <span>📦</span>
-      <div>Кейсы CS2</div>
-    </div>
   </div>
 
   <!-- CASE OPENING MODAL -->
   <div class="case-modal" id="caseModal">
     <div class="case-modal-box">
-      <button class="case-close-x" onclick="closeCaseModal()">✕</button>
-      <div class="case-modal-title" id="caseModalTitle">Кейс «Киловатт»</div>
+      <div style="display: flex; justify-content: space-between; width: 100%;">
+        <span style="font-weight: 800; font-size: 15px;" id="caseModalTitle">Кейс</span>
+        <span style="cursor: pointer; color: var(--text-muted); font-size: 18px;" onclick="closeCaseModal()">✕</span>
+      </div>
 
       <div class="tape-container">
         <div class="tape-pointer"></div>
         <div class="tape-track" id="tapeTrack"></div>
       </div>
 
-      <div class="case-actions-group">
-        <button class="case-open-btn-m case-open-1x" id="caseOpen1xBtn" onclick="spinCase(1)">
-          1x 🪙 250
-        </button>
-        <button class="case-open-btn-m case-open-10x" id="caseOpen10xBtn" onclick="spinCase(10)">
-          ⚡ 10x 🪙 2,500
-        </button>
+      <div class="case-actions">
+        <button class="case-btn case-btn-1x" id="caseOpen1xBtn" onclick="spinCase(1)">1x</button>
+        <button class="case-btn case-btn-10x" id="caseOpen10xBtn" onclick="spinCase(10)">⚡ 10x</button>
       </div>
     </div>
   </div>
 
-  <!-- WIN ANIMATION MODAL -->
-  <div class="animation-overlay" id="winOverlay">
-    <canvas id="confettiCanvas"></canvas>
-    <div class="win-card-box">
-      <div class="win-badge-title">🎉 ПОБЕДА!</div>
-      <div class="win-skin-img-box">
-        <img id="winSkinImg" src="" alt="Skin">
+  <!-- RESULT OVERLAY -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-dialog-box" id="resultDialogBox">
+      <div class="res-title" id="resTitle">АПГРЕЙД</div>
+      <div class="res-img-box">
+        <img id="resImg" src="" alt="Skin">
       </div>
-      <div class="win-item-name" id="winSkinName">AK-47 | Вулкан</div>
-      <div class="win-item-price" id="winSkinPrice">🪙 +2,800</div>
-      <button class="btn-action-dialog" onclick="closeWinOverlay()">ЗАБРАТЬ</button>
-    </div>
-  </div>
-
-  <!-- LOSE ANIMATION MODAL -->
-  <div class="animation-overlay" id="loseOverlay">
-    <div class="lose-card-box">
-      <div style="font-size: 42px; margin-bottom: 6px;">💥</div>
-      <div class="lose-badge-title">НЕУДАЧА</div>
-      <div style="font-size: 12px; color: #b97f8c; margin-top: 4px;">Скин сгорел в апгрейде</div>
-      <button class="btn-retry-lose" onclick="closeLoseOverlay()">ЕЩЕ РАЗ</button>
-    </div>
-  </div>
-
-  <!-- 10X CASE MULTI RESULT MODAL -->
-  <div class="animation-overlay" id="multiResultOverlay">
-    <div class="multi-res-dialog">
-      <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px;">
-        <span style="font-weight: 900; font-size: 14px;">🎁 ДРОП ИЗ 10 КЕЙСОВ</span>
-        <span style="font-weight: 900; font-size: 13px; color: var(--neon-gold);" id="multiResTotal">+🪙 0</span>
-      </div>
-      <div class="multi-res-grid" id="multiResGrid"></div>
-      <button class="btn-action-dialog" style="margin-top: 10px;" onclick="closeMultiResult()">ЗАБРАТЬ ВСЕ</button>
+      <div style="font-size: 14px; font-weight: 800;" id="resName">AK-47</div>
+      <div style="font-size: 13px; font-weight: 800; color: var(--accent-yellow); margin-top: 2px;" id="resPrice">🪙 0</div>
+      <button class="res-btn" style="background:#2563eb; color:#fff;" onclick="closeResult()">ЗАКРЫТЬ</button>
     </div>
   </div>
 
@@ -10299,7 +10136,7 @@
       } catch(e) {}
     }
 
-    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 55; // ~345.5px
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 58; // ~364.4px
 
     function updateBalance() {
       document.getElementById('userBalanceDisplay').textContent = Math.floor(state.balance).toLocaleString('ru-RU');
@@ -10323,17 +10160,9 @@
       if (mode === 'cases') renderCases();
     }
 
-    function switchMobileTab(tab) {
-      document.getElementById('tabMarketBtn').classList.toggle('active', tab === 'market');
-      document.getElementById('tabInventoryBtn').classList.toggle('active', tab === 'inventory');
-      document.getElementById('marketGrid').style.display = tab === 'market' ? 'grid' : 'none';
-      document.getElementById('marketFilterBar').style.display = tab === 'market' ? 'flex' : 'none';
-      document.getElementById('inventoryGrid').style.display = tab === 'inventory' ? 'grid' : 'none';
-    }
-
     function filterMarket(filter, el) {
       state.currentFilter = filter;
-      document.querySelectorAll('.m-filter-chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.f-chip').forEach(c => c.classList.remove('active'));
       if (el) el.classList.add('active');
       renderMarket();
     }
@@ -10347,9 +10176,9 @@
       document.getElementById('targetTitle').textContent = `${skin.type} | ${skin.name}`;
       document.getElementById('targetPrice').textContent = `🪙 ${skin.price.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#marketGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#marketGrid .mini-card').forEach(c => c.classList.remove('target-selected'));
       const activeCard = document.getElementById(`target-card-${skin.id}`);
-      if (activeCard) activeCard.classList.add('selected');
+      if (activeCard) activeCard.classList.add('target-selected');
 
       recalcChance();
     }
@@ -10363,7 +10192,7 @@
       document.getElementById('sourceTitle').textContent = `${item.type} | ${item.name}`;
       document.getElementById('sourcePrice').textContent = `🪙 ${item.price.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#inventoryGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#inventoryGrid .mini-card').forEach(c => c.classList.remove('selected'));
       const activeCard = document.getElementById(`inv-card-${item.uid}`);
       if (activeCard) activeCard.classList.add('selected');
 
@@ -10379,7 +10208,7 @@
       document.getElementById('sourceTitle').textContent = `${amount.toLocaleString('ru-RU')} Монет`;
       document.getElementById('sourcePrice').textContent = `🪙 ${amount.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#inventoryGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#inventoryGrid .mini-card').forEach(c => c.classList.remove('selected'));
       recalcChance();
     }
 
@@ -10402,6 +10231,7 @@
       return state.selectedSource ? state.selectedSource.price : state.coinBet;
     }
 
+    // REALISTIC UPGRADER.BEST MATHEMATICS (HONEST 95% HOUSE PAYOUT)
     function recalcChance() {
       const chanceText = document.getElementById('chanceDisplay');
       const multText = document.getElementById('multDisplay');
@@ -10427,15 +10257,17 @@
         return;
       }
 
-      let chance = (sourceVal / targetVal) * 160;
-      if (chance > 96) chance = 96;
-      if (chance < 3.0) chance = 3.0;
+      // Standard casino house edge 95%
+      let chance = (sourceVal / targetVal) * 95;
+      if (chance > 95) chance = 95;
+      if (chance < 0.2) chance = 0.2;
 
       const mult = (targetVal / sourceVal).toFixed(2);
 
       chanceText.textContent = chance.toFixed(1) + "%";
       multText.textContent = "x" + mult;
 
+      // Arc offset proportional to actual win chance
       const offset = CIRCLE_CIRCUMFERENCE - (CIRCLE_CIRCUMFERENCE * (chance / 100));
       winArc.style.strokeDashoffset = offset;
 
@@ -10455,7 +10287,6 @@
         if (state.currentFilter === 'rifle') return skin.type.includes('AK-47') || skin.type.includes('M4A') || skin.type.includes('AWP');
         if (state.currentFilter === 'pistol') return skin.type.includes('P250') || skin.type.includes('Glock') || skin.type.includes('USP') || skin.type.includes('Eagle');
         if (state.currentFilter === 'cheap') return skin.price <= 1000;
-        if (state.currentFilter === 'expensive') return skin.price >= 10000;
         return true;
       });
 
@@ -10463,15 +10294,15 @@
         const isSelected = state.selectedTarget && state.selectedTarget.id === skin.id;
         const card = document.createElement('div');
         card.id = `target-card-${skin.id}`;
-        card.className = `skin-item-card rare-${skin.rarity} ${isSelected ? 'selected' : ''}`;
+        card.className = `mini-card rare-${skin.rarity} ${isSelected ? 'target-selected' : ''}`;
         card.onclick = () => selectTarget(skin);
         card.innerHTML = `
-          <div class="skin-item-card-img">
+          <div class="mini-card-img">
             <img src="${skin.image}" alt="${skin.name}" loading="lazy">
           </div>
-          <div class="skin-item-card-name">${skin.name}</div>
-          <div class="skin-item-card-type">${skin.type}</div>
-          <div class="skin-item-card-price">🪙 ${skin.price.toLocaleString('ru-RU')}</div>
+          <div class="mini-card-name">${skin.name}</div>
+          <div class="mini-card-type">${skin.type}</div>
+          <div class="mini-card-price">🪙 ${skin.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -10481,21 +10312,22 @@
       const grid = document.getElementById('inventoryGrid');
       grid.innerHTML = '';
 
+      // Coin betting card
       const coinCard = document.createElement('div');
-      coinCard.className = `skin-item-card`;
-      coinCard.style.borderColor = 'var(--neon-gold)';
+      coinCard.className = `mini-card`;
+      coinCard.style.borderColor = 'var(--accent-yellow)';
       coinCard.onclick = () => {
         const val = prompt("Введите сумму ставки монет:", state.coinBet || "100");
         const num = parseInt(val, 10);
         if (num && num > 0) selectCoinBet(num);
       };
       coinCard.innerHTML = `
-        <div class="skin-item-card-img">
-          <span style="font-size: 26px;">🪙</span>
+        <div class="mini-card-img">
+          <span style="font-size: 24px;">🪙</span>
         </div>
-        <div class="skin-item-card-name">Монеты</div>
-        <div class="skin-item-card-type">Ставка</div>
-        <div class="skin-item-card-price">Изменить</div>
+        <div class="mini-card-name">Монеты</div>
+        <div class="mini-card-type">Ставка</div>
+        <div class="mini-card-price">🪙 Изменить</div>
       `;
       grid.appendChild(coinCard);
 
@@ -10503,15 +10335,15 @@
         const isSelected = state.selectedSource && state.selectedSource.uid === item.uid;
         const card = document.createElement('div');
         card.id = `inv-card-${item.uid}`;
-        card.className = `skin-item-card rare-${item.rarity} ${isSelected ? 'selected' : ''}`;
+        card.className = `mini-card rare-${item.rarity} ${isSelected ? 'selected' : ''}`;
         card.onclick = () => selectSourceItem(item);
         card.innerHTML = `
-          <div class="skin-item-card-img">
+          <div class="mini-card-img">
             <img src="${item.image}" alt="${item.name}" loading="lazy">
           </div>
-          <div class="skin-item-card-name">${item.name}</div>
-          <div class="skin-item-card-type">${item.type}</div>
-          <div class="skin-item-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
+          <div class="mini-card-name">${item.name}</div>
+          <div class="mini-card-type">${item.type}</div>
+          <div class="mini-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -10527,7 +10359,7 @@
 
       if (!state.selectedSource) {
         if (state.balance < state.coinBet) {
-          alert("Недостаточно виртуальных монет! Нажмите '+' возле баланса.");
+          alert("Недостаточно монет! Нажмите '+' возле баланса.");
           return;
         }
         state.balance -= state.coinBet;
@@ -10541,10 +10373,10 @@
       updateBalance();
       renderInventory();
 
-      let chance = (sourceVal / targetVal) * 160;
+      let chance = (sourceVal / targetVal) * 95;
       if (sourceVal >= targetVal) chance = 100;
-      if (chance > 96) chance = 96;
-      if (chance < 3.0) chance = 3.0;
+      if (chance > 95) chance = 95;
+      if (chance < 0.2) chance = 0.2;
 
       const isWin = (Math.random() * 100) <= chance;
       const winSectorDeg = (chance / 100) * 360;
@@ -10584,89 +10416,40 @@
     }
 
     function showUpgradeResult(isWin) {
+      const overlay = document.getElementById('resultOverlay');
+      const box = document.getElementById('resultDialogBox');
+      const title = document.getElementById('resTitle');
+      const img = document.getElementById('resImg');
+      const name = document.getElementById('resName');
+      const price = document.getElementById('resPrice');
+
       if (isWin) {
         const wonItem = { uid: Date.now(), ...state.selectedTarget };
         state.inventory.unshift(wonItem);
-        updateBalance();
-        renderInventory();
-
-        document.getElementById('winSkinImg').src = wonItem.image;
-        document.getElementById('winSkinName').textContent = `${wonItem.type} | ${wonItem.name}`;
-        document.getElementById('winSkinPrice').textContent = `🪙 +${wonItem.price.toLocaleString('ru-RU')}`;
-
-        document.getElementById('winOverlay').style.display = 'flex';
-        AudioEngine.playWin();
-        triggerConfetti();
-          AudioEngine.playWin();
+        box.className = 'result-dialog-box win';
+        title.className = 'res-title win';
+        title.textContent = '🎉 АПГРЕЙД УДАЛСЯ!';
+        img.src = wonItem.image;
+        name.textContent = `${wonItem.type} | ${wonItem.name}`;
+        price.textContent = `🪙 +${wonItem.price.toLocaleString('ru-RU')}`;
       } else {
-        updateBalance();
-        renderInventory();
-        document.getElementById('loseOverlay').style.display = 'flex';
-        AudioEngine.playLose();
+        box.className = 'result-dialog-box lose';
+        title.className = 'res-title lose';
+        title.textContent = '💔 АПГРЕЙД ПРОВАЛЕН';
+        img.src = 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGJKz2lu_XuWbwcuyMESA4Fdl-4nnpU7iQA3-kKnr8ytd6s2lfa9_Kb6VXmPGwuogsbNvSyi3zR4jsTnQztyqdS6QP1IoXpoiEeAC5Be5l9CxKaq8sIvgdE5J';
+        name.textContent = 'Предмет сгорел';
+        price.textContent = '🪙 0';
       }
+
+      overlay.style.display = 'flex';
+      updateBalance();
+      renderInventory();
     }
 
-    function closeWinOverlay() {
-      document.getElementById('winOverlay').style.display = 'none';
-      stopConfetti();
+    function closeResult() {
+      document.getElementById('resultOverlay').style.display = 'none';
       state.selectedSource = null;
       selectCoinBet(100);
-    }
-
-    function closeLoseOverlay() {
-      document.getElementById('loseOverlay').style.display = 'none';
-      state.selectedSource = null;
-      selectCoinBet(100);
-    }
-
-    let confettiAnimation = null;
-    function triggerConfetti() {
-      const canvas = document.getElementById('confettiCanvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-
-      const particles = [];
-      const colors = ['#00e701', '#00f2fe', '#ffb703', '#ffffff', '#4facfe'];
-
-      for (let i = 0; i < 60; i++) {
-        particles.push({
-          x: canvas.width / 2,
-          y: canvas.height / 2,
-          vx: (Math.random() - 0.5) * 14,
-          vy: (Math.random() - 0.8) * 16,
-          size: Math.random() * 6 + 3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          rotation: Math.random() * 360,
-          rotSpeed: (Math.random() - 0.5) * 8
-        });
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.35;
-          p.rotation += p.rotSpeed;
-
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate((p.rotation * Math.PI) / 180);
-          ctx.fillStyle = p.color;
-          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-          ctx.restore();
-        });
-        confettiAnimation = requestAnimationFrame(render);
-      }
-      render();
-    }
-
-    function stopConfetti() {
-      if (confettiAnimation) cancelAnimationFrame(confettiAnimation);
-      const canvas = document.getElementById('confettiCanvas');
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     /* ================= CASES LOGIC ================= */
@@ -10675,14 +10458,14 @@
       grid.innerHTML = '';
       CASES.forEach(c => {
         const card = document.createElement('div');
-        card.className = 'case-card-m';
+        card.className = 'case-card';
         card.onclick = () => openCaseModal(c);
         card.innerHTML = `
-          <div class="case-card-m-img">
+          <div class="case-card-img">
             <img src="${c.image}" alt="${c.name}" loading="lazy">
           </div>
-          <div class="case-card-m-name">${c.name}</div>
-          <button class="case-card-m-btn">🪙 ${c.price.toLocaleString('ru-RU')}</button>
+          <div class="case-card-name">${c.name}</div>
+          <button class="case-card-btn">🪙 ${c.price.toLocaleString('ru-RU')}</button>
         `;
         grid.appendChild(card);
       });
@@ -10694,19 +10477,8 @@
       if (state.isOpeningCase) return;
       state.activeCase = caseData;
       document.getElementById('caseModalTitle').textContent = caseData.name;
-      
-      const price1x = caseData.price;
-      const price10x = caseData.price * 10;
-      
-      const btn1x = document.getElementById('caseOpen1xBtn');
-      const btn10x = document.getElementById('caseOpen10xBtn');
-      
-      btn1x.textContent = `1x 🪙 ${price1x.toLocaleString('ru-RU')}`;
-      btn10x.textContent = `⚡ 10x 🪙 ${price10x.toLocaleString('ru-RU')}`;
-      
-      btn1x.disabled = (state.balance < price1x);
-      btn10x.disabled = (state.balance < price10x);
-
+      document.getElementById('caseOpen1xBtn').textContent = `1x 🪙 ${caseData.price.toLocaleString('ru-RU')}`;
+      document.getElementById('caseOpen10xBtn').textContent = `⚡ 10x 🪙 ${(caseData.price * 10).toLocaleString('ru-RU')}`;
       populateTape(caseData);
       document.getElementById('caseModal').style.display = 'flex';
     }
@@ -10719,10 +10491,10 @@
     function rollRandomItem(pool) {
       const rand = Math.random() * 100;
       let chosenRarity = 'milspec';
-      if (rand < 7.0) chosenRarity = 'gold';
-      else if (rand < 25.0) chosenRarity = 'covert';
-      else if (rand < 60.0) chosenRarity = 'classified';
-      else if (rand < 85.0) chosenRarity = 'restricted';
+      if (rand < 1.0) chosenRarity = 'gold';
+      else if (rand < 5.0) chosenRarity = 'covert';
+      else if (rand < 20.0) chosenRarity = 'classified';
+      else if (rand < 45.0) chosenRarity = 'restricted';
 
       const filtered = pool.filter(it => it.rarity === chosenRarity);
       return filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : pool[Math.floor(Math.random() * pool.length)];
@@ -10758,7 +10530,7 @@
       const totalCost = state.activeCase.price * count;
 
       if (state.balance < totalCost) {
-        alert("Недостаточно монет! Нажмите '+' возле баланса для пополнения.");
+        alert("Недостаточно монет! Нажмите '+' возле баланса.");
         return;
       }
 
@@ -10769,98 +10541,33 @@
       document.getElementById('caseOpen1xBtn').disabled = true;
       document.getElementById('caseOpen10xBtn').disabled = true;
 
-      if (count === 10) {
-        const track = document.getElementById('tapeTrack');
-        track.style.transition = 'transform 1.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
-        track.style.transform = 'translateX(-1800px)';
+      const winIndex = 36;
+      const wonSkin = generatedItemsTape[winIndex];
 
-        setTimeout(() => {
-          state.isOpeningCase = false;
-          document.getElementById('caseModal').style.display = 'none';
+      const itemWidth = 90;
+      const containerWidth = document.querySelector('.tape-container').offsetWidth;
+      const jitter = (Math.random() * 40) - 20;
+      const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
 
-          const wonItems = [];
-          let totalValue = 0;
-          for (let i = 0; i < 10; i++) {
-            const it = rollRandomItem(state.activeCase.items);
-            const won = { uid: Date.now() + i, ...it };
-            wonItems.push(won);
-            state.inventory.unshift(won);
-            totalValue += won.price;
-          }
+      const track = document.getElementById('tapeTrack');
+      track.style.transition = 'transform 4.5s cubic-bezier(0.1, 0.9, 0.2, 1)';
+      track.style.transform = `translateX(-${targetOffset}px)`;
 
-          updateBalance();
-          renderInventory();
+      setTimeout(() => {
+        state.isOpeningCase = false;
+        document.getElementById('caseModal').style.display = 'none';
 
-          const multiOverlay = document.getElementById('multiResultOverlay');
-          const grid = document.getElementById('multiResGrid');
-          const totalEl = document.getElementById('multiResTotal');
+        const finalWonItem = { uid: Date.now(), ...wonSkin };
+        state.inventory.unshift(finalWonItem);
+        updateBalance();
+        renderInventory();
 
-          grid.innerHTML = '';
-          totalEl.textContent = `+🪙 ${totalValue.toLocaleString('ru-RU')}`;
-
-          wonItems.forEach(item => {
-            const card = document.createElement('div');
-            card.className = `multi-res-card rare-${item.rarity}`;
-            card.innerHTML = `
-              <img src="${item.image}" alt="${item.name}">
-              <div class="multi-res-card-name">${item.name}</div>
-              <div class="multi-res-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
-            `;
-            grid.appendChild(card);
-          });
-
-          multiOverlay.style.display = 'flex';
-          AudioEngine.playWin();
-        }, 1500);
-
-      } else {
-        const winIndex = 36;
-        const wonSkin = generatedItemsTape[winIndex];
-
-        const itemWidth = 90;
-        const containerWidth = document.querySelector('.tape-container').offsetWidth;
-        const jitter = (Math.random() * 40) - 20;
-        const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
-
-        const track = document.getElementById('tapeTrack');
-        track.style.transition = 'transform 4.8s cubic-bezier(0.1, 0.9, 0.2, 1)';
-        track.style.transform = `translateX(-${targetOffset}px)`;
-        AudioEngine.playRollStart();
-
-        let caseElapsed = 0;
-        let caseDelay = 70;
-        function scheduleCaseTick() {
-          if (caseElapsed < 4500) {
-            AudioEngine.playTick(1.2);
-            caseElapsed += caseDelay;
-            caseDelay = Math.min(350, caseDelay * 1.08);
-            setTimeout(scheduleCaseTick, caseDelay);
-          }
-        }
-        setTimeout(scheduleCaseTick, 100);
-
-        setTimeout(() => {
-          state.isOpeningCase = false;
-          document.getElementById('caseModal').style.display = 'none';
-
-          const finalWonItem = { uid: Date.now(), ...wonSkin };
-          state.inventory.unshift(finalWonItem);
-          updateBalance();
-          renderInventory();
-
-          document.getElementById('winSkinImg').src = finalWonItem.image;
-          document.getElementById('winSkinName').textContent = `${finalWonItem.type} | ${finalWonItem.name}`;
-          document.getElementById('winSkinPrice').textContent = `🪙 +${finalWonItem.price.toLocaleString('ru-RU')}`;
-          document.getElementById('winOverlay').style.display = 'flex';
-        AudioEngine.playWin();
-          triggerConfetti();
-          AudioEngine.playWin();
-        }, 5000);
-      }
-    }
-
-    function closeMultiResult() {
-      document.getElementById('multiResultOverlay').style.display = 'none';
+        showUpgradeResult(true);
+        document.getElementById('resTitle').textContent = '🎁 ВЫПАЛ СКИН!';
+        document.getElementById('resImg').src = finalWonItem.image;
+        document.getElementById('resName').textContent = `${finalWonItem.type} | ${finalWonItem.name}`;
+        document.getElementById('resPrice').textContent = `🪙 +${finalWonItem.price.toLocaleString('ru-RU')}`;
+      }, 4700);
     }
 
     // Initial setup
@@ -10868,7 +10575,7 @@
     renderInventory();
     updateBalance();
     selectCoinBet(100);
-    selectTarget(CATALOG[6]);
+    selectTarget(CATALOG[10]);
   </script>
 </body>
 </html>
