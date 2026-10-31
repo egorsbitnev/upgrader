@@ -2383,9 +2383,10 @@
         return;
       }
 
-      let chance = (sourceVal / targetVal) * 95;
-      if (chance > 92) chance = 92;
-      if (chance < 0.2) chance = 0.2;
+      // BOOSTED WIN CHANCE (x1.6 boost!)
+      let chance = (sourceVal / targetVal) * 160;
+      if (chance > 96) chance = 96;
+      if (chance < 3.0) chance = 3.0;
 
       const mult = (targetVal / sourceVal).toFixed(2);
 
@@ -2612,10 +2613,11 @@
     function rollRandomItem(pool) {
       const rand = Math.random() * 100;
       let chosenRarity = 'milspec';
-      if (rand < 0.3) chosenRarity = 'gold';
-      else if (rand < 1.0) chosenRarity = 'covert';
-      else if (rand < 5.0) chosenRarity = 'classified';
-      else if (rand < 20.0) chosenRarity = 'restricted';
+      // BOOSTED DROPS: 7% Gold knife, 18% Covert Red, 35% Pink!
+      if (rand < 7.0) chosenRarity = 'gold';
+      else if (rand < 25.0) chosenRarity = 'covert';
+      else if (rand < 60.0) chosenRarity = 'classified';
+      else if (rand < 85.0) chosenRarity = 'restricted';
 
       const filtered = pool.filter(it => it.rarity === chosenRarity);
       return filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : pool[Math.floor(Math.random() * pool.length)];
