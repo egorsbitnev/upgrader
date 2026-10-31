@@ -556,6 +556,32 @@
       border-color: #3b82f6;
       background: #1b263b;
     }
+    
+    .target-chance-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 8.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .target-chance-badge.badge-locked {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+    .mini-card.target-locked {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+
     .mini-card.target-selected {
       border-color: var(--accent-green);
       background: #142820;
@@ -1197,6 +1223,7 @@
             <div class="f-chip active" onclick="filterMarket('all', this)">Все</div>
             <div class="f-chip" onclick="filterMarket('knife', this)">Ножи/Перчатки</div>
             <div class="f-chip" onclick="filterMarket('rifle', this)">Винтовки</div>
+            <div class="f-chip" onclick="filterMarket('sniper', this)">Снайперки</div>
             <div class="f-chip" onclick="filterMarket('pistol', this)">Пистолеты</div>
             <div class="f-chip" onclick="filterMarket('cheap', this)">До 1,000</div>
           </div>
@@ -15499,9 +15526,13 @@
     function applyMultiplierTarget(mult) {
       const sourceVal = getSourceValue();
       const targetVal = sourceVal * mult;
-      let closest = CATALOG[0];
+      // Filter catalog to valid target skins (price > sourceVal and chance <= 85%)
+      const validTargets = CATALOG.filter(s => s.price > sourceVal && ((sourceVal / s.price) * 95) <= 85);
+      const candidates = validTargets.length > 0 ? validTargets : CATALOG.filter(s => s.price > sourceVal);
+      if (candidates.length === 0) return;
+      let closest = candidates[0];
       let minDiff = Infinity;
-      CATALOG.forEach(s => {
+      candidates.forEach(s => {
         const diff = Math.abs(s.price - targetVal);
         if (diff < minDiff) {
           minDiff = diff;
@@ -15580,9 +15611,19 @@
         // Exclude skins cheaper than or equal to current bet
         if (skin.price <= curSourceVal) return false;
 
-        if (state.currentFilter === 'knife') return skin.type.includes('Нож') || skin.type.includes('Керамбит') || skin.type.includes('перчатки');
-        if (state.currentFilter === 'rifle') return skin.type.includes('AK-47') || skin.type.includes('M4A') || skin.type.includes('AWP');
-        if (state.currentFilter === 'pistol') return skin.type.includes('P250') || skin.type.includes('Glock') || skin.type.includes('USP') || skin.type.includes('Eagle');
+        const typeLower = (skin.type || '').toLowerCase();
+        if (state.currentFilter === 'knife') {
+          return ['knife', 'нож', 'bayonet', 'karambit', 'керамбит', 'перчатк', 'glove', 'daggers', 'dagger'].some(k => typeLower.includes(k));
+        }
+        if (state.currentFilter === 'rifle') {
+          return ['ak-47', 'm4a4', 'm4a1-s', 'galil', 'famas', 'aug', 'sg 553'].some(k => typeLower.includes(k));
+        }
+        if (state.currentFilter === 'sniper') {
+          return ['awp', 'ssg 08', 'scar-20', 'g3sg1'].some(k => typeLower.includes(k));
+        }
+        if (state.currentFilter === 'pistol') {
+          return ['glock', 'usp', 'p250', 'desert eagle', 'deagle', 'dual berettas', 'five-seven', 'cz75', 'tec-9', 'r8 revolver'].some(k => typeLower.includes(k));
+        }
         if (state.currentFilter === 'cheap') return skin.price <= 1000;
         return true;
       });
@@ -15596,9 +15637,11 @@
         return;
       }
 
-      // If current target is now cheaper than current bet, auto-switch to first valid skin
-      if (state.selectedTarget && state.selectedTarget.price <= curSourceVal) {
-        selectTarget(filtered[0]);
+      // If current target is invalid (too cheap or chance > 85%), pick the best first valid target
+      const isTargetInvalid = !state.selectedTarget || state.selectedTarget.price <= curSourceVal || ((curSourceVal / state.selectedTarget.price) * 95) > 85;
+      if (isTargetInvalid) {
+        const firstValid = filtered.find(s => ((curSourceVal / s.price) * 95) <= 85) || filtered[0];
+        if (firstValid) selectTarget(firstValid);
       }
 
       filtered.forEach(skin => {
@@ -15606,15 +15649,18 @@
         const card = document.createElement('div');
         card.id = `target-card-${skin.id}`;
         
-        const skinChance = (curSourceVal / skin.price) * 95;
+        let skinChance = (curSourceVal / skin.price) * 95;
+        if (skinChance > 95) skinChance = 95;
         const isTooHighChance = skinChance > 85;
 
-        card.className = `mini-card rare-${skin.rarity} ${isSelected ? 'target-selected' : ''}`;
-        if (isTooHighChance) {
-          card.style.opacity = '0.45';
-        }
+        card.className = `mini-card rare-${skin.rarity} ${isSelected ? 'target-selected' : ''} ${isTooHighChance ? 'target-locked' : ''}`;
+        
+        const badgeText = isTooHighChance ? `>85%` : `${skinChance.toFixed(1)}%`;
+        const badgeClass = isTooHighChance ? 'target-chance-badge badge-locked' : 'target-chance-badge';
+
         card.onclick = () => selectTarget(skin);
         card.innerHTML = `
+          <div class="${badgeClass}" title="${isTooHighChance ? 'Шанс выше макс. лимита 85%' : 'Шанс выигрыша'}">${badgeText}</div>
           <div class="mini-card-img">
             <img src="${skin.image}" alt="${skin.name}" loading="lazy">
           </div>
@@ -16144,11 +16190,13 @@
     }
 
     // Initial setup
+    selectCoinBet(100);
+    // Find initial target with ~50% chance for 100 bet
+    const initialTarget = CATALOG.find(s => s.price >= 180 && s.price <= 200) || CATALOG.find(s => (100 / s.price) * 95 <= 85) || CATALOG[10];
+    selectTarget(initialTarget);
     renderMarket();
     renderInventory();
     updateBalance();
-    selectCoinBet(100);
-    selectTarget(CATALOG[10]);
   </script>
 </body>
 </html>
