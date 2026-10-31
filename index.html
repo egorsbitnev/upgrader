@@ -6,17 +6,17 @@
   <title>UPGRADER CS2 - Симулятор Апгрейда</title>
   <style>
     :root {
-      --bg: #0d111a;
-      --bg-panel: #131926;
-      --bg-card: #192234;
+      --bg: #0b0f19;
+      --bg-panel: #121927;
+      --bg-card: #182235;
+      --bg-card-hover: #1f2b42;
       --accent-green: #00e701;
       --accent-neon: #00f2fe;
-      --accent-purple: #9d4edd;
       --accent-gold: #ffb703;
       --accent-red: #ff3366;
       --text: #ffffff;
-      --text-muted: #7e8ba3;
-      --border: #243049;
+      --text-muted: #8493ad;
+      --border: #223049;
     }
     * {
       box-sizing: border-box;
@@ -38,13 +38,14 @@
 
     /* Header */
     header {
-      background: #111723;
+      background: #0f1523;
       border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
+      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 10;
+      flex-shrink: 0;
     }
     .logo-box {
       display: flex;
@@ -55,24 +56,30 @@
       background: linear-gradient(135deg, #00f2fe, #4facfe);
       color: #0b0f19;
       font-weight: 900;
-      font-size: 14px;
+      font-size: 13px;
       padding: 4px 8px;
       border-radius: 6px;
+      letter-spacing: 0.5px;
     }
     .logo-text {
       font-size: 17px;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: 1.5px;
-      color: #fff;
+      background: linear-gradient(90deg, #fff, #b4d5fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .balance-box {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: #192234;
+      gap: 8px;
+      background: #172133;
       border: 1px solid var(--border);
-      padding: 6px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
+    }
+    .balance-icon {
+      font-size: 15px;
     }
     .balance-val {
       font-weight: 800;
@@ -84,7 +91,7 @@
       border: none;
       color: #0d111a;
       font-weight: 900;
-      font-size: 13px;
+      font-size: 14px;
       width: 24px;
       height: 24px;
       border-radius: 50%;
@@ -92,6 +99,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: transform 0.1s;
+    }
+    .add-coins-btn:active {
+      transform: scale(0.9);
     }
 
     /* Main Container */
@@ -99,67 +110,80 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
-      position: relative;
+      overflow: hidden;
     }
 
-    /* Roulette / Circle upgrade area */
+    /* UPGRADE ARENA (TOP HALF) */
     .upgrade-arena {
-      padding: 16px 12px 8px;
+      background: radial-gradient(circle at center, #162137 0%, #0d121e 100%);
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: radial-gradient(circle at center, #1b253b 0%, var(--bg) 70%);
       border-bottom: 1px solid var(--border);
+      position: relative;
+      flex-shrink: 0;
     }
 
+    /* Slots */
     .duel-slots {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: space-around;
       width: 100%;
-      max-width: 420px;
-      margin-bottom: 16px;
+      max-width: 440px;
+      margin-bottom: 8px;
     }
-
     .slot-item {
-      width: 120px;
-      height: 120px;
-      background: var(--bg-panel);
-      border: 2px dashed var(--border);
-      border-radius: 14px;
+      background: var(--bg-card);
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      width: 140px;
+      height: 100px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 8px;
       text-align: center;
-      position: relative;
       cursor: pointer;
-      transition: all 0.2s ease;
+      position: relative;
+      transition: all 0.2s;
     }
     .slot-item.active {
       border-style: solid;
-      border-color: var(--accent-neon);
-      background: #182236;
-      box-shadow: 0 0 16px rgba(0, 242, 254, 0.2);
+      border-color: #3b5078;
+      background: #19243a;
     }
     .slot-item.target-slot.active {
-      border-color: var(--accent-gold);
-      box-shadow: 0 0 16px rgba(255, 183, 3, 0.25);
+      border-color: var(--accent-neon);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
     }
     .slot-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: var(--text-muted);
       position: absolute;
-      top: 6px;
+      top: 4px;
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
-    .slot-img {
-      font-size: 40px;
-      margin: 8px 0 4px;
+    .slot-img-wrap {
+      width: 58px;
+      height: 44px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slot-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+    }
+    .slot-coin-icon {
+      font-size: 32px;
     }
     .slot-title {
       font-size: 11px;
@@ -167,61 +191,87 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 100%;
+      max-width: 125px;
+      margin-top: 2px;
     }
     .slot-price {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       color: var(--accent-gold);
     }
 
-    /* Circle Gauge */
+    /* Circular Dial Gauge */
     .circle-container {
       position: relative;
-      width: 180px;
-      height: 180px;
+      width: 170px;
+      height: 170px;
+      margin: 4px 0 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 12px;
     }
-    svg.progress-ring {
+    .progress-ring {
       transform: rotate(-90deg);
-      width: 100%;
-      height: 100%;
+      width: 170px;
+      height: 170px;
     }
     .progress-ring__circle-bg {
-      stroke: #182338;
+      stroke: #1c263c;
       stroke-width: 12;
       fill: transparent;
     }
     .progress-ring__circle {
-      stroke: var(--accent-neon);
+      stroke: var(--accent-green);
       stroke-width: 12;
       stroke-linecap: round;
       fill: transparent;
-      stroke-dasharray: 471;
-      stroke-dashoffset: 471;
-      transition: stroke-dashoffset 0.3s ease, stroke 0.3s ease;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 0.4s ease;
+      filter: drop-shadow(0 0 8px rgba(0, 231, 1, 0.6));
     }
+
+    /* Pointer / Needle */
     .needle {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 82px;
+      margin-left: -2px;
+      margin-top: -82px;
+      transform-origin: bottom center;
+      transform: rotate(0deg);
+      transition: transform 4s cubic-bezier(0.12, 0.8, 0.22, 1);
+      z-index: 5;
       pointer-events: none;
-      transition: transform 4s cubic-bezier(0.1, 0.9, 0.2, 1);
     }
     .needle::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: calc(50% - 6px);
-      width: 12px;
-      height: 16px;
-      background: #ff3366;
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
-      filter: drop-shadow(0 0 6px #ff3366);
+      top: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 14px solid #ffffff;
+      filter: drop-shadow(0 0 6px #fff);
     }
+    .needle-center {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #ffffff;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+      z-index: 6;
+    }
+
     .circle-inner-info {
       position: absolute;
       display: flex;
@@ -229,73 +279,80 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      pointer-events: none;
     }
     .chance-value {
       font-size: 26px;
       font-weight: 900;
-      color: #fff;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      text-shadow: 0 0 12px rgba(0, 231, 1, 0.5);
     }
     .chance-label {
       font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 3px;
     }
     .multiplier-val {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--accent-neon);
       margin-top: 2px;
     }
 
-    /* Upgrade Button */
     .upgrade-action-btn {
+      background: linear-gradient(135deg, #00e701, #00b301);
+      color: #0b0f19;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(0, 231, 1, 0.35);
+      transition: all 0.2s;
       width: 100%;
       max-width: 320px;
-      padding: 14px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #00b4db, #0083b0);
-      border: none;
-      color: white;
-      font-weight: 900;
-      font-size: 16px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 180, 219, 0.4);
-      transition: transform 0.1s, opacity 0.2s;
+    }
+    .upgrade-action-btn:active {
+      transform: scale(0.97);
     }
     .upgrade-action-btn:disabled {
-      background: #243049;
-      color: var(--text-muted);
+      background: #25334d;
+      color: #556885;
       box-shadow: none;
       cursor: not-allowed;
     }
-    .upgrade-action-btn:active:not(:disabled) {
-      transform: scale(0.97);
-    }
 
-    /* Bottom section: Inventory & Targets */
+    /* SELECTION SECTION (BOTTOM HALF) */
     .selection-section {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: var(--bg);
+      background: var(--bg-panel);
+      overflow: hidden;
     }
     .section-tabs {
       display: flex;
       border-bottom: 1px solid var(--border);
-      background: #111723;
+      background: #0f1523;
+      flex-shrink: 0;
     }
     .sec-tab-btn {
       flex: 1;
-      padding: 12px;
-      background: none;
+      padding: 11px;
+      background: transparent;
       border: none;
-      color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
       border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
     }
     .sec-tab-btn.active {
       color: var(--accent-neon);
@@ -303,27 +360,56 @@
       background: rgba(0, 242, 254, 0.05);
     }
 
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #111827;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex-shrink: 0;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filter-chip {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #1a2335;
+      color: var(--text-muted);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: var(--accent-neon);
+      color: #0b0f19;
+      border-color: var(--accent-neon);
+    }
+
     .skins-grid {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 10px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
       align-content: start;
     }
     .skin-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 10px 6px;
+      padding: 8px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: pointer;
-      transition: border-color 0.2s, transform 0.1s;
+      transition: border-color 0.15s, transform 0.1s, background 0.15s;
       position: relative;
+      overflow: hidden;
     }
     .skin-card:active {
       transform: scale(0.96);
@@ -331,17 +417,35 @@
     .skin-card.selected {
       border-color: var(--accent-neon);
       box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
-      background: #1c273e;
+      background: #1e2c45;
     }
+    
+    /* CS2 Rarity Bottom Bars & Glows */
+    .skin-card.rare-contraband { border-bottom: 3px solid #e4ae39; }
+    .skin-card.rare-gold { border-bottom: 3px solid #ffd700; }
     .skin-card.rare-covert { border-bottom: 3px solid #eb4b4b; }
     .skin-card.rare-classified { border-bottom: 3px solid #d32ce6; }
     .skin-card.rare-restricted { border-bottom: 3px solid #8847ff; }
     .skin-card.rare-milspec { border-bottom: 3px solid #4b69ff; }
-    .skin-card.rare-gold { border-bottom: 3px solid #ffd700; }
 
-    .skin-icon {
-      font-size: 32px;
-      margin: 4px 0 8px;
+    .skin-card-img-wrap {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .skin-card-img-wrap img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+      transition: transform 0.2s;
+    }
+    .skin-card:hover .skin-card-img-wrap img {
+      transform: scale(1.06);
     }
     .skin-name {
       font-size: 11px;
@@ -356,7 +460,11 @@
     .skin-type {
       font-size: 10px;
       color: var(--text-muted);
-      margin: 2px 0 4px;
+      margin: 1px 0 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
     .skin-price {
       font-size: 11px;
@@ -364,57 +472,74 @@
       color: var(--accent-gold);
     }
 
-    /* Modal / Popups */
+    /* Result Modal */
     .result-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(11, 15, 25, 0.85);
+      background: rgba(8, 12, 20, 0.88);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
       justify-content: center;
       z-index: 999;
-      animation: fadeIn 0.3s;
+      animation: fadeIn 0.25s;
     }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .result-dialog {
       background: var(--bg-panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      border: 2px solid var(--border);
+      border-radius: 18px;
       padding: 24px;
-      width: 85%;
+      width: 86%;
       max-width: 320px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
     }
-    .result-dialog.win { border-color: var(--accent-green); }
-    .result-dialog.lose { border-color: var(--accent-red); }
+    .result-dialog.win { border-color: var(--accent-green); box-shadow: 0 0 30px rgba(0, 231, 1, 0.3); }
+    .result-dialog.lose { border-color: var(--accent-red); box-shadow: 0 0 30px rgba(255, 51, 102, 0.3); }
 
     .res-title {
       font-size: 22px;
       font-weight: 900;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
-    .res-title.win { color: var(--accent-green); text-shadow: 0 0 12px rgba(0, 231, 1, 0.4); }
-    .res-title.lose { color: var(--accent-red); text-shadow: 0 0 12px rgba(255, 51, 102, 0.4); }
+    .res-title.win { color: var(--accent-green); text-shadow: 0 0 12px rgba(0, 231, 1, 0.5); }
+    .res-title.lose { color: var(--accent-red); text-shadow: 0 0 12px rgba(255, 51, 102, 0.5); }
 
-    .res-skin-icon { font-size: 60px; margin: 10px 0; }
-    .res-skin-name { font-weight: 800; font-size: 16px; }
-    .res-skin-price { font-weight: 800; font-size: 14px; color: var(--accent-gold); margin-top: 4px; }
+    .res-skin-img-wrap {
+      width: 140px;
+      height: 90px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .res-skin-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.8));
+    }
+    .res-skin-name { font-weight: 800; font-size: 16px; margin-top: 4px; }
+    .res-skin-price { font-weight: 800; font-size: 15px; color: var(--accent-gold); margin-top: 4px; }
     .res-close-btn {
       width: 100%;
-      margin-top: 20px;
+      margin-top: 18px;
       padding: 12px;
       border-radius: 10px;
       background: #243049;
       border: none;
       color: white;
       font-weight: 800;
+      font-size: 14px;
       cursor: pointer;
+    }
+    .res-close-btn:active {
+      background: #2e3e5f;
     }
   </style>
 </head>
@@ -422,13 +547,13 @@
 
   <header>
     <div class="logo-box">
-      <div class="logo-badge">UP</div>
+      <div class="logo-badge">CS2</div>
       <div class="logo-text">UPGRADER</div>
     </div>
     <div class="balance-box">
-      <span>🪙</span>
+      <span class="balance-icon">🪙</span>
       <span class="balance-val" id="userBalanceDisplay">1,000</span>
-      <button class="add-coins-btn" title="Пополнить бесплатно" onclick="grantFreeCoins()">+</button>
+      <button class="add-coins-btn" title="Бесплатные монеты (+1,000)" onclick="grantFreeCoins()">+</button>
     </div>
   </header>
 
@@ -440,17 +565,21 @@
         <!-- Source Slot (From inventory or coins) -->
         <div class="slot-item active" id="sourceSlot" onclick="switchTab('inventory')">
           <span class="slot-label">Ваша ставка</span>
-          <div class="slot-img" id="sourceImg">🪙</div>
+          <div class="slot-img-wrap" id="sourceImgWrap">
+            <span class="slot-coin-icon">🪙</span>
+          </div>
           <div class="slot-title" id="sourceTitle">100 Монет</div>
-          <div class="slot-price" id="sourcePrice">100</div>
+          <div class="slot-price" id="sourcePrice">🪙 100</div>
         </div>
 
-        <div style="font-size: 22px; font-weight: 900; color: var(--text-muted);">➜</div>
+        <div style="font-size: 20px; font-weight: 900; color: var(--text-muted);">➜</div>
 
         <!-- Target Slot (Target skin) -->
         <div class="slot-item target-slot" id="targetSlot" onclick="switchTab('market')">
           <span class="slot-label">Целевой Скин</span>
-          <div class="slot-img" id="targetImg">❓</div>
+          <div class="slot-img-wrap" id="targetImgWrap">
+            <span style="font-size: 26px;">🎯</span>
+          </div>
           <div class="slot-title" id="targetTitle">Выберите скин</div>
           <div class="slot-price" id="targetPrice">-</div>
         </div>
@@ -459,11 +588,12 @@
       <!-- Dial Roulette Gauge -->
       <div class="circle-container">
         <svg class="progress-ring">
-          <circle class="progress-ring__circle-bg" cx="90" cy="90" r="75"></circle>
-          <circle class="progress-ring__circle" id="winArc" cx="90" cy="90" r="75"></circle>
+          <circle class="progress-ring__circle-bg" cx="85" cy="85" r="70"></circle>
+          <circle class="progress-ring__circle" id="winArc" cx="85" cy="85" r="70"></circle>
         </svg>
 
         <div class="needle" id="needle"></div>
+        <div class="needle-center"></div>
 
         <div class="circle-inner-info">
           <span class="chance-value" id="chanceDisplay">0%</span>
@@ -480,8 +610,17 @@
     <!-- TABS & LISTS -->
     <div class="selection-section">
       <div class="section-tabs">
-        <button class="sec-tab-btn active" id="tabMarketBtn" onclick="switchTab('market')">Цели (Магазин скинов)</button>
+        <button class="sec-tab-btn active" id="tabMarketBtn" onclick="switchTab('market')">Магазин скинов (<span id="marketCount">0</span>)</button>
         <button class="sec-tab-btn" id="tabInventoryBtn" onclick="switchTab('inventory')">Инвентарь (<span id="invCount">0</span>)</button>
+      </div>
+
+      <div class="filter-bar" id="marketFilterBar">
+        <div class="filter-chip active" onclick="filterMarket('all', this)">Все</div>
+        <div class="filter-chip" onclick="filterMarket('knife', this)">Ножи и перчатки</div>
+        <div class="filter-chip" onclick="filterMarket('rifle', this)">Винтовки</div>
+        <div class="filter-chip" onclick="filterMarket('pistol', this)">Пистолеты</div>
+        <div class="filter-chip" onclick="filterMarket('cheap', this)">До 1,000</div>
+        <div class="filter-chip" onclick="filterMarket('expensive', this)">10,000+</div>
       </div>
 
       <div class="skins-grid" id="marketGrid"></div>
@@ -493,39 +632,320 @@
   <!-- Result Dialog Overlay -->
   <div class="result-overlay" id="resultOverlay">
     <div class="result-dialog" id="resultDialog">
-      <div class="res-title" id="resTitle">УСПЕХ!</div>
-      <div class="res-skin-icon" id="resIcon">🔥</div>
+      <div class="res-title" id="resTitle">🎉 УСПЕХ!</div>
+      <div class="res-skin-img-wrap" id="resImgWrap">
+        <img id="resImg" src="" alt="Skin">
+      </div>
       <div class="res-skin-name" id="resName">AK-47 | Вулкан</div>
-      <div class="res-skin-price" id="resPrice">🪙 2,400</div>
+      <div class="res-skin-price" id="resPrice">🪙 2,800</div>
       <button class="res-close-btn" onclick="closeResult()">ЗАБРАТЬ</button>
     </div>
   </div>
 
   <script>
-    // Catalog of CS2 style skins for the Upgrader
+    // Complete CS2 Skins Catalog with Steam Community HD Images
     const CATALOG = [
-      { id: 'p250_sand', name: 'Песчаная буря', type: 'P250', price: 15, rarity: 'milspec', icon: '🔫' },
-      { id: 'glock_water', name: 'Водяной', type: 'Glock-18', price: 50, rarity: 'restricted', icon: '💧' },
-      { id: 'usp_cortex', name: 'Извилины', type: 'USP-S', price: 120, rarity: 'classified', icon: '🧠' },
-      { id: 'deagle_code', name: 'Код красного', type: 'Desert Eagle', price: 300, rarity: 'covert', icon: '🦅' },
-      { id: 'm4a4_neo', name: 'Нео-нуар', type: 'M4A4', price: 650, rarity: 'covert', icon: '🌌' },
-      { id: 'ak47_vulcan', name: 'Вулкан', type: 'AK-47', price: 1500, rarity: 'covert', icon: '⚡' },
-      { id: 'awp_asiimov', name: 'Азимов', type: 'AWP', price: 2800, rarity: 'covert', icon: '🎯' },
-      { id: 'knife_karambit', name: 'Керамбит | Градиент', type: 'Нож', price: 8500, rarity: 'gold', icon: '🗡️' },
-      { id: 'knife_butterfly', name: 'Бабочка | Волны', type: 'Нож', price: 18000, rarity: 'gold', icon: '🦋' },
-      { id: 'awp_dragon', name: 'История о драконе', type: 'AWP', price: 45000, rarity: 'gold', icon: '🐉' }
-    ];
+  {
+    "id": "skin-8f578bc8c6ef",
+    "type": "P250",
+    "name": "Песчаная буря",
+    "price": 10,
+    "rarity": "milspec",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLhzMOwwjFU0OGvZqBSLPmUBnPelesn5-RrSXDlwRhx5TjSwtmocCifPwQpDpshReBfsxPrk4DhNu3jshue1dy8VcXxuA"
+  },
+  {
+    "id": "skin-8d1c8d592ffb",
+    "type": "Glock-18",
+    "name": "Дальний свет",
+    "price": 25,
+    "rarity": "milspec",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL2kpnj9h1a7s24bbZ5KfecMWWc1OtJvOhuRz39zU5yt2vQntn9dC3Dbw8iDJQhF-IJ5xDqkdSxMr6251aMiI5BynqtiTQJsHhqpMNExQ"
+  },
+  {
+    "id": "skin-c879dd5925b2",
+    "type": "Glock-18",
+    "name": "Водяной",
+    "price": 60,
+    "rarity": "classified",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL2kpnj9h1Y-s2pZKtuK72fB3aFxP11te99cCW6khUz_TjVyompc3-QOFR2DJQkFOMJtBbqk9LlY-7n5QLZjtkTxCWqhixPv311o7FVIf8eASQ"
+  },
+  {
+    "id": "skin-3901933d5e47",
+    "type": "USP-S",
+    "name": "Извилины",
+    "price": 120,
+    "rarity": "classified",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLkjYbf7itX6vytbbZSI-WsG3SA_u1jpN5lRi67gVNz4G7Qm938cS_Da1AhXpB1EeVb4xm4mtDjN7vj4A3b2NpGyCr52i4Y8G81tMzdoYZ7"
+  },
+  {
+    "id": "skin-be37abed2b4d",
+    "type": "USP-S",
+    "name": "Поток информации",
+    "price": 650,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLkjYbf7itX6vytbbZSI-WsG3SA_v5kue99XD2hkBwqjDGMnYftb3yUPFR0XsNyRrNc5kO5ltziMenr5lONj4kXyi2riywc7y9o5LtQAqQ7uvqAkScWnv4"
+  },
+  {
+    "id": "skin-2a0e222beb58",
+    "type": "Desert Eagle",
+    "name": "Рельсотрон",
+    "price": 90,
+    "rarity": "restricted",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6OGRbKFsJ_yWMWKIztF6ueZhW2fhlhlw6m-GnNyvIiiXOwQoDMR2QbZe5hi5k9KxN-vhtFbciN1FnyqskGoXuU4JtHUo"
+  },
+  {
+    "id": "skin-87ee5eacc505",
+    "type": "Desert Eagle",
+    "name": "Код красного",
+    "price": 280,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk6OGRbKFsJ_yWMWaXxvxzo_JmXRa_nBovp3PRmNj4c3mTb1RxC5cjF-EItRnrlNzkYrnk5gaI3Y0UmyX52H9K7ixs_a9cBsGEcOCn"
+  },
+  {
+    "id": "skin-32a30647e564",
+    "type": "Desert Eagle",
+    "name": "Поток информации",
+    "price": 750,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL1m5fn8Sdk7OeRbKFsJ8-DHG6e1f1iouRoQha_nBovp3OGmdeqInyVP1V0XsYlRbEI50a5wNyzZr605AyI3t5MmCSohylAuC89_a9cBoMY9UkV"
+  },
+  {
+    "id": "skin-e8144faeae9f",
+    "type": "M4A4",
+    "name": "Нео-нуар",
+    "price": 450,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiFO0P_6afBSLvWcMWmfyPxJvOhuRz39wE1142vSztmvInvBOgV0W5R1FLYNuxW4wIbgNrmx4g2Kj4tMmCX93zQJsHgJr0dqFw"
+  },
+  {
+    "id": "skin-8c5b9b7ce9f2",
+    "type": "M4A4",
+    "name": "Император",
+    "price": 950,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiVI0P_6afBSJf2DC3Wf09F6ueZhW2exwBh_6m3dnt36InjDPQ4oXJt1TbJeshW_mtfjN-vrsgaKiokWy333kGoXuRj4z9Nd"
+  },
+  {
+    "id": "skin-8aacf99e7f2f",
+    "type": "M4A4",
+    "name": "Вой",
+    "price": 85000,
+    "rarity": "contraband",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwiFO0P_6afVSKP-EAm6extF6ueZhW2exwkl2tmTXwt39eCiUPQR2DMN4TOVetUK8xoLgM-K341eM2otDnC6okGoXufBz_TAB"
+  },
+  {
+    "id": "skin-7b1351c2adba",
+    "type": "M4A1-S",
+    "name": "Скоростной зверь",
+    "price": 800,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwjFS4_ega6F_H_OGMWrEwL9JuPh5SjuMlxgmoCm6lob-KT-JbwF1WZEjR-YJskK9k9XiYePltAeNjYlAxSn5j34dvCZstb4LB6Ut-7qX0V8Xkv5_2A"
+  },
+  {
+    "id": "skin-4dd5dccd2fdd",
+    "type": "M4A1-S",
+    "name": "Второй игрок",
+    "price": 1400,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwjFS4_ega6F_H_OGMWrEwL9lj-J6SCbhxUl_jDGMnYftby7BbVdyCsB0EeZY4RPukNfhZOO2sQ3W398Qy3_6jHxIunptsO9TUqs7uvqAAWrfZoM"
+  },
+  {
+    "id": "skin-8e45a15cf7f5",
+    "type": "M4A1-S",
+    "name": "Поток информации",
+    "price": 2400,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL8ypexwjFS4_ega6F_H_OGMWrEwL9lj_F7Rienhgk1tjyIpYPwJiPTcAAoCpsiEO5ZsUbpm9C2Zuni4VHW3o5EzSX62HxP7Sg96-hWVqYi_6TJz1aW0nxrkGs"
+  },
+  {
+    "id": "skin-48e1c7c5df5e",
+    "type": "AK-47",
+    "name": "Фантомный вредитель",
+    "price": 150,
+    "rarity": "restricted",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiVI0POlPPNSMOKcCGKD0ud5vuBlcCW6khUz_W3Sytb4cCqTOFUpWJtzTOUD5hPsw9a0Yrnrs1SK3ooXzy6shilM5311o7FVYrIufmI"
+  },
+  {
+    "id": "skin-91a429af4a60",
+    "type": "AK-47",
+    "name": "Красная линия",
+    "price": 350,
+    "rarity": "classified",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSI_-RHGavzedxuPUnFniykEtzsWWBzoyuIiifaAchDZUjTOZe4RC_w4buM-6z7wzbgokUyzK-0H08hRGDMA"
+  },
+  {
+    "id": "skin-09205674e246",
+    "type": "AK-47",
+    "name": "Азимов",
+    "price": 1600,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSIeOaB2qf19F6ueZhW2e2wEt-t2jcytf6dymSO1JxA5oiRecLsRa5kIfkYr-241aLgotHz3-rkGoXuUp8oX57"
+  },
+  {
+    "id": "skin-b14c9f234bc5",
+    "type": "AK-47",
+    "name": "Вулкан",
+    "price": 2800,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0POlPPNSMuWRDGKC_uJ_t-l9AXCxxEh14zjTztivci2ePQZ2W8NzTecD4BKwloLiYeqxtAOIj9gUyyngznQeF7I6QE8"
+  },
+  {
+    "id": "skin-5fd3ee42a6c4",
+    "type": "AK-47",
+    "name": "Поверхностная закалка",
+    "price": 4500,
+    "rarity": "classified",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiNK0P2nZKFpH_yaCW-Ej7sk5bE8Sn-2lEpz4zndzoyvdHuUPwFzWZYiE7EK4Bi4k9TlY-y24FbAy9USGSiZd5Q"
+  },
+  {
+    "id": "skin-2599a8720f89",
+    "type": "AK-47",
+    "name": "Огненный змей",
+    "price": 16000,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwlcK3wiFO0PSneqF-JeKDC2mE_u995LZWTTuygxIYvzSCkpu3cnvFPQB2DpUkROFY4Rntw93lP7i241DbiI1BxSuviHlKunk_6-sHU71lpPMTRLyP4Q"
+  },
+  {
+    "id": "skin-d6cf8565026b",
+    "type": "AWP",
+    "name": "Древесная гадюка",
+    "price": 95,
+    "rarity": "restricted",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk7uW-V7JkMPWBMWuZxuZi_rZsS3zgzU8isW3dnIr6eHKfPVAhDpojEe9YsUW4xta1Nuzm5FDci4NbjXKpmWVQppo"
+  },
+  {
+    "id": "skin-c41637779316",
+    "type": "AWP",
+    "name": "Мортис",
+    "price": 180,
+    "rarity": "classified",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf-jFk7uW-V6BoIeSbMWuZxuZi_rNtHiuwwRwismWEnNn8JymSZgUiDpd3Ru9ZsxG-xNy2NLzn41DWg41bjXKp5oOAt0A"
+  },
+  {
+    "id": "skin-db4de1c248fa",
+    "type": "AWP",
+    "name": "Дикое пламя",
+    "price": 1900,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk7uW-V7NkLPSVB3WV_uJ_t-l9AX7rxhl-tmzSwomtdC6TPwQnW5UkR-YD5kK-ltCzP-Ox4FfXiNoQyyrgznQeu9L0PzQ"
+  },
+  {
+    "id": "skin-bb633c21fc25",
+    "type": "AWP",
+    "name": "Азимов",
+    "price": 3100,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk7uW-V6V-Kf2cGFidxOp_pewnF3nhxEt0sGnSzN76dH3GOg9xC8FyEORftRe-x9PuYurq71bW3d8UnjK-0H0YSTpMGQ"
+  },
+  {
+    "id": "skin-cfaaa2fab447",
+    "type": "AWP",
+    "name": "Они Тайдзи",
+    "price": 6800,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk7uW-V6xsLv6KD1icyOl-pK9vGCqwkx524G_WnNmsInyXOAVyXJJ0TbNb5EOxxIflYbzj4gDdiNlC02yg2XaKgrAq"
+  },
+  {
+    "id": "skin-8af685c49feb",
+    "type": "AWP",
+    "name": "Медуза",
+    "price": 36000,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqfbdsH_GEHlicyOl-pK85TC23wk12tWSGnNr6JXqRPVUnA5J5RLIKshS-l4HuYbji7lfajdgU02yg2bOcOBD3"
+  },
+  {
+    "id": "skin-4f8d99d09ded",
+    "type": "AWP",
+    "name": "История о драконе",
+    "price": 95000,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf_jdk4veqYaF7IfysCnWRxuF4j-B-Xxa_nBovp3Pdwtj9cC_GaAd0DZdwQu9fuhS4kNy0NePntVTbjYpCyyT_3CgY5i9j_a9cBkcCWUKV"
+  },
+  {
+    "id": "skin-2b99573c887b",
+    "type": "AWP",
+    "name": "Гунгнир",
+    "price": 110000,
+    "rarity": "covert",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLwiYbf-jFk7uW-V6N4LvedB3WvzedxuPUnHnjnzUl0sWrdztitI3rDZgJzAsZ1QOFY4UPqldDgMO_l41HXit9AmTK-0H227dAsvQ"
+  },
+  {
+    "id": "skin-525ac56c082c",
+    "type": "Керамбит",
+    "name": "Волны (Doppler)",
+    "price": 18000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SA1iSze91u_FsTju_qhAmoT-Jn4bjJC_4Ml93UtZuRLQPsBawkNfiMbnl5AKMiopCnin7iCJBv31j4rkBBKEg-6zUjV3GY6p9v8dpLWT3Fg"
+  },
+  {
+    "id": "skin-657a59e6566b",
+    "type": "Керамбит",
+    "name": "Градиент (Fade)",
+    "price": 26000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Q7uCvZaZkNM-SD1iWwOpzj-1gSCGn20tztm_UyIn_JHKUbgYlWMcmQ-ZcskSwldS0MOnntAfd3YlMzH35jntXrnE8SOGRGG8"
+  },
+  {
+    "id": "skin-eae7c10fa54f",
+    "type": "Нож-бабочка",
+    "name": "Убийство (Slaughter)",
+    "price": 28000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2qv2-t0ouBWQyC0nQlp4G_dmdauIC_DPQBzDpclRLINsEXsx92yP7jq7gXd2t1NzCT3iCwc6TErvbhfNpboFw"
+  },
+  {
+    "id": "skin-6656ae9270b9",
+    "type": "Нож-бабочка",
+    "name": "Градиент (Fade)",
+    "price": 46000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1Z-ua6bbZrLOmsD2avx-9ytd5lRi67gVNwsDvSwtqqc3iXZg4kCZYjReYLtRbum9XgYuvm5wbWjtgUzCn3iSsf8G81tFEeH9rw"
+  },
+  {
+    "id": "skin-8f49a19645c9",
+    "type": "M9 Штык-нож",
+    "name": "Гамма-волны",
+    "price": 23000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-KmsjxPr7Dl2dV18hwmOvN8IXvjVCLpxo7Oy3tIYKVIVNtYFjS_FC2yLvogMK4vM7NmHQ36CMgsHfbmhHkh0tEO-dtg-veFwv998pqQw"
+  },
+  {
+    "id": "skin-cde6adda102c",
+    "type": "Скелетный нож",
+    "name": "Градиент (Fade)",
+    "price": 24000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyL6kJ_m-B1I5PeibbBiLs-SD1iWwOpzj-1gSCGn20kjt2-En9mpcCmQag8hXsciQeJYthW9kILkMLji4g3Ygo8Uznj6jX9XrnE8raC5r1M"
+  },
+  {
+    "id": "skin-c1ae7186f829",
+    "type": "Спортивные перчатки",
+    "name": "Порок (Vice)",
+    "price": 49000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk5UvzWCL2kpn2-DFk_OKherB0H_KfG2Kv0ed4u95lRi67gVNx4T-Bw434IHyVb1QlAsd1FOUDthG4xNznMu3m4QXXg90Wzn_33C1I8G81tLaDi_rK"
+  },
+  {
+    "id": "skin-560640de154c",
+    "type": "Перчатки спецназа",
+    "name": "Кровавая паутина",
+    "price": 15000,
+    "rarity": "gold",
+    "image": "https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Tk71ruQBH4jYLf-i5U-fe9V7d9JfOaD2uZ0vpJp-RrXBahkBkYvzSCkpu3JyiSbAQkC8d1E7YJtEXtkIazMruz4lOP3dpGmCyt23hA731v4LkKAL1lpPOyoS0Ibw"
+  }
+];
 
     let state = {
       balance: 1000,
       inventory: [
         { uid: 1, ...CATALOG[0] },
-        { uid: 2, ...CATALOG[1] }
+        { uid: 2, ...CATALOG[2] }
       ],
       selectedSource: null, // item or null (if null, betting coins)
       coinBet: 100,
       selectedTarget: null,
-      isRolling: false
+      isRolling: false,
+      currentFilter: 'all'
     };
 
     // Load saved profile
@@ -534,7 +954,9 @@
       if (saved) {
         const parsed = JSON.parse(saved);
         state.balance = parsed.balance ?? 1000;
-        state.inventory = parsed.inventory || [];
+        if (Array.isArray(parsed.inventory) && parsed.inventory.length > 0) {
+          state.inventory = parsed.inventory;
+        }
       }
     } catch(e) {}
 
@@ -547,16 +969,17 @@
       } catch(e) {}
     }
 
-    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 75; // ~471
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 70; // ~440px
 
     function updateBalance() {
       document.getElementById('userBalanceDisplay').textContent = Math.floor(state.balance).toLocaleString('ru-RU');
       document.getElementById('invCount').textContent = state.inventory.length;
+      document.getElementById('marketCount').textContent = CATALOG.length;
       saveState();
     }
 
     function grantFreeCoins() {
-      state.balance += 500;
+      state.balance += 1000;
       updateBalance();
       recalcChance();
     }
@@ -565,16 +988,30 @@
       document.getElementById('tabMarketBtn').classList.toggle('active', tab === 'market');
       document.getElementById('tabInventoryBtn').classList.toggle('active', tab === 'inventory');
       document.getElementById('marketGrid').style.display = tab === 'market' ? 'grid' : 'none';
+      document.getElementById('marketFilterBar').style.display = tab === 'market' ? 'flex' : 'none';
       document.getElementById('inventoryGrid').style.display = tab === 'inventory' ? 'grid' : 'none';
+    }
+
+    function filterMarket(filter, el) {
+      state.currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderMarket();
     }
 
     function selectTarget(skin) {
       if (state.isRolling) return;
       state.selectedTarget = skin;
       document.getElementById('targetSlot').classList.add('active');
-      document.getElementById('targetImg').textContent = skin.icon;
+      document.getElementById('targetImgWrap').innerHTML = `<img src="${skin.image}" alt="${skin.name}">`;
       document.getElementById('targetTitle').textContent = `${skin.type} | ${skin.name}`;
-      document.getElementById('targetPrice').textContent = `🪙 ${skin.price}`;
+      document.getElementById('targetPrice').textContent = `🪙 ${skin.price.toLocaleString('ru-RU')}`;
+
+      // Highlight selected card
+      document.querySelectorAll('#marketGrid .skin-card').forEach(c => c.classList.remove('selected'));
+      const activeCard = document.getElementById(`target-card-${skin.id}`);
+      if (activeCard) activeCard.classList.add('selected');
+
       recalcChance();
     }
 
@@ -582,9 +1019,14 @@
       if (state.isRolling) return;
       state.selectedSource = item;
       document.getElementById('sourceSlot').classList.add('active');
-      document.getElementById('sourceImg').textContent = item.icon;
+      document.getElementById('sourceImgWrap').innerHTML = `<img src="${item.image}" alt="${item.name}">`;
       document.getElementById('sourceTitle').textContent = `${item.type} | ${item.name}`;
-      document.getElementById('sourcePrice').textContent = `🪙 ${item.price}`;
+      document.getElementById('sourcePrice').textContent = `🪙 ${item.price.toLocaleString('ru-RU')}`;
+
+      document.querySelectorAll('#inventoryGrid .skin-card').forEach(c => c.classList.remove('selected'));
+      const activeCard = document.getElementById(`inv-card-${item.uid}`);
+      if (activeCard) activeCard.classList.add('selected');
+
       recalcChance();
     }
 
@@ -593,30 +1035,29 @@
       state.selectedSource = null;
       state.coinBet = amount;
       document.getElementById('sourceSlot').classList.add('active');
-      document.getElementById('sourceImg').textContent = '🪙';
-      document.getElementById('sourceTitle').textContent = `${amount} Монет`;
-      document.getElementById('sourcePrice').textContent = `🪙 ${amount}`;
+      document.getElementById('sourceImgWrap').innerHTML = `<span class="slot-coin-icon">🪙</span>`;
+      document.getElementById('sourceTitle').textContent = `${amount.toLocaleString('ru-RU')} Монет`;
+      document.getElementById('sourcePrice').textContent = `🪙 ${amount.toLocaleString('ru-RU')}`;
+
+      document.querySelectorAll('#inventoryGrid .skin-card').forEach(c => c.classList.remove('selected'));
       recalcChance();
     }
 
     function getSourceValue() {
-      if (state.selectedSource) {
-        return state.selectedSource.price;
-      }
-      return state.coinBet;
+      return state.selectedSource ? state.selectedSource.price : state.coinBet;
     }
 
     function recalcChance() {
-      const btn = document.getElementById('upgradeBtn');
-      const winArc = document.getElementById('winArc');
       const chanceText = document.getElementById('chanceDisplay');
       const multText = document.getElementById('multDisplay');
+      const winArc = document.getElementById('winArc');
+      const btn = document.getElementById('upgradeBtn');
 
       if (!state.selectedTarget) {
-        btn.disabled = true;
         chanceText.textContent = "0%";
         multText.textContent = "x0.00";
         winArc.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+        btn.disabled = true;
         return;
       }
 
@@ -631,10 +1072,10 @@
         return;
       }
 
-      // Casino standard: ~95% house payout rate
+      // Standard CS2 Upgrader rate ~95%
       let chance = (sourceVal / targetVal) * 95;
-      if (chance > 90) chance = 90; // capped for realism
-      if (chance < 0.5) chance = 0.5;
+      if (chance > 92) chance = 92;
+      if (chance < 0.2) chance = 0.2;
 
       const mult = (targetVal / sourceVal).toFixed(2);
 
@@ -645,7 +1086,6 @@
       const offset = CIRCLE_CIRCUMFERENCE - (CIRCLE_CIRCUMFERENCE * (chance / 100));
       winArc.style.strokeDashoffset = offset;
 
-      // Check if user has enough balance if using coinBet
       if (!state.selectedSource && state.balance < state.coinBet) {
         btn.disabled = true;
       } else {
@@ -656,15 +1096,29 @@
     function renderMarket() {
       const grid = document.getElementById('marketGrid');
       grid.innerHTML = '';
-      CATALOG.forEach(skin => {
+      
+      const filtered = CATALOG.filter(skin => {
+        if (state.currentFilter === 'knife') return skin.type.includes('Нож') || skin.type.includes('Керамбит') || skin.type.includes('перчатки');
+        if (state.currentFilter === 'rifle') return skin.type.includes('AK-47') || skin.type.includes('M4A') || skin.type.includes('AWP');
+        if (state.currentFilter === 'pistol') return skin.type.includes('P250') || skin.type.includes('Glock') || skin.type.includes('USP') || skin.type.includes('Eagle');
+        if (state.currentFilter === 'cheap') return skin.price <= 1000;
+        if (state.currentFilter === 'expensive') return skin.price >= 10000;
+        return true;
+      });
+
+      filtered.forEach(skin => {
+        const isSelected = state.selectedTarget && state.selectedTarget.id === skin.id;
         const card = document.createElement('div');
-        card.className = `skin-card rare-${skin.rarity}`;
+        card.id = `target-card-${skin.id}`;
+        card.className = `skin-card rare-${skin.rarity} ${isSelected ? 'selected' : ''}`;
         card.onclick = () => selectTarget(skin);
         card.innerHTML = `
-          <div class="skin-icon">${skin.icon}</div>
+          <div class="skin-card-img-wrap">
+            <img src="${skin.image}" alt="${skin.name}" loading="lazy">
+          </div>
           <div class="skin-name">${skin.name}</div>
           <div class="skin-type">${skin.type}</div>
-          <div class="skin-price">🪙 ${skin.price}</div>
+          <div class="skin-price">🪙 ${skin.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -674,32 +1128,38 @@
       const grid = document.getElementById('inventoryGrid');
       grid.innerHTML = '';
 
-      // Coin bet option inside inventory
+      // Coin bet presets card
       const coinCard = document.createElement('div');
       coinCard.className = `skin-card`;
       coinCard.style.borderColor = 'var(--accent-gold)';
       coinCard.onclick = () => {
-        const val = prompt("Введите сумму ставки монет:", "100");
+        const val = prompt("Введите сумму ставки монет:", state.coinBet || "100");
         const num = parseInt(val, 10);
         if (num && num > 0) selectCoinBet(num);
       };
       coinCard.innerHTML = `
-        <div class="skin-icon">🪙</div>
+        <div class="skin-card-img-wrap">
+          <span style="font-size: 34px;">🪙</span>
+        </div>
         <div class="skin-name">Поставить монеты</div>
-        <div class="skin-type">Баланс: ${state.balance}</div>
-        <div class="skin-price">Любая сумма</div>
+        <div class="skin-type">Баланс: ${state.balance.toLocaleString('ru-RU')}</div>
+        <div class="skin-price">🪙 Изменить сумму</div>
       `;
       grid.appendChild(coinCard);
 
       state.inventory.forEach(item => {
+        const isSelected = state.selectedSource && state.selectedSource.uid === item.uid;
         const card = document.createElement('div');
-        card.className = `skin-card rare-${item.rarity}`;
+        card.id = `inv-card-${item.uid}`;
+        card.className = `skin-card rare-${item.rarity} ${isSelected ? 'selected' : ''}`;
         card.onclick = () => selectSourceItem(item);
         card.innerHTML = `
-          <div class="skin-icon">${item.icon}</div>
+          <div class="skin-card-img-wrap">
+            <img src="${item.image}" alt="${item.name}" loading="lazy">
+          </div>
           <div class="skin-name">${item.name}</div>
           <div class="skin-type">${item.type}</div>
-          <div class="skin-price">🪙 ${item.price}</div>
+          <div class="skin-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -720,7 +1180,6 @@
         }
         state.balance -= state.coinBet;
       } else {
-        // Remove item from inventory
         const idx = state.inventory.findIndex(i => i.uid === state.selectedSource.uid);
         if (idx !== -1) state.inventory.splice(idx, 1);
       }
@@ -730,27 +1189,21 @@
       updateBalance();
       renderInventory();
 
-      // Calculate winning angle range
       let chance = (sourceVal / targetVal) * 95;
       if (sourceVal >= targetVal) chance = 100;
-      if (chance > 90) chance = 90;
-      if (chance < 0.5) chance = 0.5;
+      if (chance > 92) chance = 92;
+      if (chance < 0.2) chance = 0.2;
 
       const isWin = (Math.random() * 100) <= chance;
-
-      // Needle starts pointing up (0 deg), winning zone is from 0 deg clockwise up to (chance/100)*360 deg
       const winSectorDeg = (chance / 100) * 360;
       let targetDeg;
 
       if (isWin) {
-        // Fall inside winning zone (avoid extreme edge by 2 degrees)
         targetDeg = Math.random() * (winSectorDeg - 4) + 2;
       } else {
-        // Fall inside losing zone
         targetDeg = winSectorDeg + (Math.random() * (360 - winSectorDeg - 4) + 2);
       }
 
-      // Add 5-7 full spins
       const fullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
       currentRotation += fullSpins + (targetDeg - (currentRotation % 360));
       if (currentRotation < fullSpins) currentRotation += fullSpins;
@@ -768,7 +1221,7 @@
       const overlay = document.getElementById('resultOverlay');
       const dialog = document.getElementById('resultDialog');
       const title = document.getElementById('resTitle');
-      const icon = document.getElementById('resIcon');
+      const img = document.getElementById('resImg');
       const name = document.getElementById('resName');
       const price = document.getElementById('resPrice');
 
@@ -778,14 +1231,14 @@
         dialog.className = 'result-dialog win';
         title.className = 'res-title win';
         title.textContent = '🎉 АПГРЕЙД УДАЛСЯ!';
-        icon.textContent = wonItem.icon;
+        img.src = wonItem.image;
         name.textContent = `${wonItem.type} | ${wonItem.name}`;
-        price.textContent = `🪙 +${wonItem.price}`;
+        price.textContent = `🪙 +${wonItem.price.toLocaleString('ru-RU')}`;
       } else {
         dialog.className = 'result-dialog lose';
         title.className = 'res-title lose';
         title.textContent = '💔 АПГРЕЙД ПРОВАЛЕН';
-        icon.textContent = '💨';
+        img.src = 'https://community.akamai.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGJKz2lu_XuWbwcuyMESA4Fdl-4nnpU7iQA3-kKnr8ytd6s2lfa9_Kb6VXmPGwuogsbNvSyi3zR4jsTnQztyqdS6QP1IoXpoiEeAC5Be5l9CxKaq8sIvgdE5J';
         name.textContent = 'Предмет сгорел';
         price.textContent = '🪙 0';
       }
@@ -797,17 +1250,16 @@
 
     function closeResult() {
       document.getElementById('resultOverlay').style.display = 'none';
-      // Reset source selection to safe default
       state.selectedSource = null;
       selectCoinBet(100);
     }
 
-    // Init
+    // Initial setup
     renderMarket();
     renderInventory();
     updateBalance();
     selectCoinBet(100);
-    selectTarget(CATALOG[4]); // M4A4
+    selectTarget(CATALOG[6]); // Desert Eagle Code Red
   </script>
 </body>
 </html>
