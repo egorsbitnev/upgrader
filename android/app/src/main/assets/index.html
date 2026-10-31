@@ -15885,8 +15885,12 @@
       const btn = document.getElementById('caseOpenSelectedBtn');
       if (btn && state.activeCase) {
         const total = state.activeCase.price * selectedCaseQty;
+        const canAfford = (state.balance >= total);
         btn.textContent = `ОТКРЫТЬ (${selectedCaseQty}x) ЗА 🪙 ${total.toLocaleString('ru-RU')}`;
-        btn.disabled = (state.balance < total);
+        btn.disabled = !canAfford;
+        if (!canAfford) {
+          btn.textContent += ' (НЕДОСТАТОЧНО МОНЕТ)';
+        }
       }
     }
 
@@ -15895,9 +15899,9 @@
       state.activeCase = caseData;
       selectedCaseQty = 1;
       document.getElementById('caseModalTitle').textContent = caseData.name;
-      setCaseQty(1, document.querySelector('.qty-pill'));
-      populateTape(caseData);
       document.getElementById('caseModal').style.display = 'flex';
+      setCaseQty(1, document.querySelector('.qty-pill'));
+      updateCaseOpenBtn();
     }
 
     function closeCaseModal() {
@@ -15998,7 +16002,7 @@
       const wonItems = [];
       let totalValue = 0;
 
-      // Start spinning all reels at once with slight natural variances
+      // Collect winning items and start spinning
       for (let r = 0; r < count; r++) {
         const track = document.getElementById(`reel-track-${r}`);
         if (!track) continue;
@@ -16012,11 +16016,18 @@
 
         const jitter = (Math.random() * 30) - 15;
         const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
-
-        // Vary spin duration slightly (4.3s - 4.8s) for ultra realistic feel
         const duration = (4.4 + Math.random() * 0.4).toFixed(2);
-        track.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.9, 0.2, 1)`;
-        track.style.transform = `translateX(-${targetOffset}px)`;
+
+        // Reset track position first without transition
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(0px)';
+        void track.offsetWidth; // Force DOM browser reflow
+
+        // Start smooth CSS transform spin
+        requestAnimationFrame(() => {
+          track.style.transition = `transform ${duration}s cubic-bezier(0.12, 0.85, 0.22, 1)`;
+          track.style.transform = `translateX(-${targetOffset}px)`;
+        });
       }
 
       AudioEngine.playRollStart();
