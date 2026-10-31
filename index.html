@@ -691,20 +691,42 @@
       margin-top: 4px;
     }
 
+    .case-actions-group {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 380px;
+    }
     .case-open-action-btn {
+      flex: 1;
       background: linear-gradient(135deg, #00e701, #00b301);
       color: #0b0f19;
       font-weight: 900;
-      font-size: 15px;
-      padding: 12px 28px;
+      font-size: 13px;
+      padding: 12px 14px;
       border-radius: 12px;
       border: none;
       cursor: pointer;
       box-shadow: 0 4px 18px rgba(0, 231, 1, 0.35);
-      width: 100%;
-      max-width: 260px;
+      transition: transform 0.1s;
     }
-    .case-open-action-btn:disabled {
+    .case-open-10x-btn {
+      flex: 1;
+      background: linear-gradient(135deg, #ffb703, #fb8500);
+      color: #0b0f19;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(255, 183, 3, 0.35);
+      transition: transform 0.1s;
+    }
+    .case-open-action-btn:active, .case-open-10x-btn:active {
+      transform: scale(0.97);
+    }
+    .case-open-action-btn:disabled, .case-open-10x-btn:disabled {
       background: #25334d;
       color: #556885;
       box-shadow: none;
@@ -721,7 +743,7 @@
       border: none;
     }
 
-    /* Result Modals */
+    /* Result Modals (Single) */
     .result-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -788,6 +810,87 @@
       cursor: pointer;
     }
     .res-close-btn:active { background: #2e3e5f; }
+
+    /* 10X Case Result Modal */
+    .multi-result-dialog {
+      background: var(--bg-panel);
+      border: 2px solid var(--accent-gold);
+      border-radius: 18px;
+      padding: 18px;
+      width: 92%;
+      max-width: 520px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 0 40px rgba(255, 183, 3, 0.35);
+      animation: zoomIn 0.25s;
+    }
+    @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    .multi-res-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    .multi-res-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+    }
+    .multi-res-total {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent-gold);
+    }
+    .multi-res-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+      width: 100%;
+      overflow-y: auto;
+      max-height: 52vh;
+      padding: 4px;
+    }
+    .multi-res-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .multi-res-card.rare-gold { border-bottom: 3px solid #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+    .multi-res-card.rare-covert { border-bottom: 3px solid #eb4b4b; }
+    .multi-res-card.rare-classified { border-bottom: 3px solid #d32ce6; }
+    .multi-res-card.rare-restricted { border-bottom: 3px solid #8847ff; }
+    .multi-res-card.rare-milspec { border-bottom: 3px solid #4b69ff; }
+
+    .multi-res-card img {
+      width: 54px;
+      height: 40px;
+      object-fit: contain;
+      margin-bottom: 4px;
+    }
+    .multi-res-card-name {
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+    .multi-res-card-price {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--accent-gold);
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
@@ -907,13 +1010,18 @@
         <div class="tape-track" id="tapeTrack"></div>
       </div>
 
-      <button class="case-open-action-btn" id="caseOpenBtn" onclick="spinCase()">
-        ОТКРЫТЬ ЗА 🪙 250
-      </button>
+      <div class="case-actions-group">
+        <button class="case-open-action-btn" id="caseOpen1xBtn" onclick="spinCase(1)">
+          1x 🪙 250
+        </button>
+        <button class="case-open-10x-btn" id="caseOpen10xBtn" onclick="spinCase(10)">
+          ⚡ 10x 🪙 2,500
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Result Dialog Overlay -->
+  <!-- Result Dialog Overlay (Single) -->
   <div class="result-overlay" id="resultOverlay">
     <div class="result-dialog" id="resultDialog">
       <div class="res-title" id="resTitle">🎉 УСПЕХ!</div>
@@ -923,6 +1031,20 @@
       <div class="res-skin-name" id="resName">AK-47 | Вулкан</div>
       <div class="res-skin-price" id="resPrice">🪙 2,800</div>
       <button class="res-close-btn" onclick="closeResult()">ЗАБРАТЬ В ИНВЕНТАРЬ</button>
+    </div>
+  </div>
+
+  <!-- Result Dialog Overlay (10x Bulk Opening) -->
+  <div class="result-overlay" id="multiResultOverlay">
+    <div class="multi-result-dialog">
+      <div class="multi-res-header">
+        <div class="multi-res-title">🎁 ДРОП ИЗ 10 КЕЙСОВ</div>
+        <div class="multi-res-total" id="multiResTotal">+🪙 0</div>
+      </div>
+
+      <div class="multi-res-grid" id="multiResGrid"></div>
+
+      <button class="res-close-btn" onclick="closeMultiResult()">ЗАБРАТЬ ВСЕ В ИНВЕНТАРЬ</button>
     </div>
   </div>
 
@@ -2465,10 +2587,19 @@
       if (state.isOpeningCase) return;
       state.activeCase = caseData;
       document.getElementById('caseModalTitle').textContent = caseData.name;
-      document.getElementById('caseOpenBtn').textContent = `ОТКРЫТЬ ЗА 🪙 ${caseData.price.toLocaleString('ru-RU')}`;
-      document.getElementById('caseOpenBtn').disabled = (state.balance < caseData.price);
+      
+      const price1x = caseData.price;
+      const price10x = caseData.price * 10;
+      
+      const btn1x = document.getElementById('caseOpen1xBtn');
+      const btn10x = document.getElementById('caseOpen10xBtn');
+      
+      btn1x.textContent = `1x 🪙 ${price1x.toLocaleString('ru-RU')}`;
+      btn10x.textContent = `⚡ 10x 🪙 ${price10x.toLocaleString('ru-RU')}`;
+      
+      btn1x.disabled = (state.balance < price1x);
+      btn10x.disabled = (state.balance < price10x);
 
-      // Pre-fill roulette tape with items from this case
       populateTape(caseData);
       document.getElementById('caseModal').style.display = 'flex';
     }
@@ -2476,6 +2607,18 @@
     function closeCaseModal() {
       if (state.isOpeningCase) return;
       document.getElementById('caseModal').style.display = 'none';
+    }
+
+    function rollRandomItem(pool) {
+      const rand = Math.random() * 100;
+      let chosenRarity = 'milspec';
+      if (rand < 0.3) chosenRarity = 'gold';
+      else if (rand < 1.0) chosenRarity = 'covert';
+      else if (rand < 5.0) chosenRarity = 'classified';
+      else if (rand < 20.0) chosenRarity = 'restricted';
+
+      const filtered = pool.filter(it => it.rarity === chosenRarity);
+      return filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : pool[Math.floor(Math.random() * pool.length)];
     }
 
     function populateTape(caseData) {
@@ -2487,20 +2630,8 @@
       generatedItemsTape = [];
       const pool = caseData.items;
 
-      // Generate 50 items for realistic roulette spin
       for (let i = 0; i < 50; i++) {
-        // Weighted probability CS:GO case style:
-        // Mil-spec: ~79%, Restricted: ~16%, Classified: ~3.2%, Covert: ~0.64%, Special Gold: ~0.26%
-        const rand = Math.random() * 100;
-        let chosenRarity = 'milspec';
-        if (rand < 0.3) chosenRarity = 'gold';
-        else if (rand < 1.0) chosenRarity = 'covert';
-        else if (rand < 5.0) chosenRarity = 'classified';
-        else if (rand < 20.0) chosenRarity = 'restricted';
-
-        const filtered = pool.filter(it => it.rarity === chosenRarity);
-        const item = filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : pool[Math.floor(Math.random() * pool.length)];
-
+        const item = rollRandomItem(pool);
         generatedItemsTape.push(item);
 
         const el = document.createElement('div');
@@ -2515,61 +2646,112 @@
       }
     }
 
-    function spinCase() {
+    function spinCase(count = 1) {
       if (state.isOpeningCase || !state.activeCase) return;
-      if (state.balance < state.activeCase.price) {
-        alert("Недостаточно виртуальных монет! Нажмите '+' возле баланса.");
+      const totalCost = state.activeCase.price * count;
+
+      if (state.balance < totalCost) {
+        alert("Недостаточно монет! Нажмите '+' возле баланса для пополнения.");
         return;
       }
 
-      state.balance -= state.activeCase.price;
+      state.balance -= totalCost;
       updateBalance();
 
       state.isOpeningCase = true;
-      document.getElementById('caseOpenBtn').disabled = true;
+      document.getElementById('caseOpen1xBtn').disabled = true;
+      document.getElementById('caseOpen10xBtn').disabled = true;
 
-      // Winning item will be around index 36
-      const winIndex = 36;
-      const wonSkin = generatedItemsTape[winIndex];
+      if (count === 10) {
+        // Fast multi-open: quick 1.5s spin preview then reveal all 10
+        const track = document.getElementById('tapeTrack');
+        track.style.transition = 'transform 1.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
+        track.style.transform = 'translateX(-2200px)';
 
-      const itemWidth = 110;
-      const containerWidth = document.querySelector('.tape-container').offsetWidth;
-      // Center of winning item inside the container
-      const jitter = (Math.random() * 60) - 30; // slight offset within card
-      const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
+        setTimeout(() => {
+          state.isOpeningCase = false;
+          document.getElementById('caseModal').style.display = 'none';
 
-      const track = document.getElementById('tapeTrack');
-      track.style.transition = 'transform 5s cubic-bezier(0.1, 0.9, 0.2, 1)';
-      track.style.transform = `translateX(-${targetOffset}px)`;
+          // Roll 10 distinct items
+          const wonItems = [];
+          let totalValue = 0;
+          for (let i = 0; i < 10; i++) {
+            const it = rollRandomItem(state.activeCase.items);
+            const won = { uid: Date.now() + i, ...it };
+            wonItems.push(won);
+            state.inventory.unshift(won);
+            totalValue += won.price;
+          }
 
-      setTimeout(() => {
-        state.isOpeningCase = false;
-        document.getElementById('caseOpenBtn').disabled = false;
-        document.getElementById('caseModal').style.display = 'none';
+          updateBalance();
+          renderInventory();
 
-        // Add to inventory
-        const finalWonItem = { uid: Date.now(), ...wonSkin };
-        state.inventory.unshift(finalWonItem);
-        updateBalance();
-        renderInventory();
+          // Display multi-result modal
+          const multiOverlay = document.getElementById('multiResultOverlay');
+          const grid = document.getElementById('multiResGrid');
+          const totalEl = document.getElementById('multiResTotal');
 
-        // Show result popup
-        const overlay = document.getElementById('resultOverlay');
-        const dialog = document.getElementById('resultDialog');
-        const title = document.getElementById('resTitle');
-        const img = document.getElementById('resImg');
-        const name = document.getElementById('resName');
-        const price = document.getElementById('resPrice');
+          grid.innerHTML = '';
+          totalEl.textContent = `Общая ценность: 🪙 ${totalValue.toLocaleString('ru-RU')}`;
 
-        dialog.className = 'result-dialog win';
-        title.className = 'res-title win';
-        title.textContent = '🎁 ВЫПАЛ СКИН!';
-        img.src = finalWonItem.image;
-        name.textContent = `${finalWonItem.type} | ${finalWonItem.name}`;
-        price.textContent = `🪙 +${finalWonItem.price.toLocaleString('ru-RU')}`;
+          wonItems.forEach(item => {
+            const card = document.createElement('div');
+            card.className = `multi-res-card rare-${item.rarity}`;
+            card.innerHTML = `
+              <img src="${item.image}" alt="${item.name}">
+              <div class="multi-res-card-name">${item.name}</div>
+              <div class="multi-res-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
+            `;
+            grid.appendChild(card);
+          });
 
-        overlay.style.display = 'flex';
-      }, 5300);
+          multiOverlay.style.display = 'flex';
+        }, 1500);
+
+      } else {
+        // 1x Single spin animation
+        const winIndex = 36;
+        const wonSkin = generatedItemsTape[winIndex];
+
+        const itemWidth = 110;
+        const containerWidth = document.querySelector('.tape-container').offsetWidth;
+        const jitter = (Math.random() * 60) - 30;
+        const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
+
+        const track = document.getElementById('tapeTrack');
+        track.style.transition = 'transform 4.8s cubic-bezier(0.1, 0.9, 0.2, 1)';
+        track.style.transform = `translateX(-${targetOffset}px)`;
+
+        setTimeout(() => {
+          state.isOpeningCase = false;
+          document.getElementById('caseModal').style.display = 'none';
+
+          const finalWonItem = { uid: Date.now(), ...wonSkin };
+          state.inventory.unshift(finalWonItem);
+          updateBalance();
+          renderInventory();
+
+          const overlay = document.getElementById('resultOverlay');
+          const dialog = document.getElementById('resultDialog');
+          const title = document.getElementById('resTitle');
+          const img = document.getElementById('resImg');
+          const name = document.getElementById('resName');
+          const price = document.getElementById('resPrice');
+
+          dialog.className = 'result-dialog win';
+          title.className = 'res-title win';
+          title.textContent = '🎁 ВЫПАЛ СКИН!';
+          img.src = finalWonItem.image;
+          name.textContent = `${finalWonItem.type} | ${finalWonItem.name}`;
+          price.textContent = `🪙 +${finalWonItem.price.toLocaleString('ru-RU')}`;
+
+          overlay.style.display = 'flex';
+        }, 5000);
+      }
+    }
+
+    function closeMultiResult() {
+      document.getElementById('multiResultOverlay').style.display = 'none';
     }
 
     // Initial setup
