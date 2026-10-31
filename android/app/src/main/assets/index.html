@@ -10275,10 +10275,10 @@
       const offset = CIRCLE_CIRCUMFERENCE - (CIRCLE_CIRCUMFERENCE * (chance / 100));
       winArc.style.strokeDashoffset = offset;
 
-      // RULE 2: Minimum chance must be at least 85%
-      if (chance < 85) {
+      // RULE 2: Maximum chance must be UP TO 85% (chance <= 85%)
+      if (chance > 85) {
         btn.disabled = true;
-        btn.textContent = "НУЖЕН ШАНС ОТ 85%";
+        btn.textContent = "МАКС. ШАНС ДО 85%";
       } else if (!state.selectedSource && state.balance < state.coinBet) {
         btn.disabled = true;
         btn.textContent = "НЕДОСТАТОЧНО МОНЕТ";
@@ -10325,10 +10325,10 @@
         card.id = `target-card-${skin.id}`;
         
         const skinChance = (curSourceVal / skin.price) * 95;
-        const isTooLowChance = skinChance < 85;
+        const isTooHighChance = skinChance > 85;
 
         card.className = `mini-card rare-${skin.rarity} ${isSelected ? 'target-selected' : ''}`;
-        if (isTooLowChance) {
+        if (isTooHighChance) {
           card.style.opacity = '0.45';
         }
         card.onclick = () => selectTarget(skin);
@@ -10399,8 +10399,8 @@
       }
 
       let checkChance = (sourceVal / targetVal) * 95;
-      if (checkChance < 85) {
-        alert("Минимальный шанс для апгрейда должен быть не менее 85%!");
+      if (checkChance > 85) {
+        alert("Шанс для апгрейда должен быть не более 85%!");
         return;
       }
 
