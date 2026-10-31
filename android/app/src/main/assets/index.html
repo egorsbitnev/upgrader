@@ -1027,7 +1027,49 @@
       font-size: 13px;
       cursor: pointer;
     }
-  </style>
+  
+    /* Speed Control Switches */
+    .speed-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #101622;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+      font-size: 11px;
+    }
+    .speed-btn {
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .speed-btn.active {
+      background: #2563eb;
+      color: #fff;
+    }
+    .modal-actions-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .modal-actions-row button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+</style>
 </head>
 <body>
 
@@ -1108,6 +1150,13 @@
 
         <!-- Presets and Upgrade Button -->
         <div class="arena-bottom-row">
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 6px;">
+            <span style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Скорость спина:</span>
+            <div class="speed-toggle-row">
+              <button class="speed-btn active" id="upgSpeedSlow" onclick="setUpgraderSpeed('slow')">Медленно (4с)</button>
+              <button class="speed-btn" id="upgSpeedFast" onclick="setUpgraderSpeed('fast')">Быстро (1.5с)</button>
+            </div>
+          </div>
           <div class="preset-chips-row">
             <div class="preset-btn" onclick="applyMultiplierTarget(1.5)">1.5x</div>
             <div class="preset-btn" onclick="applyMultiplierTarget(2)">2x</div>
@@ -1180,6 +1229,13 @@
       <div class="reels-scroll-area" id="reelsArea"></div>
 
       <!-- Quantity Selector 1 - 10 -->
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 6px;">
+        <span style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Скорость прокрутки:</span>
+        <div class="speed-toggle-row">
+          <button class="speed-btn active" id="caseSpeedSlow" onclick="setCaseSpeed('slow')">Медленно (4.5с)</button>
+          <button class="speed-btn" id="caseSpeedFast" onclick="setCaseSpeed('fast')">Быстро (1.5с)</button>
+        </div>
+      </div>
       <div class="case-qty-row">
         <div style="font-size: 11px; font-weight: 800; color: var(--text-muted);">Количество:</div>
         <div class="qty-pills">
@@ -1211,7 +1267,10 @@
         <span style="font-size: 13px; font-weight: 800; color: var(--accent-yellow);" id="multiModalTotal">+🪙 0</span>
       </div>
       <div class="multi-grid" id="multiCaseGrid"></div>
-      <button class="btn-open-selected" style="background:#2563eb; color:#fff;" onclick="closeMultiCaseModal()">ЗАБРАТЬ ВСЕ</button>
+      <div class="modal-actions-row">
+        <button style="background: var(--accent-green); color: #000; font-weight: 900;" onclick="reopenMultiCase()">ОТКРЫТЬ СНОВА</button>
+        <button class="btn-open-selected" style="background: #2563eb; color: #fff; margin-top: 0;" onclick="closeMultiCaseModal()">ЗАБРАТЬ ВСЕ</button>
+      </div>
     </div>
   </div>
 
@@ -1224,7 +1283,10 @@
       </div>
       <div style="font-size: 14px; font-weight: 800;" id="resName">AK-47</div>
       <div style="font-size: 13px; font-weight: 800; color: var(--accent-yellow); margin-top: 2px;" id="resPrice">🪙 0</div>
-      <button class="res-btn" style="background:#2563eb; color:#fff;" onclick="closeResult()">ЗАКРЫТЬ</button>
+      <div class="modal-actions-row">
+        <button id="resReopenBtn" style="background: var(--accent-green); color: #000; font-weight: 900; display: none;" onclick="reopenLastCase()">ОТКРЫТЬ СНОВА</button>
+        <button class="res-btn" style="background: #2563eb; color: #fff; margin-top: 0;" onclick="closeResult()">ЗАКРЫТЬ</button>
+      </div>
     </div>
   </div>
 
@@ -15654,7 +15716,28 @@
       });
     }
 
-    let currentRotation = 0;
+        let currentRotation = 0;
+    let upgraderSpeed = 'slow'; // 'slow' (4s) or 'fast' (1.5s)
+    let caseSpeed = 'slow';     // 'slow' (4.5s) or 'fast' (1.5s)
+    let lastOpenedCase = null;
+    let lastCaseQty = 1;
+    let lastResultSourceType = 'upgrade'; // 'upgrade' or 'case'
+
+    function setUpgraderSpeed(speed) {
+      upgraderSpeed = speed;
+      const btnSlow = document.getElementById('upgSpeedSlow');
+      const btnFast = document.getElementById('upgSpeedFast');
+      if (btnSlow) btnSlow.classList.toggle('active', speed === 'slow');
+      if (btnFast) btnFast.classList.toggle('active', speed === 'fast');
+    }
+
+    function setCaseSpeed(speed) {
+      caseSpeed = speed;
+      const btnSlow = document.getElementById('caseSpeedSlow');
+      const btnFast = document.getElementById('caseSpeedFast');
+      if (btnSlow) btnSlow.classList.toggle('active', speed === 'slow');
+      if (btnFast) btnFast.classList.toggle('active', speed === 'fast');
+    }
 
     function startUpgrade() {
       if (state.isRolling || !state.selectedTarget) return;
@@ -15704,31 +15787,37 @@
         targetDeg = winSectorDeg + (Math.random() * (360 - winSectorDeg - 4) + 2);
       }
 
-      const fullSpins = (5 + Math.floor(Math.random() * 3)) * 360;
+      const isFast = (upgraderSpeed === 'fast');
+      const animDuration = isFast ? 1.5 : 4.0;
+      const spinTurns = isFast ? (3 + Math.floor(Math.random() * 2)) : (5 + Math.floor(Math.random() * 3));
+      const fullSpins = spinTurns * 360;
       currentRotation += fullSpins + (targetDeg - (currentRotation % 360));
       if (currentRotation < fullSpins) currentRotation += fullSpins;
 
       const needle = document.getElementById('needle');
+      needle.style.transition = `transform ${animDuration}s cubic-bezier(0.12, 0.8, 0.22, 1)`;
       needle.style.transform = `rotate(${currentRotation}deg)`;
       AudioEngine.playRollStart();
 
-      // Play decelerating roulette ticks mimicking authentic Upgrader dial wheel
+      // Audio ticks
       let elapsed = 0;
-      let tickDelay = 60;
+      let tickDelay = isFast ? 35 : 60;
+      const maxElapsed = isFast ? 1400 : 3800;
       function scheduleTick() {
-        if (elapsed < 3800) {
-          AudioEngine.playTick(1.0 + (3800 - elapsed) / 3800);
+        if (elapsed < maxElapsed) {
+          AudioEngine.playTick(1.0 + (maxElapsed - elapsed) / maxElapsed);
           elapsed += tickDelay;
-          tickDelay = Math.min(320, tickDelay * 1.07); // gradually slow down
+          tickDelay = Math.min(isFast ? 160 : 320, tickDelay * (isFast ? 1.12 : 1.07));
           setTimeout(scheduleTick, tickDelay);
         }
       }
-      setTimeout(scheduleTick, 100);
+      setTimeout(scheduleTick, 50);
 
       setTimeout(() => {
         state.isRolling = false;
+        lastResultSourceType = 'upgrade';
         showUpgradeResult(isWin);
-      }, 4100);
+      }, (animDuration + 0.1) * 1000);
     }
 
     function showUpgradeResult(isWin) {
@@ -15738,6 +15827,16 @@
       const img = document.getElementById('resImg');
       const name = document.getElementById('resName');
       const price = document.getElementById('resPrice');
+      const reopenBtn = document.getElementById('resReopenBtn');
+
+      if (reopenBtn) {
+        if (lastResultSourceType === 'case' && lastOpenedCase) {
+          reopenBtn.style.display = 'block';
+          reopenBtn.textContent = `ОТКРЫТЬ СНОВА (🪙 ${lastOpenedCase.price.toLocaleString('ru-RU')})`;
+        } else {
+          reopenBtn.style.display = 'none';
+        }
+      }
 
       if (isWin) {
         const wonItem = { uid: Date.now(), ...state.selectedTarget };
@@ -15764,8 +15863,30 @@
 
     function closeResult() {
       document.getElementById('resultOverlay').style.display = 'none';
-      state.selectedSource = null;
-      selectCoinBet(100);
+      if (lastResultSourceType === 'upgrade') {
+        state.selectedSource = null;
+        selectCoinBet(100);
+      }
+    }
+
+    function reopenLastCase() {
+      closeResult();
+      if (lastOpenedCase) {
+        openCaseModal(lastOpenedCase);
+        selectedCaseQty = lastCaseQty || 1;
+        updateCaseOpenBtn();
+        spinCase();
+      }
+    }
+
+    function reopenMultiCase() {
+      closeMultiCaseModal();
+      if (lastOpenedCase) {
+        openCaseModal(lastOpenedCase);
+        selectedCaseQty = lastCaseQty || 1;
+        updateCaseOpenBtn();
+        spinCase();
+      }
     }
 
     /* ================= CASES LOGIC ================= */
@@ -15788,7 +15909,6 @@
     }
 
     let generatedItemsTape = [];
-
     let selectedCaseQty = 1;
 
     function setCaseQty(qty, el) {
@@ -15826,12 +15946,17 @@
     function openCaseModal(caseData) {
       if (state.isOpeningCase) return;
       state.activeCase = caseData;
-      selectedCaseQty = 1;
+      lastOpenedCase = caseData;
+      selectedCaseQty = selectedCaseQty || 1;
       document.getElementById('caseModalTitle').textContent = caseData.name;
       document.getElementById('caseModal').style.display = 'flex';
       
-      const firstPill = document.querySelector('.qty-pill');
-      setCaseQty(1, firstPill);
+      const pills = document.querySelectorAll('.qty-pill');
+      let foundPill = null;
+      pills.forEach(p => {
+        if (parseInt(p.textContent) === selectedCaseQty) foundPill = p;
+      });
+      setCaseQty(selectedCaseQty, foundPill || pills[0]);
       updateCaseOpenBtn();
     }
 
@@ -15852,7 +15977,7 @@
       return filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : pool[Math.floor(Math.random() * pool.length)];
     }
 
-        let multiTapeData = [];
+    let multiTapeData = [];
 
     function buildReels(count) {
       const area = document.getElementById('reelsArea');
@@ -15910,6 +16035,9 @@
         return;
       }
 
+      lastOpenedCase = state.activeCase;
+      lastCaseQty = count;
+
       state.balance -= totalCost;
       updateBalance();
 
@@ -15917,10 +16045,8 @@
       const openBtn = document.getElementById('caseOpenSelectedBtn');
       if (openBtn) openBtn.disabled = true;
 
-      // Ensure reels are created
-      if (!multiTapeData || multiTapeData.length !== count) {
-        buildReels(count);
-      }
+      // Always rebuild reels fresh to ensure clean animation from start position
+      buildReels(count);
 
       const itemWidth = 80;
       const firstRow = document.querySelector('.single-reel-row');
@@ -15929,6 +16055,8 @@
       const wonItems = [];
       let totalValue = 0;
       const winIndex = 32;
+      const isFast = (caseSpeed === 'fast');
+      const animDuration = isFast ? 1.5 : (4.0 + Math.random() * 0.4);
 
       for (let r = 0; r < count; r++) {
         const tape = multiTapeData[r];
@@ -15940,29 +16068,31 @@
 
         const jitter = (Math.random() * 26) - 13;
         const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
-        const duration = (4.0 + Math.random() * 0.4).toFixed(2);
 
         const track = document.getElementById(`reel-track-${r}`);
         if (track) {
-          track.style.transition = `transform ${duration}s cubic-bezier(0.12, 0.85, 0.22, 1)`;
-          track.style.transform = `translateX(-${targetOffset}px)`;
+          // slight requestAnimationFrame to let browser register origin
+          requestAnimationFrame(() => {
+            track.style.transition = `transform ${animDuration.toFixed(2)}s cubic-bezier(0.12, 0.85, 0.22, 1)`;
+            track.style.transform = `translateX(-${targetOffset}px)`;
+          });
         }
       }
 
       AudioEngine.playRollStart();
 
       let tickCount = 0;
-      const maxTicks = 28;
-      let tickInterval = 70;
+      const maxTicks = isFast ? 14 : 28;
+      let tickInterval = isFast ? 40 : 70;
       function runTicks() {
         if (tickCount < maxTicks && state.isOpeningCase) {
           AudioEngine.playTick(1.2);
           tickCount++;
-          tickInterval = Math.min(280, tickInterval * 1.08);
+          tickInterval = Math.min(isFast ? 160 : 280, tickInterval * (isFast ? 1.14 : 1.08));
           setTimeout(runTicks, tickInterval);
         }
       }
-      setTimeout(runTicks, 100);
+      setTimeout(runTicks, 50);
 
       setTimeout(() => {
         state.isOpeningCase = false;
@@ -15974,6 +16104,7 @@
         AudioEngine.playWin();
 
         if (count === 1) {
+          lastResultSourceType = 'case';
           showUpgradeResult(true);
           const singleWon = wonItems[0];
           document.getElementById('resTitle').textContent = '🎁 ВЫПАЛ СКИН!';
@@ -16005,7 +16136,7 @@
 
           modal.style.display = 'flex';
         }
-      }, 4600);
+      }, (animDuration + 0.15) * 1000);
     }
 
     function closeMultiCaseModal() {
