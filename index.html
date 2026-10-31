@@ -10185,6 +10185,7 @@
 
     function selectSourceItem(item) {
       AudioEngine.playClick();
+      setTimeout(renderMarket, 50);
       if (state.isRolling) return;
       state.selectedSource = item;
       document.getElementById('sourceSlot').classList.add('active');
@@ -10200,6 +10201,7 @@
     }
 
     function selectCoinBet(amount) {
+      setTimeout(renderMarket, 50);
       if (state.isRolling) return;
       state.selectedSource = null;
       state.coinBet = amount;
@@ -10249,11 +10251,13 @@
       const sourceVal = getSourceValue();
       const targetVal = state.selectedTarget.price;
 
-      if (sourceVal >= targetVal) {
-        chanceText.textContent = "100%";
-        multText.textContent = "x1.00";
-        winArc.style.strokeDashoffset = 0;
-        btn.disabled = (!state.selectedSource && state.balance < state.coinBet);
+      // RULE 1: Cannot upgrade to skins cheaper than or equal to source
+      if (targetVal <= sourceVal) {
+        chanceText.textContent = "0%";
+        multText.textContent = "x0.00";
+        winArc.style.strokeDashoffset = CIRCLE_CIRCUMFERENCE;
+        btn.disabled = true;
+        btn.textContent = "ВЫБЕРИТЕ СКИН ДОРОЖЕ";
         return;
       }
 
@@ -10271,10 +10275,16 @@
       const offset = CIRCLE_CIRCUMFERENCE - (CIRCLE_CIRCUMFERENCE * (chance / 100));
       winArc.style.strokeDashoffset = offset;
 
-      if (!state.selectedSource && state.balance < state.coinBet) {
+      // RULE 2: Minimum chance must be at least 85%
+      if (chance < 85) {
         btn.disabled = true;
+        btn.textContent = "НУЖЕН ШАНС ОТ 85%";
+      } else if (!state.selectedSource && state.balance < state.coinBet) {
+        btn.disabled = true;
+        btn.textContent = "НЕДОСТАТОЧНО МОНЕТ";
       } else {
         btn.disabled = false;
+        btn.textContent = "СДЕЛАТЬ АПГРЕЙД";
       }
     }
 
@@ -10290,11 +10300,22 @@
         return true;
       });
 
+      const curSourceVal = getSourceValue();
       filtered.forEach(skin => {
         const isSelected = state.selectedTarget && state.selectedTarget.id === skin.id;
         const card = document.createElement('div');
         card.id = `target-card-${skin.id}`;
+        
+        // Check if skin is cheaper or chance < 85%
+        const isCheaper = skin.price <= curSourceVal;
+        const skinChance = (curSourceVal / skin.price) * 95;
+        const isTooLowChance = skinChance < 85;
+        const isInvalid = isCheaper || isTooLowChance;
+
         card.className = `mini-card rare-${skin.rarity} ${isSelected ? 'target-selected' : ''}`;
+        if (isInvalid) {
+          card.style.opacity = '0.45';
+        }
         card.onclick = () => selectTarget(skin);
         card.innerHTML = `
           <div class="mini-card-img">
@@ -10356,6 +10377,17 @@
 
       const sourceVal = getSourceValue();
       const targetVal = state.selectedTarget.price;
+
+      if (targetVal <= sourceVal) {
+        alert("Нельзя апгрейдить на скин дешевле вашей ставки!");
+        return;
+      }
+
+      let checkChance = (sourceVal / targetVal) * 95;
+      if (checkChance < 85) {
+        alert("Минимальный шанс для апгрейда должен быть не менее 85%!");
+        return;
+      }
 
       if (!state.selectedSource) {
         if (state.balance < state.coinBet) {
