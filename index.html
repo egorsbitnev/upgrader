@@ -3,14 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>UPGRADER CS2 - Симулятор Апгрейда</title>
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0a0d14">
+  <title>UPGRADER CS2</title>
   <style>
     :root {
-      --bg-dark: #0a0d14;
-      --bg-surface: #0f1422;
-      --bg-panel: #141c2e;
-      --bg-card: #18233a;
-      --bg-card-hover: #202d4a;
+      --bg-dark: #090c14;
+      --bg-surface: #0e1320;
+      --bg-panel: #131b2c;
+      --bg-card: #182337;
+      --bg-card-hover: #1e2c45;
       --neon-cyan: #00f2fe;
       --neon-blue: #4facfe;
       --neon-green: #00e701;
@@ -20,8 +23,9 @@
       --neon-red-glow: rgba(255, 42, 95, 0.45);
       --text-main: #ffffff;
       --text-dim: #7f8fa4;
-      --border: #23314d;
-      --border-light: #2d3e63;
+      --border: #202c44;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     * {
       box-sizing: border-box;
@@ -30,137 +34,102 @@
       -webkit-tap-highlight-color: transparent;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-dark);
+      color: var(--text-main);
     }
     body {
-      background: radial-gradient(circle at 50% 10%, #151f33 0%, #090c14 100%);
-      color: var(--text-main);
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
     }
 
-    /* HEADER UPGRADER.BEST STYLE */
+    /* MOBILE HEADER */
     header {
-      background: rgba(13, 18, 30, 0.95);
+      background: #0d121f;
       border-bottom: 1px solid var(--border);
-      padding: 10px 18px;
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
       flex-shrink: 0;
-      backdrop-filter: blur(10px);
+      height: 48px;
     }
     .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      gap: 6px;
     }
     .brand-icon {
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #080d1a;
       font-weight: 900;
-      font-size: 15px;
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      font-size: 12px;
     }
     .brand-name {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 900;
-      letter-spacing: 1.5px;
-      background: linear-gradient(90deg, #ffffff, #a5c9ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      color: #fff;
     }
     .brand-suffix {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
       background: rgba(0, 242, 254, 0.15);
       color: var(--neon-cyan);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(0, 242, 254, 0.3);
-      letter-spacing: 0.5px;
+      padding: 1px 4px;
+      border-radius: 3px;
     }
 
     .user-profile {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
     }
     .balance-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: #151d30;
+      gap: 6px;
+      background: #141c2c;
       border: 1px solid var(--border);
-      padding: 5px 12px;
-      border-radius: 20px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+      padding: 4px 10px;
+      border-radius: 16px;
     }
     .balance-val {
       font-weight: 900;
-      font-size: 15px;
+      font-size: 13px;
       color: var(--neon-gold);
-      letter-spacing: 0.5px;
     }
     .btn-deposit {
       background: linear-gradient(135deg, #00e676, #00c853);
       border: none;
       color: #090e17;
       font-weight: 900;
-      font-size: 15px;
-      width: 26px;
-      height: 26px;
+      font-size: 14px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 10px rgba(0, 230, 118, 0.4);
-      transition: transform 0.1s, box-shadow 0.2s;
-    }
-    .btn-deposit:active { transform: scale(0.9); }
-
-    /* SUB NAV (UPGRADER / CASES) */
-    .nav-bar {
-      display: flex;
-      background: #0d121f;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .nav-btn {
-      flex: 1;
-      padding: 11px 0;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--text-dim);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-    }
-    .nav-btn.active {
-      color: #ffffff;
-      border-bottom-color: var(--neon-cyan);
-      background: rgba(0, 242, 254, 0.05);
-      text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
     }
 
-    /* MAIN WRAPPER */
-    .main-content {
+    /* MAIN CONTENT VIEWPORT */
+    .main-viewport {
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -168,9 +137,7 @@
       position: relative;
     }
 
-    /* ========================================================
-       UPGRADER ARENA (UPGRADER.BEST ORIGINAL LAYOUT)
-       ======================================================== */
+    /* UPGRADER VIEW FOR MOBILE */
     #view-upgrader {
       display: flex;
       flex-direction: column;
@@ -178,126 +145,130 @@
       overflow: hidden;
     }
 
-    .arena-board {
+    /* COMPACT ARENA FOR MOBILE PHONES */
+    .arena-top {
+      background: radial-gradient(ellipse at 50% 20%, #162035 0%, #0a0e18 100%);
+      padding: 8px 10px 6px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 20px;
-      padding: 10px 16px 8px;
-      background: radial-gradient(ellipse at 50% 40%, #151e33 0%, #0d121d 100%);
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
-      position: relative;
     }
 
-    /* SIDE SLOTS: Left (Bet) & Right (Target) */
-    .arena-slot {
-      width: 140px;
-      height: 120px;
+    .arena-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 380px;
+      gap: 8px;
+    }
+
+    /* MOBILE SLOTS (Left Bet / Right Target) */
+    .mobile-slot {
+      flex: 1;
+      height: 105px;
       background: var(--bg-panel);
       border: 1.5px dashed var(--border);
-      border-radius: 14px;
-      padding: 8px 6px;
+      border-radius: 12px;
+      padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      text-align: center;
       position: relative;
       cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: all 0.2s;
     }
-    .arena-slot:hover {
-      border-color: #3f5580;
-      transform: translateY(-2px);
-    }
-    .arena-slot.active {
+    .mobile-slot.active {
       border-style: solid;
       border-color: #3b5078;
-      background: #172237;
+      background: #162136;
     }
-    .arena-slot.target.active {
+    .mobile-slot.target.active {
       border-color: var(--neon-cyan);
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
     }
-    .slot-tag {
+    .slot-badge {
       position: absolute;
-      top: 5px;
-      font-size: 9px;
+      top: 4px;
+      font-size: 8.5px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       color: var(--text-dim);
     }
-    .slot-img-box {
-      width: 75px;
-      height: 52px;
-      margin-top: 10px;
+    .slot-img-wrap {
+      width: 65px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 8px;
     }
-    .slot-img-box img {
+    .slot-img-wrap img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.7));
     }
-    .slot-text-name {
-      font-size: 11px;
-      font-weight: 800;
+    .slot-name {
+      font-size: 10.5px;
+      font-weight: 700;
       color: #fff;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 125px;
-      margin-top: 3px;
+      width: 100%;
+      max-width: 105px;
+      margin-top: 2px;
     }
-    .slot-text-price {
-      font-size: 11px;
+    .slot-price {
+      font-size: 10.5px;
       font-weight: 900;
       color: var(--neon-gold);
     }
 
-    /* CENTER ROULETTE DIAL (UPGRADER.BEST SIGNATURE) */
-    .dial-wrapper {
+    /* CENTER COMPACT DIAL FOR MOBILE SCREEN */
+    .dial-wrap {
       position: relative;
-      width: 180px;
-      height: 180px;
+      width: 130px;
+      height: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .dial-svg {
-      width: 180px;
-      height: 180px;
+      width: 130px;
+      height: 130px;
       transform: rotate(-90deg);
     }
-    .dial-track {
+    .dial-bg {
       fill: transparent;
-      stroke: #182236;
-      stroke-width: 13;
+      stroke: #162136;
+      stroke-width: 11;
     }
-    .dial-glow-arc {
+    .dial-arc {
       fill: transparent;
       stroke: var(--neon-green);
-      stroke-width: 13;
+      stroke-width: 11;
       stroke-linecap: round;
-      stroke-dasharray: 471;
-      stroke-dashoffset: 471;
+      stroke-dasharray: 345;
+      stroke-dashoffset: 345;
       transition: stroke-dashoffset 0.35s ease;
-      filter: drop-shadow(0 0 10px var(--neon-green-glow));
+      filter: drop-shadow(0 0 8px var(--neon-green-glow));
     }
 
-    /* ARROW NEEDLE */
     .dial-needle {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 4px;
-      height: 86px;
-      margin-left: -2px;
-      margin-top: -86px;
+      width: 3px;
+      height: 62px;
+      margin-left: -1.5px;
+      margin-top: -62px;
       transform-origin: bottom center;
       transform: rotate(0deg);
       transition: transform 4s cubic-bezier(0.12, 0.8, 0.22, 1);
@@ -307,31 +278,28 @@
     .dial-needle::before {
       content: '';
       position: absolute;
-      top: -4px;
+      top: -3px;
       left: 50%;
       transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 16px solid #ffffff;
-      filter: drop-shadow(0 0 8px #ffffff);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 13px solid #ffffff;
+      filter: drop-shadow(0 0 6px #ffffff);
     }
-    .dial-needle-hub {
+    .dial-hub {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle, #ffffff 40%, #00f2fe 100%);
+      width: 14px;
+      height: 14px;
+      background: #ffffff;
       border-radius: 50%;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 14px rgba(0, 242, 254, 0.8);
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.8);
       z-index: 11;
     }
 
-    /* DIAL CENTER TEXT */
-    .dial-center-data {
+    .dial-center {
       position: absolute;
       display: flex;
       flex-direction: column;
@@ -340,114 +308,102 @@
       text-align: center;
       pointer-events: none;
     }
-    .dial-chance {
-      font-size: 28px;
+    .dial-val {
+      font-size: 21px;
       font-weight: 900;
       color: #ffffff;
       line-height: 1;
-      letter-spacing: -0.5px;
-      text-shadow: 0 0 14px var(--neon-green-glow);
+      text-shadow: 0 0 10px var(--neon-green-glow);
     }
-    .dial-chance-label {
-      font-size: 9px;
-      font-weight: 800;
+    .dial-lbl {
+      font-size: 8px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       color: var(--text-dim);
       margin-top: 2px;
     }
-    .dial-mult {
-      font-size: 13px;
+    .dial-x {
+      font-size: 11px;
       font-weight: 800;
       color: var(--neon-cyan);
-      margin-top: 1px;
     }
 
-    /* UPGRADE CONTROLS BAR (MULTIPLIER PRESETS & UPGRADE BUTTON) */
-    .arena-controls {
+    /* MOBILE PRESET CHIPS & ACTION BUTTON */
+    .arena-actions {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 6px 14px 10px;
-      background: #0d121d;
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .presets-row {
-      display: flex;
-      gap: 6px;
       width: 100%;
-      max-width: 440px;
-      justify-content: center;
+      max-width: 380px;
+      gap: 6px;
+      margin-top: 6px;
     }
-    .preset-chip {
+    .presets-carousel {
+      display: flex;
+      gap: 5px;
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 1px 0;
+    }
+    .presets-carousel::-webkit-scrollbar { display: none; }
+    .preset-pill {
       flex: 1;
+      min-width: 50px;
       background: #141c2c;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 0;
+      border-radius: 6px;
+      padding: 4px 0;
       font-size: 11px;
       font-weight: 800;
       color: var(--text-dim);
       text-align: center;
       cursor: pointer;
-      transition: all 0.15s;
     }
-    .preset-chip:hover {
-      border-color: #3b5078;
-      color: #fff;
-    }
-    .preset-chip:active {
-      transform: scale(0.96);
+    .preset-pill:active {
+      background: var(--neon-cyan);
+      color: #000;
     }
 
-    .btn-upgrade-main {
+    .btn-upgrade-mobile {
       width: 100%;
-      max-width: 440px;
-      padding: 12px 0;
+      padding: 11px 0;
       background: linear-gradient(135deg, #00e701, #00a801);
       color: #080d15;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 900;
-      letter-spacing: 1px;
-      border-radius: 12px;
+      letter-spacing: 0.5px;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 231, 1, 0.4);
-      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(0, 231, 1, 0.4);
     }
-    .btn-upgrade-main:hover:not(:disabled) {
-      box-shadow: 0 4px 25px rgba(0, 231, 1, 0.6);
-      transform: translateY(-1px);
-    }
-    .btn-upgrade-main:active:not(:disabled) {
+    .btn-upgrade-mobile:active {
       transform: scale(0.98);
     }
-    .btn-upgrade-main:disabled {
+    .btn-upgrade-mobile:disabled {
       background: #1c2639;
       color: #4f617d;
       box-shadow: none;
-      cursor: not-allowed;
     }
 
-    /* BOTTOM TABS & MARKET/INVENTORY GRIDS */
-    .bottom-section {
+    /* MOBILE BOTTOM SKINS COLLECTION */
+    .mobile-catalog {
       flex: 1;
       display: flex;
       flex-direction: column;
       background: var(--bg-surface);
       overflow: hidden;
     }
-    .section-tabs-bar {
+    .mobile-tabs-row {
       display: flex;
       border-bottom: 1px solid var(--border);
       background: #0d121e;
       flex-shrink: 0;
     }
-    .sec-tab {
+    .mobile-tab-btn {
       flex: 1;
-      padding: 10px;
+      padding: 9px 0;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
@@ -455,242 +411,265 @@
       font-size: 12px;
       font-weight: 800;
       cursor: pointer;
-      transition: all 0.15s;
     }
-    .sec-tab.active {
+    .mobile-tab-btn.active {
       color: var(--neon-cyan);
       border-bottom-color: var(--neon-cyan);
       background: rgba(0, 242, 254, 0.05);
     }
 
-    .filter-scroll-bar {
+    .mobile-filter-bar {
       display: flex;
-      gap: 6px;
-      padding: 6px 12px;
+      gap: 5px;
+      padding: 5px 8px;
       background: #101625;
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
       scrollbar-width: none;
       flex-shrink: 0;
     }
-    .filter-scroll-bar::-webkit-scrollbar { display: none; }
-    .filter-tag {
-      padding: 3px 10px;
-      font-size: 11px;
+    .mobile-filter-bar::-webkit-scrollbar { display: none; }
+    .m-filter-chip {
+      padding: 3px 8px;
+      font-size: 10px;
       font-weight: 700;
       background: #172134;
       color: var(--text-dim);
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid var(--border);
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.15s;
     }
-    .filter-tag.active {
+    .m-filter-chip.active {
       background: var(--neon-cyan);
       color: #090e18;
       border-color: var(--neon-cyan);
     }
 
-    .skins-collection {
+    .mobile-grid {
       flex: 1;
       overflow-y: auto;
-      padding: 8px 10px;
+      -webkit-overflow-scrolling: touch;
+      padding: 6px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
       align-content: start;
     }
-    .skin-tile {
+    @media (min-width: 480px) {
+      .mobile-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (min-width: 768px) {
+      .mobile-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+    }
+
+    .skin-item-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 6px;
+      border-radius: 8px;
+      padding: 6px 4px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: pointer;
       position: relative;
-      overflow: hidden;
-      transition: all 0.15s;
     }
-    .skin-tile:hover {
-      border-color: #3f5580;
-      transform: translateY(-2px);
+    .skin-item-card:active {
+      transform: scale(0.95);
     }
-    .skin-tile:active {
-      transform: scale(0.96);
-    }
-    .skin-tile.selected {
+    .skin-item-card.selected {
       border-color: var(--neon-cyan);
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.35);
       background: #1e2c47;
     }
-    .skin-tile.rare-contraband { border-bottom: 3px solid #e4ae39; }
-    .skin-tile.rare-gold { border-bottom: 3px solid #ffd700; }
-    .skin-tile.rare-covert { border-bottom: 3px solid #eb4b4b; }
-    .skin-tile.rare-classified { border-bottom: 3px solid #d32ce6; }
-    .skin-tile.rare-restricted { border-bottom: 3px solid #8847ff; }
-    .skin-tile.rare-milspec { border-bottom: 3px solid #4b69ff; }
+    .skin-item-card.rare-contraband { border-bottom: 2.5px solid #e4ae39; }
+    .skin-item-card.rare-gold { border-bottom: 2.5px solid #ffd700; }
+    .skin-item-card.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
+    .skin-item-card.rare-classified { border-bottom: 2.5px solid #d32ce6; }
+    .skin-item-card.rare-restricted { border-bottom: 2.5px solid #8847ff; }
+    .skin-item-card.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
 
-    .skin-tile-img {
+    .skin-item-card-img {
       width: 100%;
-      height: 56px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
-    .skin-tile-img img {
+    .skin-item-card-img img {
       max-width: 90%;
       max-height: 90%;
       object-fit: contain;
-      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5));
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
     }
-    .skin-tile-name {
-      font-size: 11px;
+    .skin-item-card-name {
+      font-size: 10px;
       font-weight: 700;
       color: #fff;
-      line-height: 1.2;
+      line-height: 1.15;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
     }
-    .skin-tile-type {
-      font-size: 10px;
+    .skin-item-card-type {
+      font-size: 9px;
       color: var(--text-dim);
-      margin: 1px 0 2px;
+      margin: 1px 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
     }
-    .skin-tile-price {
-      font-size: 11px;
+    .skin-item-card-price {
+      font-size: 10px;
       font-weight: 900;
       color: var(--neon-gold);
     }
 
-    /* ========================================================
-       CASES VIEW
-       ======================================================== */
+    /* ================= MOBILE CASES VIEW ================= */
     #view-cases {
       display: none;
       flex-direction: column;
       height: 100%;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background: var(--bg-dark);
-      padding: 14px;
+      padding: 10px 8px;
     }
-    .cases-banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .cases-banner h2 {
-      font-size: 18px;
-      font-weight: 900;
-      color: #fff;
-    }
-    .cases-grid {
+    .cases-mobile-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
-    .case-card {
+    @media (min-width: 500px) {
+      .cases-mobile-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .case-card-m {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 10px;
+      border-radius: 12px;
+      padding: 10px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .case-card:hover {
-      transform: translateY(-3px);
-      border-color: #3b5078;
+    .case-card-m:active {
+      transform: scale(0.96);
     }
-    .case-card:active { transform: scale(0.96); }
-    .case-card-img {
-      width: 110px;
-      height: 85px;
+    .case-card-m-img {
+      width: 90px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .case-card-img img {
+    .case-card-m-img img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.6));
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
     }
-    .case-card-name {
+    .case-card-m-name {
       font-weight: 800;
-      font-size: 13px;
+      font-size: 11.5px;
       color: #fff;
       margin-bottom: 6px;
+      line-height: 1.2;
     }
-    .case-open-btn {
+    .case-card-m-btn {
       background: linear-gradient(135deg, #ffb703, #fb8500);
       color: #0b0f19;
       font-weight: 900;
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 8px;
+      font-size: 11px;
+      padding: 5px 0;
+      border-radius: 6px;
       border: none;
       cursor: pointer;
       width: 100%;
       margin-top: auto;
     }
 
-    /* CASE OPENING MODAL & ROULETTE REEL */
+    /* MOBILE BOTTOM TAB BAR */
+    .mobile-bottom-nav {
+      height: 52px;
+      background: #0b0e18;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-shrink: 0;
+      z-index: 90;
+    }
+    .m-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      gap: 2px;
+      transition: color 0.15s;
+    }
+    .m-nav-item span {
+      font-size: 17px;
+    }
+    .m-nav-item.active {
+      color: var(--neon-cyan);
+    }
+
+    /* CASE OPENING MODAL FOR MOBILE */
     .case-modal {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(8, 11, 18, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(6, 9, 15, 0.95);
+      backdrop-filter: blur(8px);
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      padding: 16px;
+      padding: 12px;
     }
     .case-modal-box {
       width: 100%;
-      max-width: 480px;
+      max-width: 360px;
       background: var(--bg-panel);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 20px;
+      border-radius: 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
     }
     .case-modal-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 900;
       color: #fff;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .tape-container {
       width: 100%;
-      height: 120px;
+      height: 96px;
       background: #090c14;
       border: 2px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       position: relative;
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .tape-pointer {
       position: absolute;
@@ -698,26 +677,8 @@
       transform: translateX(-50%);
       width: 3px;
       background: #ffb703;
-      box-shadow: 0 0 10px #ffb703;
+      box-shadow: 0 0 8px #ffb703;
       z-index: 10;
-    }
-    .tape-pointer::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-top: 8px solid #ffb703;
-    }
-    .tape-pointer::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%);
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-bottom: 8px solid #ffb703;
     }
     .tape-track {
       display: flex;
@@ -727,7 +688,7 @@
       will-change: transform;
     }
     .tape-item {
-      width: 110px;
+      width: 90px;
       height: 100%;
       background: #141c2c;
       border-right: 1px solid var(--border);
@@ -735,19 +696,17 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 6px;
+      padding: 4px;
       flex-shrink: 0;
-      box-sizing: border-box;
-      position: relative;
     }
-    .tape-item.rare-gold { border-bottom: 3px solid #ffd700; }
-    .tape-item.rare-covert { border-bottom: 3px solid #eb4b4b; }
-    .tape-item.rare-classified { border-bottom: 3px solid #d32ce6; }
-    .tape-item.rare-restricted { border-bottom: 3px solid #8847ff; }
-    .tape-item.rare-milspec { border-bottom: 3px solid #4b69ff; }
+    .tape-item.rare-gold { border-bottom: 2.5px solid #ffd700; }
+    .tape-item.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
+    .tape-item.rare-classified { border-bottom: 2.5px solid #d32ce6; }
+    .tape-item.rare-restricted { border-bottom: 2.5px solid #8847ff; }
+    .tape-item.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
     .tape-item-img {
-      width: 65px;
-      height: 48px;
+      width: 50px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -758,313 +717,207 @@
       object-fit: contain;
     }
     .tape-item-name {
-      font-size: 10px;
+      font-size: 8.5px;
       font-weight: 700;
       color: #fff;
-      text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       width: 100%;
-      margin-top: 4px;
+      text-align: center;
+      margin-top: 2px;
     }
-
     .case-actions-group {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       width: 100%;
-      max-width: 380px;
     }
-    .case-open-action-btn {
+    .case-open-btn-m {
       flex: 1;
+      padding: 10px 0;
+      border-radius: 10px;
+      border: none;
+      font-weight: 900;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .case-open-1x {
       background: linear-gradient(135deg, #00e701, #00b301);
       color: #0b0f19;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(0, 231, 1, 0.35);
     }
-    .case-open-10x-btn {
-      flex: 1;
+    .case-open-10x {
       background: linear-gradient(135deg, #ffb703, #fb8500);
       color: #0b0f19;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 18px rgba(255, 183, 3, 0.35);
     }
     .case-close-x {
       position: absolute;
-      top: 14px;
-      right: 16px;
+      top: 10px;
+      right: 12px;
       color: var(--text-dim);
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       background: none;
       border: none;
     }
 
-    /* ========================================================
-       SPECTACULAR WIN / LOSE FULLSCREEN ANIMATIONS & MODALS
-       ======================================================== */
+    /* FULLSCREEN RESULT OVERLAYS FOR MOBILE */
     .animation-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(6, 9, 16, 0.92);
-      backdrop-filter: blur(10px);
+      background: rgba(6, 9, 16, 0.94);
+      backdrop-filter: blur(8px);
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 1200;
-      overflow: hidden;
+      padding: 16px;
     }
 
-    /* WIN MODAL WITH NEON CONFETTI & EXPLOSION */
-    .win-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      animation: popWin 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-      max-width: 360px;
-      width: 90%;
-    }
-    @keyframes popWin {
-      0% { transform: scale(0.4); opacity: 0; }
-      70% { transform: scale(1.08); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .win-light-rays {
-      position: absolute;
-      width: 380px;
-      height: 380px;
-      background: conic-gradient(from 0deg, rgba(0, 231, 1, 0.25), transparent 45deg, rgba(0, 242, 254, 0.25) 90deg, transparent 135deg, rgba(0, 231, 1, 0.25) 180deg, transparent 225deg, rgba(0, 242, 254, 0.25) 270deg, transparent 315deg);
-      border-radius: 50%;
-      animation: rotateRays 12s linear infinite;
-      z-index: 1;
-      pointer-events: none;
-    }
-    @keyframes rotateRays {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
+    /* WIN POPUP */
     .win-card-box {
       background: linear-gradient(180deg, #17243c 0%, #101828 100%);
       border: 2px solid var(--neon-green);
-      box-shadow: 0 0 50px rgba(0, 231, 1, 0.4), inset 0 0 20px rgba(0, 231, 1, 0.2);
-      border-radius: 20px;
-      padding: 26px 20px;
+      box-shadow: 0 0 35px rgba(0, 231, 1, 0.4);
+      border-radius: 18px;
+      padding: 20px 16px;
       width: 100%;
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .win-badge-title {
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--neon-green);
-      letter-spacing: 1px;
-      text-shadow: 0 0 16px rgba(0, 231, 1, 0.7);
-      margin-bottom: 4px;
-    }
-    .win-subtitle {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-dim);
-      margin-bottom: 12px;
-    }
-    .win-skin-glow-wrap {
-      width: 170px;
-      height: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 8px 0;
-      position: relative;
-    }
-    .win-skin-glow-wrap img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 20px rgba(0, 231, 1, 0.6));
-      animation: floatSkin 3s ease-in-out infinite;
-    }
-    @keyframes floatSkin {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-8px) scale(1.05); }
-    }
-
-    .win-item-name {
-      font-size: 18px;
-      font-weight: 900;
-      color: #ffffff;
-      margin-top: 6px;
-    }
-    .win-item-price {
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--neon-gold);
-      margin-top: 4px;
-      text-shadow: 0 0 10px rgba(255, 183, 3, 0.5);
-    }
-    .btn-collect-win {
-      margin-top: 20px;
-      width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, #00e701, #00b301);
-      border: none;
-      border-radius: 12px;
-      color: #080d16;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 231, 1, 0.4);
-      transition: all 0.15s;
-    }
-    .btn-collect-win:active { transform: scale(0.97); }
-
-    /* LOSE MODAL WITH SHAKE & ASH/FIRE EFFECT */
-    .lose-container {
+      max-width: 310px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      max-width: 340px;
-      width: 90%;
-      animation: shakeLose 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      animation: popWin 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
-    @keyframes shakeLose {
-      10%, 90% { transform: translate3d(-3px, 0, 0); }
-      20%, 80% { transform: translate3d(5px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-7px, 0, 0); }
-      40%, 60% { transform: translate3d(7px, 0, 0); }
+    @keyframes popWin {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
+    .win-badge-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--neon-green);
+      letter-spacing: 0.5px;
+    }
+    .win-skin-img-box {
+      width: 140px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+    }
+    .win-skin-img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(0, 231, 1, 0.6));
+    }
+    .win-item-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .win-item-price {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--neon-gold);
+      margin-top: 3px;
+    }
+    .btn-action-dialog {
+      margin-top: 16px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00e701, #00b301);
+      border: none;
+      border-radius: 10px;
+      color: #080d16;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* LOSE POPUP */
     .lose-card-box {
       background: linear-gradient(180deg, #24141c 0%, #130a0f 100%);
       border: 2px solid var(--neon-red);
-      box-shadow: 0 0 45px rgba(255, 42, 95, 0.4), inset 0 0 20px rgba(255, 42, 95, 0.2);
-      border-radius: 20px;
-      padding: 24px 20px;
+      box-shadow: 0 0 35px rgba(255, 42, 95, 0.4);
+      border-radius: 18px;
+      padding: 20px 16px;
       width: 100%;
+      max-width: 300px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
+      animation: shakeLose 0.6s ease;
     }
-    .lose-icon {
-      font-size: 55px;
-      margin: 8px 0;
-      filter: drop-shadow(0 0 16px rgba(255, 42, 95, 0.6));
-      animation: smokeFade 1.2s ease-in-out infinite alternate;
-    }
-    @keyframes smokeFade {
-      from { transform: scale(0.9) rotate(-4deg); opacity: 0.7; }
-      to { transform: scale(1.1) rotate(4deg); opacity: 1; }
+    @keyframes shakeLose {
+      20%, 80% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
     }
     .lose-badge-title {
-      font-size: 22px;
+      font-size: 19px;
       font-weight: 900;
       color: var(--neon-red);
-      letter-spacing: 1px;
-      text-shadow: 0 0 16px rgba(255, 42, 95, 0.7);
-      margin-bottom: 4px;
-    }
-    .lose-desc {
-      font-size: 13px;
-      color: #b97f8c;
-      margin: 4px 0 16px;
     }
     .btn-retry-lose {
+      margin-top: 14px;
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       background: #331d27;
       border: 1px solid #66273c;
-      border-radius: 12px;
+      border-radius: 10px;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
-      transition: all 0.15s;
     }
-    .btn-retry-lose:active { transform: scale(0.97); }
 
-    /* MULTI RESULT 10X */
+    /* 10X CASE MULTI RESULT */
     .multi-res-dialog {
       background: var(--bg-panel);
       border: 2px solid var(--neon-gold);
-      border-radius: 18px;
-      padding: 18px;
-      width: 92%;
-      max-width: 520px;
+      border-radius: 16px;
+      padding: 14px;
+      width: 100%;
+      max-width: 360px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      box-shadow: 0 0 40px rgba(255, 183, 3, 0.35);
-      animation: popWin 0.3s ease;
-    }
-    .multi-res-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin-bottom: 12px;
-    }
-    .multi-res-title {
-      font-size: 18px;
-      font-weight: 900;
-      color: #fff;
-    }
-    .multi-res-total {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--neon-gold);
     }
     .multi-res-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
       width: 100%;
       overflow-y: auto;
-      max-height: 52vh;
-      padding: 4px;
+      max-height: 55vh;
+      padding: 4px 0;
     }
     .multi-res-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 6px 4px;
+      border-radius: 8px;
+      padding: 5px 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
     }
-    .multi-res-card.rare-gold { border-bottom: 3px solid #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
-    .multi-res-card.rare-covert { border-bottom: 3px solid #eb4b4b; }
-    .multi-res-card.rare-classified { border-bottom: 3px solid #d32ce6; }
-    .multi-res-card.rare-restricted { border-bottom: 3px solid #8847ff; }
-    .multi-res-card.rare-milspec { border-bottom: 3px solid #4b69ff; }
+    .multi-res-card.rare-gold { border-bottom: 2px solid #ffd700; }
+    .multi-res-card.rare-covert { border-bottom: 2.5px solid #eb4b4b; }
+    .multi-res-card.rare-classified { border-bottom: 2.5px solid #d32ce6; }
+    .multi-res-card.rare-restricted { border-bottom: 2.5px solid #8847ff; }
+    .multi-res-card.rare-milspec { border-bottom: 2.5px solid #4b69ff; }
     .multi-res-card img {
-      width: 54px;
-      height: 40px;
+      width: 44px;
+      height: 34px;
       object-fit: contain;
-      margin-bottom: 4px;
     }
     .multi-res-card-name {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
@@ -1072,24 +925,11 @@
       width: 100%;
     }
     .multi-res-card-price {
-      font-size: 10px;
-      font-weight: 800;
+      font-size: 9px;
+      font-weight: 900;
       color: var(--neon-gold);
-      margin-top: 2px;
-    }
-    .btn-collect-all {
-      margin-top: 14px;
-      width: 100%;
-      padding: 12px;
-      background: #25334d;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: 800;
-      cursor: pointer;
     }
 
-    /* PARTICLES CANVAS */
     #confettiCanvas {
       position: absolute;
       top: 0; left: 0;
@@ -1101,126 +941,127 @@
 </head>
 <body>
 
-  <!-- HEADER -->
+  <!-- MOBILE HEADER -->
   <header>
     <div class="brand-wrap">
       <div class="brand-icon">UP</div>
       <div class="brand-name">UPGRADER</div>
-      <div class="brand-suffix">BEST</div>
+      <div class="brand-suffix">CS2</div>
     </div>
     <div class="user-profile">
       <div class="balance-pill">
-        <span>🪙</span>
+        <span style="font-size: 13px;">🪙</span>
         <span class="balance-val" id="userBalanceDisplay">1,000</span>
       </div>
       <button class="btn-deposit" title="Пополнить бесплатно (+1,000)" onclick="grantFreeCoins()">+</button>
     </div>
   </header>
 
-  <!-- NAVIGATION -->
-  <div class="nav-bar">
-    <div class="nav-btn active" id="navTabUpgrader" onclick="switchMainView('upgrader')">
-      <span>⚡</span> Апгрейдер
-    </div>
-    <div class="nav-btn" id="navTabCases" onclick="switchMainView('cases')">
-      <span>📦</span> Кейсы CS2
-    </div>
-  </div>
-
-  <div class="main-content">
+  <!-- VIEWPORT -->
+  <div class="main-viewport">
 
     <!-- ================= VIEW 1: UPGRADER ================= -->
     <div id="view-upgrader">
       
-      <!-- ARENA: Left Bet Slot - Dial Wheel - Right Target Slot -->
-      <div class="arena-board">
-        
-        <!-- Left Slot: Source -->
-        <div class="arena-slot active" id="sourceSlot" onclick="switchTab('inventory')">
-          <span class="slot-tag">Ваша ставка</span>
-          <div class="slot-img-box" id="sourceImgBox">
-            <span style="font-size: 32px;">🪙</span>
+      <!-- COMPACT ARENA -->
+      <div class="arena-top">
+        <div class="arena-row">
+          
+          <!-- Left: User Bet Slot -->
+          <div class="mobile-slot active" id="sourceSlot" onclick="switchMobileTab('inventory')">
+            <span class="slot-badge">Ставка</span>
+            <div class="slot-img-wrap" id="sourceImgBox">
+              <span style="font-size: 26px;">🪙</span>
+            </div>
+            <div class="slot-name" id="sourceTitle">100 Монет</div>
+            <div class="slot-price" id="sourcePrice">🪙 100</div>
           </div>
-          <div class="slot-text-name" id="sourceTitle">100 Монет</div>
-          <div class="slot-text-price" id="sourcePrice">🪙 100</div>
+
+          <!-- Center: Dial Wheel -->
+          <div class="dial-wrap">
+            <svg class="dial-svg">
+              <circle class="dial-bg" cx="65" cy="65" r="55"></circle>
+              <circle class="dial-arc" id="winArc" cx="65" cy="65" r="55"></circle>
+            </svg>
+
+            <div class="dial-needle" id="needle"></div>
+            <div class="dial-hub"></div>
+
+            <div class="dial-center">
+              <span class="dial-val" id="chanceDisplay">0%</span>
+              <span class="dial-lbl">Шанс</span>
+              <span class="dial-x" id="multDisplay">x0.00</span>
+            </div>
+          </div>
+
+          <!-- Right: Target Slot -->
+          <div class="mobile-slot target" id="targetSlot" onclick="switchMobileTab('market')">
+            <span class="slot-badge">Цель</span>
+            <div class="slot-img-wrap" id="targetImgBox">
+              <span style="font-size: 24px;">🎯</span>
+            </div>
+            <div class="slot-name" id="targetTitle">Выберите</div>
+            <div class="slot-price" id="targetPrice">-</div>
+          </div>
+
         </div>
 
-        <!-- Center: Roulette Dial -->
-        <div class="dial-wrapper">
-          <svg class="dial-svg">
-            <circle class="dial-track" cx="90" cy="90" r="75"></circle>
-            <circle class="dial-glow-arc" id="winArc" cx="90" cy="90" r="75"></circle>
-          </svg>
-
-          <div class="dial-needle" id="needle"></div>
-          <div class="dial-needle-hub"></div>
-
-          <div class="dial-center-data">
-            <span class="dial-chance" id="chanceDisplay">0%</span>
-            <span class="dial-chance-label">Шанс успеха</span>
-            <span class="dial-mult" id="multDisplay">x0.00</span>
+        <!-- Presets & Action Button -->
+        <div class="arena-actions">
+          <div class="presets-carousel">
+            <div class="preset-pill" onclick="applyMultiplierTarget(1.5)">1.5x</div>
+            <div class="preset-pill" onclick="applyMultiplierTarget(2)">2x</div>
+            <div class="preset-pill" onclick="applyMultiplierTarget(5)">5x</div>
+            <div class="preset-pill" onclick="applyMultiplierTarget(10)">10x</div>
+            <div class="preset-pill" onclick="applyMultiplierTarget(25)">25x</div>
+            <div class="preset-pill" onclick="applyMultiplierTarget(50)">50x</div>
           </div>
-        </div>
 
-        <!-- Right Slot: Target Skin -->
-        <div class="arena-slot target" id="targetSlot" onclick="switchTab('market')">
-          <span class="slot-tag">Цель</span>
-          <div class="slot-img-box" id="targetImgBox">
-            <span style="font-size: 26px;">🎯</span>
-          </div>
-          <div class="slot-text-name" id="targetTitle">Выберите скин</div>
-          <div class="slot-text-price" id="targetPrice">-</div>
+          <button class="btn-upgrade-mobile" id="upgradeBtn" disabled onclick="startUpgrade()">
+            СДЕЛАТЬ АПГРЕЙД
+          </button>
         </div>
-
       </div>
 
-      <!-- Controls Row: Preset Multipliers & Action Button -->
-      <div class="arena-controls">
-        <div class="presets-row">
-          <div class="preset-chip" onclick="applyMultiplierTarget(1.5)">1.5x</div>
-          <div class="preset-chip" onclick="applyMultiplierTarget(2)">2x</div>
-          <div class="preset-chip" onclick="applyMultiplierTarget(5)">5x</div>
-          <div class="preset-chip" onclick="applyMultiplierTarget(10)">10x</div>
-          <div class="preset-chip" onclick="applyMultiplierTarget(25)">25x</div>
-          <div class="preset-chip" onclick="applyMultiplierTarget(50)">50x</div>
+      <!-- MOBILE CATALOG SECTION -->
+      <div class="mobile-catalog">
+        <div class="mobile-tabs-row">
+          <button class="mobile-tab-btn active" id="tabMarketBtn" onclick="switchMobileTab('market')">Магазин (<span id="marketCount">0</span>)</button>
+          <button class="mobile-tab-btn" id="tabInventoryBtn" onclick="switchMobileTab('inventory')">Инвентарь (<span id="invCount">0</span>)</button>
         </div>
 
-        <button class="btn-upgrade-main" id="upgradeBtn" disabled onclick="startUpgrade()">
-          СДЕЛАТЬ АПГРЕЙД
-        </button>
-      </div>
-
-      <!-- Bottom Collection Section -->
-      <div class="bottom-section">
-        <div class="section-tabs-bar">
-          <button class="sec-tab active" id="tabMarketBtn" onclick="switchTab('market')">Магазин скинов (<span id="marketCount">0</span>)</button>
-          <button class="sec-tab" id="tabInventoryBtn" onclick="switchTab('inventory')">Инвентарь (<span id="invCount">0</span>)</button>
+        <div class="mobile-filter-bar" id="marketFilterBar">
+          <div class="m-filter-chip active" onclick="filterMarket('all', this)">Все</div>
+          <div class="m-filter-chip" onclick="filterMarket('knife', this)">Ножи / Перчатки</div>
+          <div class="m-filter-chip" onclick="filterMarket('rifle', this)">Винтовки</div>
+          <div class="m-filter-chip" onclick="filterMarket('pistol', this)">Пистолеты</div>
+          <div class="m-filter-chip" onclick="filterMarket('cheap', this)">До 1,000</div>
+          <div class="m-filter-chip" onclick="filterMarket('expensive', this)">10,000+</div>
         </div>
 
-        <div class="filter-scroll-bar" id="marketFilterBar">
-          <div class="filter-tag active" onclick="filterMarket('all', this)">Все</div>
-          <div class="filter-tag" onclick="filterMarket('knife', this)">Ножи и перчатки</div>
-          <div class="filter-tag" onclick="filterMarket('rifle', this)">Винтовки</div>
-          <div class="filter-tag" onclick="filterMarket('pistol', this)">Пистолеты</div>
-          <div class="filter-tag" onclick="filterMarket('cheap', this)">До 1,000</div>
-          <div class="filter-tag" onclick="filterMarket('expensive', this)">10,000+</div>
-        </div>
-
-        <div class="skins-collection" id="marketGrid"></div>
-        <div class="skins-collection" id="inventoryGrid" style="display: none;"></div>
+        <div class="mobile-grid" id="marketGrid"></div>
+        <div class="mobile-grid" id="inventoryGrid" style="display: none;"></div>
       </div>
 
     </div>
 
     <!-- ================= VIEW 2: CASES ================= -->
     <div id="view-cases">
-      <div class="cases-banner">
-        <h2>Оригинальные кейсы CS2</h2>
-        <span style="font-size: 13px; color: var(--neon-gold); font-weight: 800;">📦 Открытие в 1 клик</span>
-      </div>
-      <div class="cases-grid" id="casesGrid"></div>
+      <div class="cases-mobile-grid" id="casesGrid"></div>
     </div>
 
+  </div>
+
+  <!-- MOBILE BOTTOM BAR NAVIGATION -->
+  <div class="mobile-bottom-nav">
+    <div class="m-nav-item active" id="navItemUpgrader" onclick="switchMainView('upgrader')">
+      <span>⚡</span>
+      <div>Апгрейдер</div>
+    </div>
+    <div class="m-nav-item" id="navItemCases" onclick="switchMainView('cases')">
+      <span>📦</span>
+      <div>Кейсы CS2</div>
+    </div>
   </div>
 
   <!-- CASE OPENING MODAL -->
@@ -1235,10 +1076,10 @@
       </div>
 
       <div class="case-actions-group">
-        <button class="case-open-action-btn" id="caseOpen1xBtn" onclick="spinCase(1)">
+        <button class="case-open-btn-m case-open-1x" id="caseOpen1xBtn" onclick="spinCase(1)">
           1x 🪙 250
         </button>
-        <button class="case-open-10x-btn" id="caseOpen10xBtn" onclick="spinCase(10)">
+        <button class="case-open-btn-m case-open-10x" id="caseOpen10xBtn" onclick="spinCase(10)">
           ⚡ 10x 🪙 2,500
         </button>
       </div>
@@ -1248,42 +1089,36 @@
   <!-- WIN ANIMATION MODAL -->
   <div class="animation-overlay" id="winOverlay">
     <canvas id="confettiCanvas"></canvas>
-    <div class="win-light-rays"></div>
-    <div class="win-container">
-      <div class="win-card-box">
-        <div class="win-badge-title">🎉 АПГРЕЙД УСПЕШЕН!</div>
-        <div class="win-subtitle">Поздравляем с выигрышем</div>
-        <div class="win-skin-glow-wrap">
-          <img id="winSkinImg" src="" alt="Skin">
-        </div>
-        <div class="win-item-name" id="winSkinName">AK-47 | Вулкан</div>
-        <div class="win-item-price" id="winSkinPrice">🪙 +2,800</div>
-        <button class="btn-collect-win" onclick="closeWinOverlay()">ЗАБРАТЬ В ИНВЕНТАРЬ</button>
+    <div class="win-card-box">
+      <div class="win-badge-title">🎉 ПОБЕДА!</div>
+      <div class="win-skin-img-box">
+        <img id="winSkinImg" src="" alt="Skin">
       </div>
+      <div class="win-item-name" id="winSkinName">AK-47 | Вулкан</div>
+      <div class="win-item-price" id="winSkinPrice">🪙 +2,800</div>
+      <button class="btn-action-dialog" onclick="closeWinOverlay()">ЗАБРАТЬ</button>
     </div>
   </div>
 
   <!-- LOSE ANIMATION MODAL -->
   <div class="animation-overlay" id="loseOverlay">
-    <div class="lose-container">
-      <div class="lose-card-box">
-        <div class="lose-icon">💥</div>
-        <div class="lose-badge-title">АПГРЕЙД ПРОВАЛЕН</div>
-        <div class="lose-desc">Стрелка остановилась вне зоны победы. Предмет сгорел.</div>
-        <button class="btn-retry-lose" onclick="closeLoseOverlay()">ПОПРОБОВАТЬ СНОВА</button>
-      </div>
+    <div class="lose-card-box">
+      <div style="font-size: 42px; margin-bottom: 6px;">💥</div>
+      <div class="lose-badge-title">НЕУДАЧА</div>
+      <div style="font-size: 12px; color: #b97f8c; margin-top: 4px;">Скин сгорел в апгрейде</div>
+      <button class="btn-retry-lose" onclick="closeLoseOverlay()">ЕЩЕ РАЗ</button>
     </div>
   </div>
 
   <!-- 10X CASE MULTI RESULT MODAL -->
   <div class="animation-overlay" id="multiResultOverlay">
     <div class="multi-res-dialog">
-      <div class="multi-res-header">
-        <div class="multi-res-title">🎁 ДРОП ИЗ 10 КЕЙСОВ</div>
-        <div class="multi-res-total" id="multiResTotal">+🪙 0</div>
+      <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px;">
+        <span style="font-weight: 900; font-size: 14px;">🎁 ДРОП ИЗ 10 КЕЙСОВ</span>
+        <span style="font-weight: 900; font-size: 13px; color: var(--neon-gold);" id="multiResTotal">+🪙 0</span>
       </div>
       <div class="multi-res-grid" id="multiResGrid"></div>
-      <button class="btn-collect-all" onclick="closeMultiResult()">ЗАБРАТЬ ВСЕ В ИНВЕНТАРЬ</button>
+      <button class="btn-action-dialog" style="margin-top: 10px;" onclick="closeMultiResult()">ЗАБРАТЬ ВСЕ</button>
     </div>
   </div>
 
@@ -2512,7 +2347,7 @@
       } catch(e) {}
     }
 
-    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 75; // ~471px
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 55; // ~345.5px
 
     function updateBalance() {
       document.getElementById('userBalanceDisplay').textContent = Math.floor(state.balance).toLocaleString('ru-RU');
@@ -2528,14 +2363,14 @@
     }
 
     function switchMainView(mode) {
-      document.getElementById('navTabUpgrader').classList.toggle('active', mode === 'upgrader');
-      document.getElementById('navTabCases').classList.toggle('active', mode === 'cases');
+      document.getElementById('navItemUpgrader').classList.toggle('active', mode === 'upgrader');
+      document.getElementById('navItemCases').classList.toggle('active', mode === 'cases');
       document.getElementById('view-upgrader').style.display = mode === 'upgrader' ? 'flex' : 'none';
       document.getElementById('view-cases').style.display = mode === 'cases' ? 'flex' : 'none';
       if (mode === 'cases') renderCases();
     }
 
-    function switchTab(tab) {
+    function switchMobileTab(tab) {
       document.getElementById('tabMarketBtn').classList.toggle('active', tab === 'market');
       document.getElementById('tabInventoryBtn').classList.toggle('active', tab === 'inventory');
       document.getElementById('marketGrid').style.display = tab === 'market' ? 'grid' : 'none';
@@ -2545,7 +2380,7 @@
 
     function filterMarket(filter, el) {
       state.currentFilter = filter;
-      document.querySelectorAll('.filter-tag').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.m-filter-chip').forEach(c => c.classList.remove('active'));
       if (el) el.classList.add('active');
       renderMarket();
     }
@@ -2558,7 +2393,7 @@
       document.getElementById('targetTitle').textContent = `${skin.type} | ${skin.name}`;
       document.getElementById('targetPrice').textContent = `🪙 ${skin.price.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#marketGrid .skin-tile').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#marketGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
       const activeCard = document.getElementById(`target-card-${skin.id}`);
       if (activeCard) activeCard.classList.add('selected');
 
@@ -2573,7 +2408,7 @@
       document.getElementById('sourceTitle').textContent = `${item.type} | ${item.name}`;
       document.getElementById('sourcePrice').textContent = `🪙 ${item.price.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#inventoryGrid .skin-tile').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#inventoryGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
       const activeCard = document.getElementById(`inv-card-${item.uid}`);
       if (activeCard) activeCard.classList.add('selected');
 
@@ -2585,18 +2420,17 @@
       state.selectedSource = null;
       state.coinBet = amount;
       document.getElementById('sourceSlot').classList.add('active');
-      document.getElementById('sourceImgBox').innerHTML = `<span style="font-size: 32px;">🪙</span>`;
+      document.getElementById('sourceImgBox').innerHTML = `<span style="font-size: 26px;">🪙</span>`;
       document.getElementById('sourceTitle').textContent = `${amount.toLocaleString('ru-RU')} Монет`;
       document.getElementById('sourcePrice').textContent = `🪙 ${amount.toLocaleString('ru-RU')}`;
 
-      document.querySelectorAll('#inventoryGrid .skin-tile').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#inventoryGrid .skin-item-card').forEach(c => c.classList.remove('selected'));
       recalcChance();
     }
 
     function applyMultiplierTarget(mult) {
       const sourceVal = getSourceValue();
       const targetVal = sourceVal * mult;
-      // find skin closest to targetVal
       let closest = CATALOG[0];
       let minDiff = Infinity;
       CATALOG.forEach(s => {
@@ -2638,7 +2472,6 @@
         return;
       }
 
-      // Boosted formula x1.6 for generous win-rates
       let chance = (sourceVal / targetVal) * 160;
       if (chance > 96) chance = 96;
       if (chance < 3.0) chance = 3.0;
@@ -2675,15 +2508,15 @@
         const isSelected = state.selectedTarget && state.selectedTarget.id === skin.id;
         const card = document.createElement('div');
         card.id = `target-card-${skin.id}`;
-        card.className = `skin-tile rare-${skin.rarity} ${isSelected ? 'selected' : ''}`;
+        card.className = `skin-item-card rare-${skin.rarity} ${isSelected ? 'selected' : ''}`;
         card.onclick = () => selectTarget(skin);
         card.innerHTML = `
-          <div class="skin-tile-img">
+          <div class="skin-item-card-img">
             <img src="${skin.image}" alt="${skin.name}" loading="lazy">
           </div>
-          <div class="skin-tile-name">${skin.name}</div>
-          <div class="skin-tile-type">${skin.type}</div>
-          <div class="skin-tile-price">🪙 ${skin.price.toLocaleString('ru-RU')}</div>
+          <div class="skin-item-card-name">${skin.name}</div>
+          <div class="skin-item-card-type">${skin.type}</div>
+          <div class="skin-item-card-price">🪙 ${skin.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -2694,7 +2527,7 @@
       grid.innerHTML = '';
 
       const coinCard = document.createElement('div');
-      coinCard.className = `skin-tile`;
+      coinCard.className = `skin-item-card`;
       coinCard.style.borderColor = 'var(--neon-gold)';
       coinCard.onclick = () => {
         const val = prompt("Введите сумму ставки монет:", state.coinBet || "100");
@@ -2702,12 +2535,12 @@
         if (num && num > 0) selectCoinBet(num);
       };
       coinCard.innerHTML = `
-        <div class="skin-tile-img">
-          <span style="font-size: 34px;">🪙</span>
+        <div class="skin-item-card-img">
+          <span style="font-size: 26px;">🪙</span>
         </div>
-        <div class="skin-tile-name">Ставка монетами</div>
-        <div class="skin-tile-type">Баланс: ${state.balance.toLocaleString('ru-RU')}</div>
-        <div class="skin-tile-price">🪙 Изменить</div>
+        <div class="skin-item-card-name">Монеты</div>
+        <div class="skin-item-card-type">Ставка</div>
+        <div class="skin-item-card-price">Изменить</div>
       `;
       grid.appendChild(coinCard);
 
@@ -2715,15 +2548,15 @@
         const isSelected = state.selectedSource && state.selectedSource.uid === item.uid;
         const card = document.createElement('div');
         card.id = `inv-card-${item.uid}`;
-        card.className = `skin-tile rare-${item.rarity} ${isSelected ? 'selected' : ''}`;
+        card.className = `skin-item-card rare-${item.rarity} ${isSelected ? 'selected' : ''}`;
         card.onclick = () => selectSourceItem(item);
         card.innerHTML = `
-          <div class="skin-tile-img">
+          <div class="skin-item-card-img">
             <img src="${item.image}" alt="${item.name}" loading="lazy">
           </div>
-          <div class="skin-tile-name">${item.name}</div>
-          <div class="skin-tile-type">${item.type}</div>
-          <div class="skin-tile-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
+          <div class="skin-item-card-name">${item.name}</div>
+          <div class="skin-item-card-type">${item.type}</div>
+          <div class="skin-item-card-price">🪙 ${item.price.toLocaleString('ru-RU')}</div>
         `;
         grid.appendChild(card);
       });
@@ -2814,7 +2647,6 @@
       selectCoinBet(100);
     }
 
-    /* ================= CONFETTI PARTICLES ================= */
     let confettiAnimation = null;
     function triggerConfetti() {
       const canvas = document.getElementById('confettiCanvas');
@@ -2825,16 +2657,16 @@
       const particles = [];
       const colors = ['#00e701', '#00f2fe', '#ffb703', '#ffffff', '#4facfe'];
 
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < 60; i++) {
         particles.push({
           x: canvas.width / 2,
           y: canvas.height / 2,
-          vx: (Math.random() - 0.5) * 16,
-          vy: (Math.random() - 0.8) * 18,
-          size: Math.random() * 7 + 4,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 16,
+          size: Math.random() * 6 + 3,
           color: colors[Math.floor(Math.random() * colors.length)],
           rotation: Math.random() * 360,
-          rotSpeed: (Math.random() - 0.5) * 10
+          rotSpeed: (Math.random() - 0.5) * 8
         });
       }
 
@@ -2843,7 +2675,7 @@
         particles.forEach(p => {
           p.x += p.vx;
           p.y += p.vy;
-          p.vy += 0.4; // gravity
+          p.vy += 0.35;
           p.rotation += p.rotSpeed;
 
           ctx.save();
@@ -2871,14 +2703,14 @@
       grid.innerHTML = '';
       CASES.forEach(c => {
         const card = document.createElement('div');
-        card.className = 'case-card';
+        card.className = 'case-card-m';
         card.onclick = () => openCaseModal(c);
         card.innerHTML = `
-          <div class="case-card-img">
+          <div class="case-card-m-img">
             <img src="${c.image}" alt="${c.name}" loading="lazy">
           </div>
-          <div class="case-card-name">${c.name}</div>
-          <button class="case-open-btn">🪙 ${c.price.toLocaleString('ru-RU')}</button>
+          <div class="case-card-m-name">${c.name}</div>
+          <button class="case-card-m-btn">🪙 ${c.price.toLocaleString('ru-RU')}</button>
         `;
         grid.appendChild(card);
       });
@@ -2968,7 +2800,7 @@
       if (count === 10) {
         const track = document.getElementById('tapeTrack');
         track.style.transition = 'transform 1.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
-        track.style.transform = 'translateX(-2200px)';
+        track.style.transform = 'translateX(-1800px)';
 
         setTimeout(() => {
           state.isOpeningCase = false;
@@ -2992,7 +2824,7 @@
           const totalEl = document.getElementById('multiResTotal');
 
           grid.innerHTML = '';
-          totalEl.textContent = `Общая ценность: 🪙 ${totalValue.toLocaleString('ru-RU')}`;
+          totalEl.textContent = `+🪙 ${totalValue.toLocaleString('ru-RU')}`;
 
           wonItems.forEach(item => {
             const card = document.createElement('div');
@@ -3012,9 +2844,9 @@
         const winIndex = 36;
         const wonSkin = generatedItemsTape[winIndex];
 
-        const itemWidth = 110;
+        const itemWidth = 90;
         const containerWidth = document.querySelector('.tape-container').offsetWidth;
-        const jitter = (Math.random() * 60) - 30;
+        const jitter = (Math.random() * 40) - 20;
         const targetOffset = (winIndex * itemWidth) + (itemWidth / 2) - (containerWidth / 2) + jitter;
 
         const track = document.getElementById('tapeTrack');
