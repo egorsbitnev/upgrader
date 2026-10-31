@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cyber Generator: Upgrader</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --accent: #00f2fe;
+      --accent2: #4facfe;
+      --neon-green: #00ff87;
+      --gold: #f6d365;
+      --purple: #a855f7;
+      --text: #f0f6fc;
+      --text-dim: #8b9bb4;
+      --border: #222f49;
+    }
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      touch-action: manipulation;
+    }
+    header {
+      background: linear-gradient(180deg, rgba(21, 29, 48, 0.95) 0%, rgba(11, 15, 25, 0.8) 100%);
+      padding: 16px 20px 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+    .energy-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .energy-amount {
+      font-size: 34px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--neon-green), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+    }
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .stats-bar span b {
+      color: var(--neon-green);
+    }
+
+    /* Core clicker zone */
+    .clicker-section {
+      flex: 0 0 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, transparent 70%);
+    }
+    .reactor-btn {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #182848, #2980b9);
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 242, 254, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      outline: none;
+      position: relative;
+    }
+    .reactor-btn:active {
+      transform: scale(0.92);
+      box-shadow: 0 0 50px rgba(0, 255, 135, 0.8), inset 0 0 30px rgba(0, 255, 135, 0.8);
+      border-color: var(--neon-green);
+    }
+    .floating-text {
+      position: absolute;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--neon-green);
+      pointer-events: none;
+      animation: floatUp 0.8s ease-out forwards;
+      text-shadow: 0 0 8px rgba(0, 255, 135, 0.6);
+      z-index: 100;
+    }
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -60px) scale(1.3);
+      }
+    }
+
+    /* Tabs & Upgrades list */
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 22, 36, 0.9);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(0, 242, 254, 0.04);
+    }
+
+    .upgrades-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .upgrade-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.1s, border-color 0.2s, background 0.2s;
+    }
+    .upgrade-card.can-afford {
+      border-color: rgba(0, 242, 254, 0.5);
+      cursor: pointer;
+    }
+    .upgrade-card.can-afford:active {
+      transform: scale(0.98);
+      background: #1c2742;
+    }
+    .upgrade-card.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .upgrade-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .upgrade-icon {
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .upgrade-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .upgrade-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+    }
+    .upgrade-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .upgrade-count {
+      font-size: 11px;
+      color: var(--purple);
+      margin-top: 2px;
+      font-weight: bold;
+    }
+    .upgrade-btn {
+      background: linear-gradient(135deg, #1f3056, #2a4374);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+      min-width: 90px;
+    }
+    .upgrade-card.can-afford .upgrade-btn {
+      background: linear-gradient(135deg, #00b4db, #0083b0);
+      box-shadow: 0 0 10px rgba(0, 180, 219, 0.4);
+      border-color: var(--accent);
+    }
+    .cost-val {
+      color: var(--gold);
+    }
+
+    /* Prestige Banner */
+    .prestige-box {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(79, 172, 254, 0.15));
+      border: 1px dashed var(--purple);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .prestige-btn {
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="energy-title">ЭНЕРГИЯ РЕАКТОРА</div>
+    <div class="energy-amount" id="energyDisplay">0</div>
+    <div class="stats-bar">
+      <span>Клик: +<b id="clickPowerDisplay">1</b></span>
+      <span>Пассивный доход: +<b id="passivePowerDisplay">0</b>/сек</span>
+    </div>
+  </header>
+
+  <div class="clicker-section" id="clickArea">
+    <button class="reactor-btn" id="reactorBtn">⚡</button>
+  </div>
+
+  <div class="tabs-header">
+    <button class="tab-btn active" id="tabUpgradesBtn" onclick="switchTab('upgrades')">Апгрейды</button>
+    <button class="tab-btn" id="tabPrestigeBtn" onclick="switchTab('prestige')">Перерождение</button>
+  </div>
+
+  <div class="upgrades-list" id="tabUpgrades">
+    <!-- Generated dynamically -->
+  </div>
+
+  <div class="upgrades-list" id="tabPrestige" style="display: none;">
+    <div class="prestige-box">
+      <h3 style="color: var(--purple); margin-bottom: 6px;">🌌 Квантовая Перезагрузка</h3>
+      <p style="font-size: 13px; color: var(--text-dim);">Сбросьте накопленную энергию и апгрейды, чтобы получить Квантовые Ядра! Каждое ядро навсегда увеличивает ВСЮ добычу на +25%.</p>
+      <div style="margin: 12px 0; font-size: 15px;">
+        Текущий бонус: <b style="color: var(--neon-green);" id="prestigeMultiplier">+0%</b><br>
+        Ядер за сброс: <b style="color: var(--gold);" id="coresToGain">0</b> ⚛️
+      </div>
+      <button class="prestige-btn" id="prestigeActionBtn" onclick="doPrestige()">ПЕРЕРОДИТЬСЯ</button>
+    </div>
+  </div>
+
+  <script>
+    // Game State
+    let state = {
+      energy: 0,
+      clickPower: 1,
+      passivePerSec: 0,
+      cores: 0,
+      upgrades: {
+        tapPower: { name: "Усиленный клик", icon: "👆", baseCost: 15, count: 0, effect: 1, type: "click", costMult: 1.15, desc: "+1 к силе клика" },
+        autoClicker: { name: "Микро-дроны", icon: "🤖", baseCost: 50, count: 0, effect: 2, type: "passive", costMult: 1.18, desc: "+2 энергии в сек." },
+        generator: { name: "Плазмо-генератор", icon: "🔋", baseCost: 350, count: 0, effect: 15, type: "passive", costMult: 1.20, desc: "+15 энергии в сек." },
+        superCharge: { name: "Кибер-чип", icon: "💾", baseCost: 1500, count: 0, effect: 8, type: "click", costMult: 1.25, desc: "+8 к силе клика" },
+        reactorCooler: { name: "Охладитель ядра", icon: "❄️", baseCost: 5000, count: 0, effect: 90, type: "passive", costMult: 1.22, desc: "+90 энергии в сек." },
+        fusionCore: { name: "Термоядерный синтез", icon: "☀️", baseCost: 25000, count: 0, effect: 450, type: "passive", costMult: 1.24, desc: "+450 энергии в сек." },
+        dysonSphere: { name: "Сфера Дайсона", icon: "🪐", baseCost: 120000, count: 0, effect: 2500, type: "passive", costMult: 1.28, desc: "+2500 энергии в сек." }
+      }
+    };
+
+    // Load savegame
+    try {
+      const saved = localStorage.getItem('cyber_generator_save');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        state.energy = parsed.energy || 0;
+        state.cores = parsed.cores || 0;
+        for (let key in parsed.upgrades) {
+          if (state.upgrades[key]) {
+            state.upgrades[key].count = parsed.upgrades[key].count || 0;
+          }
+        }
+      }
+    } catch(e) {}
+
+    function getCost(upgrade) {
+      return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMult, upgrade.count));
+    }
+
+    function formatNumber(num) {
+      if (num >= 1e12) return (num / 1e12).toFixed(2) + "T";
+      if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
+      if (num >= 1e6) return (num / 1e6).toFixed(2) + "M";
+      if (num >= 1e3) return (num / 1e3).toFixed(1) + "k";
+      return Math.floor(num).toLocaleString('ru-RU');
+    }
+
+    function recalculateStats() {
+      const coreBonus = 1 + (state.cores * 0.25);
+      
+      let baseClick = 1;
+      let basePassive = 0;
+
+      for (let key in state.upgrades) {
+        const u = state.upgrades[key];
+        if (u.type === "click") {
+          baseClick += u.count * u.effect;
+        } else if (u.type === "passive") {
+          basePassive += u.count * u.effect;
+        }
+      }
+
+      state.clickPower = Math.round(baseClick * coreBonus);
+      state.passivePerSec = Math.round(basePassive * coreBonus);
+
+      document.getElementById('clickPowerDisplay').textContent = formatNumber(state.clickPower);
+      document.getElementById('passivePowerDisplay').textContent = formatNumber(state.passivePerSec);
+      document.getElementById('prestigeMultiplier').textContent = `+${state.cores * 25}% (${state.cores} ⚛️)`;
+
+      const coresToGain = Math.floor(Math.sqrt(state.energy / 50000));
+      document.getElementById('coresToGain').textContent = coresToGain;
+      const prestigeBtn = document.getElementById('prestigeActionBtn');
+      if (coresToGain > 0) {
+        prestigeBtn.style.opacity = '1';
+        prestigeBtn.disabled = false;
+      } else {
+        prestigeBtn.style.opacity = '0.5';
+        prestigeBtn.disabled = true;
+      }
+    }
+
+    function renderUpgrades() {
+      const container = document.getElementById('tabUpgrades');
+      container.innerHTML = '';
+
+      for (let key in state.upgrades) {
+        const u = state.upgrades[key];
+        const cost = getCost(u);
+        const canAfford = state.energy >= cost;
+
+        const card = document.createElement('div');
+        card.className = `upgrade-card ${canAfford ? 'can-afford' : 'disabled'}`;
+        card.onclick = () => buyUpgrade(key);
+
+        card.innerHTML = `
+          <div class="upgrade-left">
+            <div class="upgrade-icon">${u.icon}</div>
+            <div class="upgrade-info">
+              <span class="upgrade-name">${u.name}</span>
+              <span class="upgrade-desc">${u.desc}</span>
+              <span class="upgrade-count">Уровень: ${u.count}</span>
+            </div>
+          </div>
+          <div class="upgrade-btn">
+            <div class="cost-val">${formatNumber(cost)} ⚡</div>
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    function updateDisplay() {
+      document.getElementById('energyDisplay').textContent = formatNumber(state.energy);
+      recalculateStats();
+
+      // Update affordability classes without recreating DOM elements for smooth 60fps
+      const cards = document.querySelectorAll('.upgrade-card');
+      const keys = Object.keys(state.upgrades);
+      cards.forEach((card, i) => {
+        const u = state.upgrades[keys[i]];
+        if (u) {
+          const cost = getCost(u);
+          if (state.energy >= cost) {
+            card.classList.remove('disabled');
+            card.classList.add('can-afford');
+          } else {
+            card.classList.add('disabled');
+            card.classList.remove('can-afford');
+          }
+        }
+      });
+    }
+
+    function buyUpgrade(key) {
+      const u = state.upgrades[key];
+      const cost = getCost(u);
+      if (state.energy >= cost) {
+        state.energy -= cost;
+        u.count++;
+        saveGame();
+        renderUpgrades();
+        updateDisplay();
+      }
+    }
+
+    function createFloatingText(x, y, text) {
+      const el = document.createElement('div');
+      el.className = 'floating-text';
+      el.textContent = text;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 800);
+    }
+
+    const reactorBtn = document.getElementById('reactorBtn');
+    reactorBtn.addEventListener('pointerdown', (e) => {
+      state.energy += state.clickPower;
+      createFloatingText(e.clientX, e.clientY - 20, `+${formatNumber(state.clickPower)}`);
+      updateDisplay();
+      if (navigator.vibrate) {
+        navigator.vibrate(15);
+      }
+    });
+
+    function switchTab(tab) {
+      document.getElementById('tabUpgradesBtn').classList.toggle('active', tab === 'upgrades');
+      document.getElementById('tabPrestigeBtn').classList.toggle('active', tab === 'prestige');
+      document.getElementById('tabUpgrades').style.display = tab === 'upgrades' ? 'flex' : 'none';
+      document.getElementById('tabPrestige').style.display = tab === 'prestige' ? 'flex' : 'none';
+    }
+
+    function doPrestige() {
+      const coresToGain = Math.floor(Math.sqrt(state.energy / 50000));
+      if (coresToGain <= 0) return;
+      if (!confirm(`Вы действительно хотите совершить Перерождение? Вы получите ${coresToGain} Квантовых Ядер (+${coresToGain * 25}% к добыче навсегда)!`)) return;
+
+      state.cores += coresToGain;
+      state.energy = 0;
+      for (let k in state.upgrades) {
+        state.upgrades[k].count = 0;
+      }
+      saveGame();
+      renderUpgrades();
+      updateDisplay();
+      switchTab('upgrades');
+    }
+
+    function saveGame() {
+      try {
+        localStorage.setItem('cyber_generator_save', JSON.stringify({
+          energy: state.energy,
+          cores: state.cores,
+          upgrades: state.upgrades
+        }));
+      } catch(e) {}
+    }
+
+    // Passive income loop (runs 10 times a sec for smooth counting)
+    setInterval(() => {
+      if (state.passivePerSec > 0) {
+        state.energy += state.passivePerSec / 10;
+        updateDisplay();
+      }
+    }, 100);
+
+    // Auto-save every 5 seconds
+    setInterval(saveGame, 5000);
+
+    // Initial render
+    renderUpgrades();
+    updateDisplay();
+  </script>
+</body>
+</html>
