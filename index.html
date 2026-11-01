@@ -1095,7 +1095,235 @@
       font-size: 13px;
       cursor: pointer;
     }
-</style>
+
+    /* ========================================================
+       MOBILE-FIRST RESPONSIVE OPTIMIZATIONS
+       ======================================================== */
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+    }
+
+    body {
+      padding-top: var(--sat);
+      padding-bottom: var(--sab);
+      padding-left: var(--sal);
+      padding-right: var(--sar);
+    }
+
+    /* Bet Modal Styles */
+    .bet-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+      padding: 16px;
+    }
+    .bet-modal-box {
+      width: 100%;
+      max-width: 320px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .bet-presets-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+    .bet-quick-btn {
+      background: #192233;
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      padding: 8px 0;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .bet-quick-btn:active {
+      background: #2563eb;
+      color: #fff;
+    }
+    .bet-input {
+      flex: 1;
+      background: #0f1420;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+    }
+    .bet-input:focus {
+      border-color: #3b82f6;
+    }
+    .bet-apply-btn {
+      background: var(--accent-green);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      padding: 0 16px;
+      font-weight: 900;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Small Screen / Mobile Adjustments */
+    @media (max-width: 480px) {
+      header {
+        padding: 4px 10px;
+        height: 42px;
+      }
+      .brand-name {
+        font-size: 14px;
+      }
+      .brand-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+      }
+      .balance-pill {
+        padding: 3px 8px;
+      }
+      .balance-val {
+        font-size: 12px;
+      }
+      .btn-deposit {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+      }
+      .top-nav-btn {
+        padding: 6px 0;
+        font-size: 11px;
+      }
+
+      .upgrader-arena {
+        padding: 6px 8px;
+      }
+      .arena-top-row {
+        gap: 6px;
+      }
+      .arena-slot {
+        height: 98px;
+        padding: 4px;
+      }
+      .slot-img-box {
+        width: 58px;
+        height: 40px;
+        margin-top: 6px;
+      }
+      .slot-name {
+        font-size: 9.5px;
+        max-width: 100px;
+      }
+      .slot-price {
+        font-size: 10px;
+      }
+      .dial-container {
+        width: 116px;
+        height: 116px;
+      }
+      .dial-svg {
+        width: 116px;
+        height: 116px;
+      }
+
+      .dial-needle {
+        height: 56px;
+        margin-top: -56px;
+      }
+      .dial-chance-num {
+        font-size: 18px;
+      }
+      .dial-multiplier {
+        font-size: 10px;
+      }
+      .speed-toggle-row {
+        gap: 2px;
+        padding: 1px;
+      }
+      .speed-btn {
+        padding: 2px 6px;
+        font-size: 10px;
+      }
+      .preset-btn {
+        padding: 4px 0;
+        font-size: 10px;
+      }
+      .btn-upgrade-action {
+        padding: 9px 0;
+        font-size: 13px;
+      }
+
+      .panel-header {
+        height: 30px;
+        padding: 4px 6px;
+      }
+      .panel-title {
+        font-size: 9.5px;
+      }
+      .panel-badge {
+        font-size: 9px;
+      }
+      .f-chip {
+        padding: 2px 6px;
+        font-size: 9px;
+      }
+
+      .dual-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 5px;
+        padding: 5px;
+      }
+      .mini-card {
+        padding: 5px 3px;
+      }
+      .mini-card-img {
+        height: 38px;
+      }
+      .mini-card-name {
+        font-size: 9px;
+      }
+      .mini-card-type {
+        font-size: 8px;
+      }
+      .mini-card-price {
+        font-size: 9.5px;
+      }
+      .target-chance-badge {
+        font-size: 7.5px;
+        padding: 1px 4px;
+        top: 2px;
+        right: 2px;
+      }
+
+      .case-modal-box {
+        max-height: 94vh;
+        padding: 12px 10px;
+      }
+      .reels-scroll-area {
+        max-height: 45vh;
+      }
+    }
+
+  </style>
 </head>
 <body>
 
@@ -1136,7 +1364,7 @@
         <div class="arena-top-row">
           
           <!-- Left: User Bet Slot -->
-          <div class="arena-slot active" id="sourceSlot">
+          <div class="arena-slot active" id="sourceSlot" onclick="openBetModal()" title="Нажмите, чтобы изменить ставку">
             <span class="slot-tag">Ваша ставка</span>
             <div class="slot-img-box" id="sourceImgBox">
               <span style="font-size: 26px;">🪙</span>
@@ -1147,7 +1375,7 @@
 
           <!-- Center: Dial Wheel (No white center circle) -->
           <div class="dial-container">
-            <svg class="dial-svg">
+            <svg class="dial-svg" viewBox="0 0 136 136">
               <circle class="dial-track" cx="68" cy="68" r="58"></circle>
               <circle class="dial-arc" id="winArc" cx="68" cy="68" r="58"></circle>
             </svg>
@@ -15509,6 +15737,32 @@
       recalcChance();
     }
 
+    
+    function openBetModal() {
+      if (state.isRolling) return;
+      AudioEngine.playClick();
+      const input = document.getElementById('customBetInput');
+      if (input) input.value = state.coinBet || 100;
+      document.getElementById('betModalOverlay').style.display = 'flex';
+    }
+    function closeBetModal() {
+      document.getElementById('betModalOverlay').style.display = 'none';
+    }
+    function applyQuickBet(amount) {
+      AudioEngine.playClick();
+      selectCoinBet(amount);
+      closeBetModal();
+    }
+    function submitCustomBet() {
+      const input = document.getElementById('customBetInput');
+      const val = parseInt(input.value, 10);
+      if (val && val > 0) {
+        AudioEngine.playClick();
+        selectCoinBet(val);
+        closeBetModal();
+      }
+    }
+
     function selectCoinBet(amount) {
       setTimeout(renderMarket, 50);
       if (state.isRolling) return;
@@ -15728,11 +15982,7 @@
       const coinCard = document.createElement('div');
       coinCard.className = `mini-card`;
       coinCard.style.borderColor = 'var(--accent-yellow)';
-      coinCard.onclick = () => {
-        const val = prompt("Введите сумму ставки монет:", state.coinBet || "100");
-        const num = parseInt(val, 10);
-        if (num && num > 0) selectCoinBet(num);
-      };
+      coinCard.onclick = () => openBetModal();
       coinCard.innerHTML = `
         <div class="mini-card-img">
           <span style="font-size: 24px;">🪙</span>
@@ -16198,5 +16448,31 @@
     renderInventory();
     updateBalance();
   </script>
+
+  <!-- CUSTOM COIN BET MODAL (MOBILE FRIENDLY) -->
+  <div class="bet-modal-overlay" id="betModalOverlay">
+    <div class="bet-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="font-weight: 800; font-size: 15px; color: #fff;">🪙 Ставка монетами</span>
+        <span style="cursor: pointer; color: var(--text-muted); font-size: 18px; padding: 2px 6px;" onclick="closeBetModal()">✕</span>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); margin: 6px 0 10px; width: 100%;">Выберите быструю сумму или введите свою:</div>
+      <div class="bet-presets-grid">
+        <button class="bet-quick-btn" onclick="applyQuickBet(50)">50</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(100)">100</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(250)">250</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(500)">500</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(1000)">1,000</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(2500)">2,500</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(5000)">5,000</button>
+        <button class="bet-quick-btn" onclick="applyQuickBet(10000)">10,000</button>
+      </div>
+      <div style="display: flex; gap: 8px; width: 100%; margin-top: 10px;">
+        <input type="number" id="customBetInput" class="bet-input" placeholder="Своя сумма..." min="1" max="1000000" />
+        <button class="bet-apply-btn" onclick="submitCustomBet()">ОК</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
